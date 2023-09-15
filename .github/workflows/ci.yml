@@ -1,0 +1,33 @@
+name: Continuous Integration
+
+on:
+  # Trigger the workflow on push or pull request,
+  push:
+    branches:
+      - main
+      - develop
+  pull_request: {}
+
+jobs:
+  build:
+    name: Lint Code Base
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: "20"
+
+      - name: Lint Code Base
+        uses: super-linter/super-linter@v5

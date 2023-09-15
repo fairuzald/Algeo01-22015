@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "vscjava.vscode-java-pack",
+    "redhat.java",
+    "springbootio.vscode-spring-boot",
+    "Pivotal.vscode-boot-dev-pack",
+    "SonarSource.sonarlint-vscode",
+    "esbenp.prettier-vscode",
+    "aaron-bond.better-comments"
+  ]
+}
