@@ -27,7 +27,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
-          java-version: "20"
+          java-version: "16" # Use a supported Java version
 
       - name: Lint Code Base
         uses: super-linter/super-linter@v5
