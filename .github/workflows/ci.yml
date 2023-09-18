@@ -31,8 +31,8 @@ jobs:
 
       - name: Build testing using bat
         run: |
-          cd Algeo01-22015
-          Run.bat
+          ./Run.bat
+        shell: cmd
 
   lint-formatting:
     runs-on: ubuntu-latest
