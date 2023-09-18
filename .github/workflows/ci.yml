@@ -11,8 +11,27 @@ permissions:
   contents: read
 
 jobs:
+  lint-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@v2.5.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Run formatter
+        id: formatter
+        uses: axel-op/googlejavaformat-action@v3
+        with:
+          args: "--replace"
+          skip-commit: true
+
   build:
     runs-on: windows-latest # Use a Windows runner
+    needs: lint-formatting
 
     steps:
       - name: Harden Runner
@@ -33,22 +52,5 @@ jobs:
       - name: Build testing using bat
         run: |
           .\Run.bat
+          if %ERRORLEVEL% NEQ 0 exit 1
         shell: cmd
-
-  lint-formatting:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@v2.5.1
-        with:
-          egress-policy: audit
-
-      - name: Checkout repo
-        uses: actions/checkout@v2
-
-      - name: Run formatter
-        id: formatter
-        uses: axel-op/googlejavaformat-action@v3
-        with:
-          args: "--replace"
-          skip-commit: true
