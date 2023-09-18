@@ -1,34 +1,45 @@
-name: Continuous Integration
-
+name: Java Lint CI
 on:
-  # Trigger the workflow on push or pull request,
   push:
     branches:
       - main
-      - develop
-  pull_request: {}
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
 
 jobs:
-  build:
-    name: Lint Code Base
+  lint:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: read
-      statuses: write
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Harden Runner
+        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
         with:
-          fetch-depth: 0
-
-      - name: Set up Java
-        uses: actions/setup-java@v2
+          disable-sudo: true
+          egress-policy: block
+          allowed-endpoints: >
+            github.com:443
+            repo.maven.apache.org:443
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+      - name: Set up JDK
+        uses: actions/setup-java@cd89f46ac9d01407894225f350157564c9c7cee2 # v3.12.0
         with:
-          java-version: "16"
-          distribution: "adopt"
+          java-version: 11.x
+          distribution: temurin
+  formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - name: Lint Code Base
-        uses: super-linter/super-linter@v5
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0 # v2 minimum required
+      - name: Run formatter
+        id: formatter
+        uses: axel-op/googlejavaformat-action@dbff853fb823671ec5781365233bf86543b13215 # v3
+        with:
+          args: "--replace"
+          skip-commit: true
+      - name: Print diffs
+        run: git --no-pager diff --exit-code
