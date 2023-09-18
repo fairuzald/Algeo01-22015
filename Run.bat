@@ -20,5 +20,3 @@ if %ERRORLEVEL% NEQ 0 (
 java -cp %CLASSPATH% Main
 
 
-:: Tunggu sebentar sebelum menutup jendela
-pause
