@@ -29,7 +29,7 @@ jobs:
           java-version: "17"
           distribution: "temurin"
 
-      - name: Build testing using bat
+      - name: Build testing using bat cmd
         run: |
           cd Algeo01-22015
           Run.bat
