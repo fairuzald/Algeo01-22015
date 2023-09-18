@@ -17,27 +17,33 @@ jobs:
         with:
           disable-sudo: true
           egress-policy: block
-          allowed-endpoints: >
-            github.com:443
-            repo.maven.apache.org:443
+
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
       - name: Set up JDK
         uses: actions/setup-java@cd89f46ac9d01407894225f350157564c9c7cee2 # v3.12.0
         with:
           java-version: 11.x
           distribution: temurin
+
   formatting:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@8ca2b8b2ece13480cda6dacd3511b49857a23c09 # v2.5.1
         with:
-          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+          egress-policy: audit
 
-      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0 # v2 minimum required
+      - name: Checkout
+        uses: actions/checkout@v3 # v2 minimum required
+
       - name: Run formatter
         id: formatter
-        uses: axel-op/googlejavaformat-action@dbff853fb823671ec5781365233bf86543b13215 # v3
+        uses: axel-op/googlejavaformat-action@v3
         with:
           args: "--replace"
           skip-commit: true
+
+      - name: Run prettier
+        uses: wearerequired/lint-action@v2
+        with:
+          prettier: true
