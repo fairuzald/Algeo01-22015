@@ -31,7 +31,7 @@ jobs:
 
       - name: Build testing using bat
         run: |
-          ./Run.bat
+          .\Run.bat
         shell: cmd
 
   lint-formatting:
@@ -51,8 +51,3 @@ jobs:
         with:
           args: "--replace"
           skip-commit: true
-
-      - name: Run prettier
-        uses: wearerequired/lint-action@v2
-        with:
-          prettier: true
