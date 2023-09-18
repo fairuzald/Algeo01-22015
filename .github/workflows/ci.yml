@@ -12,7 +12,8 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest # Use a Windows runner
+
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@v2.5.1
@@ -31,9 +32,8 @@ jobs:
 
       - name: Build testing using bat
         run: |
-          chmod +x ./Run.bat # Make the batch file executable
-          ./Run.bat
-        shell: bash
+          .\Run.bat
+        shell: cmd
 
   lint-formatting:
     runs-on: ubuntu-latest
