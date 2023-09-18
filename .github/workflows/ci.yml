@@ -31,8 +31,9 @@ jobs:
 
       - name: Build testing using bat
         run: |
-          .\Run.bat
-        shell: cmd
+          chmod +x ./Run.bat # Make the batch file executable
+          ./Run.bat
+        shell: bash
 
   lint-formatting:
     runs-on: ubuntu-latest
