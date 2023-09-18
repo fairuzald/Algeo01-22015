@@ -5,7 +5,7 @@ public class Main {
   public static void main(String[] args) {
     Scanner scan = new Scanner(System.in);
     Matrix tes = new Matrix();
-    System.out.println("Selamat datang di TUBES ALGEO 1");
+    System.out.println("Selamat datang di TUBES ALGEO 1"
     System.out.println("by: ucup tampan");
     System.out.println("Anggota:");
     System.out.println("1. (13522015) Yusuf Ardian Sandi ");
