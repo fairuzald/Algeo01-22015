@@ -16,3 +16,9 @@ if %ERRORLEVEL% NEQ 0 (
   echo Error: Java program exited with an error code.
   exit /b %ERRORLEVEL%
 )
+
+:: Jalankan aplikasi Anda dari folder bin
+java -cp %CLASSPATH% Test
+
+:: Tunggu sebentar sebelum menutup jendela
+pause

@@ -10,5 +10,5 @@
   "java.autobuild.enabled": true,
   "java.trace.server": "off",
   "java.jdt.ls.vmargs": "-noverify",
-  "java.import.gradle.enabled": false
+  "java.import.gradle.enabled": false,
 }
