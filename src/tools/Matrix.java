@@ -10,7 +10,7 @@ public class Matrix {
   /* ***** ATRIBUTE ***** */
   private float[][] matrix; // Inisialisasi matrix
   private int rowEff; // Ukuran baris terdefinisi
-  private int colEff; // Ukuran kolom terdefinisi
+  private int colEff; // Ukuran Colom terdefinisi
 
   // * ***** METHOD ***** */
 
@@ -469,5 +469,217 @@ public class Matrix {
   }
 
 
+  public void OBEPlusRow(final int idxRowOrigin, final int idxRowTarget, final float factor) {
+    // Diperuntukkan operasi antara 2 baris
+    int i;
+    float value;
+    for (i = this.getFirstIdxCol(); i <= this.getLastIdxCol(); i++) {
+      value = this.getElmt(idxRowTarget, i) + (factor * this.getElmt(idxRowOrigin, i));
+      if (value == -0.0f) {
+        value = 0.0f;
+      }
+      this.setElmt(idxRowTarget, i, value);
+    }
+  }
 
+  public void OBESwapRow(final int idxRowOrigin, final int idxRowTarget) {
+    // Diperuntukkan operasi pertukaran elemen antara 2 baris
+    int i;
+    float temp;
+    for (i = this.getFirstIdxCol(); i <= this.getLastIdxCol(); i++) {
+      temp = this.getElmt(idxRowOrigin, i);
+      this.setElmt(idxRowOrigin, i, this.getElmt(idxRowTarget, i));
+      this.setElmt(idxRowTarget, i, temp);
+    }
+  }
+
+  public void OBEDivisionFactor(final int i, final float factor) {
+    /* Membagi baris i dengan konstanta factor untuk membuat 1 utama */
+    int j;
+    float value;
+    for (j = this.getFirstIdxCol(); j <= this.getLastIdxCol(); j++) {
+      value = (this.getElmt(i, j) / factor);
+      if (value == -0.0f) {
+        value = 0.0f;
+      }
+      this.setElmt(i, j, value);
+    }
+  }
+
+  public void gaussElimination() {
+    int j, k;
+    float factor;
+    int i = this.getFirstIdxRow();
+    // Iterasi kolom dengan for loop, tapi iterasi baris disesuaikan dengan case
+    for (j =
+        this.getFirstIdxCol(); ((i <= this.getLastIdxRow()) && (j < this.getLastIdxCol())); j++) {
+      boolean isOBEProcess = true; // Untuk Proses OBEPlusRow
+      boolean isAllZero = false; // untuk pergeseran i jika tidak semua elemen baris 0
+
+      // dilakukan pengecekan per baris
+      if (this.getElmt(i, j) == 0) {
+        k = i + 1;
+        boolean found = false;
+        while (!found && k <= this.getLastIdxRow()) {
+          // lakukan perulangan sampai ditemukan elemen kolom j yang != 0
+          if (this.getElmt(k, j) != 0) {
+            found = true;
+            this.OBESwapRow(i, k);
+          } else {
+            k += 1;
+          }
+        }
+        // Jika ridak ditemukan elemen !=0 pada suatu baris
+        if (!found) {
+          isOBEProcess = false;
+          isAllZero = true;
+        }
+      }
+
+      if (isOBEProcess) {
+        this.OBEDivisionFactor(i, this.getElmt(i, j));
+        // Making elemen dibawah ini harus semuanya 0;
+        for (k = i + 1; k <= this.getLastIdxRow(); k++) {
+
+          factor = -(this.getElmt(k, j) / this.getElmt(i, j));
+          this.OBEPlusRow(i, k, factor);
+        }
+      }
+      // Penggeseran pengecekan baris
+      if (!isAllZero) {
+        i += 1;
+      }
+    }
+  }
+
+  public void gJordanElimination() {
+    int j, k;
+    float factor;
+    int i = this.getFirstIdxRow();
+    // Iterasi kolom dengan for loop, tapi iterasi baris disesuaikan dengan case
+    for (j =
+        this.getFirstIdxCol(); ((i <= this.getLastIdxRow()) && (j < this.getLastIdxCol())); j++) {
+      boolean isOBEProcess = true; // Untuk Proses OBEPlusRow
+      boolean isAllZero = false; // untuk pergeseran i jika tidak semua elemen baris 0
+
+      // dilakukan pengecekan per baris
+      if (this.getElmt(i, j) == 0) {
+        k = i + 1;
+        boolean found = false;
+        while (!found && k <= this.getLastIdxRow()) {
+          // lakukan perulangan sampai ditemukan elemen kolom j yang != 0
+          if (this.getElmt(k, j) != 0) {
+            found = true;
+            this.OBESwapRow(i, k);
+          } else {
+            k += 1;
+          }
+        }
+        // Jika ridak ditemukan elemen !=0 pada suatu baris
+        if (!found) {
+          isOBEProcess = false;
+          isAllZero = true;
+        }
+      }
+
+      if (isOBEProcess) {
+        this.OBEDivisionFactor(i, this.getElmt(i, j));
+        // Making elemen dibawah ini harus semuanya 0;
+        for (k = this.getFirstIdxRow(); k <= this.getLastIdxRow(); k++) {
+          if (k != i) {
+            factor = -(this.getElmt(k, j) / this.getElmt(i, j));
+            this.OBEPlusRow(i, k, factor);
+          }
+        }
+      }
+      // Penggeseran pengecekan baris
+      if (!isAllZero) {
+        i += 1;
+      }
+    }
+
+  }
+
+  public float determinantCofactor() {
+    if (!this.isSquare()) {
+      throw new IllegalArgumentException("Matrix is not square. Determinant is undefined.");
+    }
+    Matrix subMatrix;
+    int i, j, k, rowSub;
+    if (this.getSize() == 1) {
+      return this.getElmt(0, 0);
+    }
+
+    float determinan = 0.0f;
+
+    for (i = this.getFirstIdxRow(); i <= this.getLastIdxRow(); i++) {
+      // Assign submatrix
+      subMatrix = new Matrix(this.getRowEff() - 1, this.getColEff() - 1);
+
+      // Fill the subMatrix with the corresponding elements
+      for (j = 1; j <= this.getLastIdxCol(); j++) {
+        for (k = this.getFirstIdxRow(), rowSub = 0; k <= this.getLastIdxRow(); k++) {
+          if (k != i) {
+            subMatrix.setElmt(rowSub, j - 1, this.getElmt(k, j));
+            rowSub++;
+          }
+        }
+      }
+
+      float cofactor = this.getElmt(i, 0) * subMatrix.determinantCofactor();
+      if (i % 2 == 1) {
+        cofactor = -cofactor;
+      }
+
+      determinan += cofactor;
+    }
+
+    return determinan;
+  }
+
+  public float determinantLowerTriangle() {
+    if (!this.isSquare()) {
+      throw new IllegalArgumentException("Matrix is not square. Determinant is undefined.");
+    }
+    float det = 1.0f;
+    int i, j;
+    float factor;
+    Matrix mCopy = this.copyMatrix(); // Buat copy matrix
+
+    for (i = mCopy.getFirstIdxRow(); i <= mCopy.getLastIdxRow(); i++) {
+      // Apakah ada elemen diagonal bernilai 0
+      if (mCopy.getElmtDiagonal(i) == 0) {
+        boolean found = false;
+        j = i + 1;
+
+        // Swap jika ada elemen dibawah diagonal yang tidak nol
+        while (j <= mCopy.getLastIdxRow() && !found) {
+          if (mCopy.getElmt(i, j) != 0) {
+            mCopy.OBESwapRow(j, i);
+            det *= -1.0f;
+            found = true;
+          } else {
+            j += 1;
+          }
+        }
+
+        // determinan bernilai 0 jika ada baris yang elemennya semua 0
+        if (!found) {
+          return 0.0f;
+        }
+      }
+      // Make elements below the diagonal zero
+      for (j = i + 1; j <= mCopy.getLastIdxRow(); j++) {
+        if (mCopy.getElmt(j, i) != 0) {
+          factor = -(mCopy.getElmt(j, i) / mCopy.getElmt(i, i));
+          mCopy.OBEPlusRow(i, j, factor);
+
+        }
+      }
+      det *= mCopy.getElmt(i, i); // Multiply by the diagonal element
+    }
+    return det;
+  }
 }
+
+
