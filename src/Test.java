@@ -9,21 +9,35 @@ public class Test {
     Matrix matrix2 = new Matrix(3, 3);
 
     // Mengisi matriks dengan nilai-nilai tertentu
-    matrix1.setElmt(0, 0, 1.0f);
-    matrix1.setElmt(0, 1, 3.0f);
-    matrix1.setElmt(0, 2, 4.0f);
-    matrix1.setElmt(1, 0, 20.0f);
-    matrix1.setElmt(1, 1, 1.0f);
+    matrix1.setElmt(0, 0, 3.0f);
+    matrix1.setElmt(0, 1, 2.0f);
+    matrix1.setElmt(0, 2, -1.0f);
+    matrix1.setElmt(1, 0, 1.0f);
+    matrix1.setElmt(1, 1, 6.0f);
     matrix1.setElmt(1, 2, 3.0f);
-    matrix1.setElmt(2, 0, 10.0f);
-    matrix1.setElmt(2, 1, 2.0f);
-    matrix1.setElmt(2, 2, 4.0f);
+    matrix1.setElmt(2, 0, 2.0f);
+    matrix1.setElmt(2, 1, -4.0f);
+    matrix1.setElmt(2, 2, 0.0f);
     // matrix1.gJordanElimination();
     // matrix1.displayMatrix();
-    float det = matrix1.determinantLowerTriangle();
+    float det = matrix1.determinantUpperTriangle();
     float det2 = matrix1.determinantCofactor();
-    System.out.println(String.valueOf(det));
-    System.out.println(String.valueOf(det2));
+    Matrix sub = new Matrix(3, 3);
+    Matrix adj = new Matrix(3, 3);
+    Matrix inv = new Matrix(3, 3);
+    Matrix inv2 = new Matrix(3, 3);
+    sub = matrix1.cofactor();
+    adj = matrix1.adjoin();
+    inv = matrix1.inversAdjoin();
+    inv2 = matrix1.inversGJordan();
+
+    sub.displayMatrix();
+    System.out.println();
+    adj.displayMatrix();
+    System.out.println();
+    inv.displayMatrix();
+    System.out.println();
+    inv2.displayMatrix();
 
     // ... mengisi nilai-nilai lainnya ...
 

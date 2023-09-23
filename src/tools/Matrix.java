@@ -109,7 +109,7 @@ public class Matrix {
     int i, j;
 
     // ALGORITMA
-    if (!isSquare()) {
+    if (!this.isSquare()) {
       return false;
     }
 
@@ -424,7 +424,7 @@ public class Matrix {
   /**
    * multiplyByConst I.S Matriks terdefinisi dan memiliki nilai F.S Mengalikan seluruh elemen
    */
-  public void multiplyByConst(final int k) {
+  public void multiplyByConst(final float k) {
     // KAMUS
     int i, j;
 
@@ -455,7 +455,7 @@ public class Matrix {
     Matrix result = new Matrix(nRows, nCols);
 
     // ALGORITMA
-    if (this.isSquare()) {
+    if (!this.isSquare()) {
       throw new IllegalArgumentException("Dimensi matriks tidak memungkinkan perkalian.");
     }
 
@@ -466,6 +466,21 @@ public class Matrix {
     }
 
     return result;
+  }
+
+  public Matrix createIdentityMatrix(int rows, int cols) {
+    if (rows <= 0 || cols <= 0) {
+      throw new IllegalArgumentException("Rows and columns must be greater than zero.");
+    } else if (rows != cols) {
+      throw new IllegalArgumentException("Harus matrix persegi");
+    }
+    Matrix identityMatrix = new Matrix(rows, cols);
+    int i;
+    for (i = 0; i < rows; i++) {
+      identityMatrix.setElmt(i, i, 1.0f);
+    }
+
+    return identityMatrix;
   }
 
 
@@ -637,7 +652,7 @@ public class Matrix {
     return determinan;
   }
 
-  public float determinantLowerTriangle() {
+  public float determinantUpperTriangle() {
     if (!this.isSquare()) {
       throw new IllegalArgumentException("Matrix is not square. Determinant is undefined.");
     }
@@ -680,6 +695,94 @@ public class Matrix {
     }
     return det;
   }
+
+  public Matrix cofactor() {
+    int i, j, k, l, rowSub, colSub;
+    Matrix mCofactor = new Matrix(this.getRowEff(), this.getColEff());
+    Matrix mSub = new Matrix(this.getRowEff() - 1, this.getColEff() - 1);
+    // Looping big matrix
+    for (i = 0; i <= this.getLastIdxRow(); i++) {
+      for (j = 0; j <= this.getLastIdxCol(); j++) {
+
+
+        // Set Submatrix
+        for (k = 0, rowSub = 0; k <= mSub.getLastIdxRow(); k++) {
+          if (rowSub == i) {
+            rowSub += 1;
+          }
+          for (l = 0, colSub = 0; l <= mSub.getLastIdxCol(); l++) {
+            if (colSub == j) {
+              colSub += 1;
+            }
+
+            mSub.setElmt(k, l, this.getElmt(rowSub, colSub));
+            colSub += 1;
+
+          }
+          rowSub += 1;
+        }
+
+        // Assign value ke mCofactor
+        if ((i + j) % 2 == 0) {
+          mCofactor.setElmt(i, j, mSub.determinantCofactor());
+        } else {
+          mCofactor.setElmt(i, j, -1.0f * mSub.determinantCofactor());
+
+        }
+      }
+    }
+
+    return mCofactor;
+  }
+
+  public Matrix adjoin() {
+    Matrix mAdj = this.cofactor();
+    mAdj = mAdj.transpose();
+    return mAdj;
+
+  }
+
+  public Matrix inversAdjoin() {
+    Matrix mInvers = this.adjoin();
+    float determinan = this.determinantCofactor();
+    if (determinan == 0) {
+      System.out.println("Natrix tidak memiliki invers karena nilai determinan = 0.");
+    } else {
+      mInvers.multiplyByConst(1 / determinan);
+    }
+    return mInvers;
+  }
+
+  public Matrix inversGJordan() {
+    Matrix mTemp = new Matrix(this.getRowEff(), this.getColEff() * 2);
+    Matrix mIdentity = this.createIdentityMatrix(this.getRowEff(), this.getColEff());
+    Matrix mInvers = new Matrix(this.getRowEff(), this.getColEff());
+    int i, j;
+
+    // Merge identity with mTemp
+    float determinant = this.determinantCofactor();
+
+    if (determinant == 0) {
+      System.out.println("Matrix does not have an invers because the determinant is 0.");
+    } else {
+      for (i = 0; i < this.getRowEff(); i++) {
+        for (j = 0; j < this.getColEff(); j++) {
+          mTemp.setElmt(i, j, this.getElmt(i, j));
+          mTemp.setElmt(i, j + this.getColEff(), mIdentity.getElmt(i, j));
+        }
+      }
+      mTemp.gJordanElimination();
+
+      for (i = 0; i < mTemp.getRowEff(); i++) {
+        for (j = this.getColEff(); j < mTemp.getColEff(); j++) {
+          mInvers.setElmt(i, j - this.getColEff(), mTemp.getElmt(i, j));
+        }
+      }
+    }
+
+    return mInvers;
+  }
+
 }
 
 
