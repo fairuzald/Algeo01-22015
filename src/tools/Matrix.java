@@ -6,11 +6,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Matrix {
+public class Matrix implements MatrixInterface {
   /* ***** ATRIBUTE ***** */
   private float[][] matrix; // Inisialisasi matrix
-  private int rowEff; // Ukuran baris terdefinisi
-  private int colEff; // Ukuran Colom terdefinisi
+  protected int rowEff; // Ukuran baris terdefinisi
+  protected int colEff; // Ukuran Colom terdefinisi
 
   // * ***** METHOD ***** */
 
@@ -180,7 +180,7 @@ public class Matrix {
   }
 
   /** Mencopy matriks ke matriks lain */
-  Matrix copyMatrix() {
+  public Matrix copyMatrix() {
     /* KAMUS */
     final Matrix mCopy = new Matrix(this.rowEff, this.colEff);
     /* ALGORITMA */
@@ -346,7 +346,7 @@ public class Matrix {
    * addMatrix I.S Matriks terdefinisi dan memiliki nilai F.S Menambahkan dua matriks dan
    * mengembalikan hasil penjumlahannya.
    */
-  public static Matrix addMatrix(final Matrix m1, final Matrix m2) {
+  public Matrix addMatrix(final Matrix m1, final Matrix m2) {
     // KAMUS
     int i, j;
     int nRows = m1.getRowEff();
@@ -371,7 +371,7 @@ public class Matrix {
   /**
    * substractMatrix Mengurangkan dua matriks dan mengembalikan hasil pengurangannya.
    */
-  public static Matrix subtractMatrix(final Matrix m1, final Matrix m2) {
+  public Matrix subtractMatrix(final Matrix m1, final Matrix m2) {
     // KAMUS
     int i, j;
     int nRows = m1.getRowEff();
@@ -396,7 +396,7 @@ public class Matrix {
   /**
    * multiplyMatrix Mengalikan dua matriks dan mengembalikan hasil perkaliannya.
    */
-  public static Matrix multiplyMatrix(final Matrix m1, final Matrix m2) {
+  public Matrix multiplyMatrix(final Matrix m1, final Matrix m2) {
     // KAMUS
     int i, j, k;
     int nRows = m1.getRowEff();
