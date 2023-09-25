@@ -1,4 +1,4 @@
-package tools;
+package tools.types;
 
 // Interface SPLInterface yang mendefinisikan metode dan enum tipe solusi SPL
 public interface SPLInterface {
