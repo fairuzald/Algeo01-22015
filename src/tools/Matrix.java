@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Matrix implements MatrixInterface {
+public class Matrix {
   /* ***** ATRIBUTE ***** */
   private float[][] matrix; // Inisialisasi matrix
   protected int rowEff; // Ukuran baris terdefinisi
@@ -397,24 +397,26 @@ public class Matrix implements MatrixInterface {
    * multiplyMatrix Mengalikan dua matriks dan mengembalikan hasil perkaliannya.
    */
   public Matrix multiplyMatrix(final Matrix m1, final Matrix m2) {
-    // KAMUS
+    int rows1 = m1.rowEff;
+    int cols1 = m1.colEff;
+    int rows2 = m2.rowEff;
+    int cols2 = m2.colEff;
     int i, j, k;
-    int nRows = m1.getRowEff();
-    int nCols = m2.getColEff();
-    Matrix result = new Matrix(nRows, nCols);
 
-    // ALGORITMA
-    if (!isMatrixSizeEqual(m1, m2)) {
-      throw new IllegalArgumentException("Dimensi matriks tidak memungkinkan perkalian.");
+    // Periksa apakah kedua matriks dapat dikalikan
+    if (cols1 != rows2) {
+      throw new IllegalArgumentException("Kedua matriks tidak dapat dikalikan.");
     }
 
-    for (i = m1.getFirstIdxRow(); i < nRows; i++) {
-      for (j = m1.getFirstIdxCol(); j < nCols; j++) {
-        float sum = 0;
-        for (k = 0; k < nCols; k++) {
-          sum += m1.getElmt(i, k) * m2.getElmt(k, j);
+    // Buat matriks hasil dengan ukuran yang sesuai
+    Matrix result = new Matrix(rows1, cols2);
+
+    // Lakukan perkalian matriks
+    for (i = 0; i < rows1; i++) {
+      for (j = 0; j < cols2; j++) {
+        for (k = 0; k < cols1; k++) {
+          result.setElmt(i, j, (result.getElmt(i, j) + (m1.getElmt(i, k) * m2.getElmt(k, j))));
         }
-        result.setElmt(i, j, sum);
       }
     }
 
@@ -452,12 +454,12 @@ public class Matrix implements MatrixInterface {
     int i, j;
     int nCols = this.colEff;
     int nRows = this.rowEff;
-    Matrix result = new Matrix(nRows, nCols);
+    Matrix result = new Matrix(nCols, nRows);
 
     // ALGORITMA
-    if (!this.isSquare()) {
-      throw new IllegalArgumentException("Dimensi matriks tidak memungkinkan perkalian.");
-    }
+    // if (!this.isSquare()) {
+    // throw new IllegalArgumentException("Dimensi matriks tidak memungkinkan perkalian.");
+    // }
 
     for (i = this.getFirstIdxRow(); i < nRows; i++) {
       for (j = this.getFirstIdxCol(); j < nCols; j++) {
