@@ -9,8 +9,6 @@ set CLASSPATH=%BIN_DIR%
 if not exist %BIN_DIR% mkdir %BIN_DIR%
 
 :: Compile semua file Java ke dalam folder bin
-javac -d %BIN_DIR% %TOOLS_DIR_TYPES%\MatrixInterface.java
-javac -d %BIN_DIR% %TOOLS_DIR%\Matrix.java
 javac -d %BIN_DIR% %TOOLS_DIR_TYPES%\*.java
 javac -d %BIN_DIR% %TOOLS_DIR%\*.java
 javac -d %BIN_DIR% %SRC_DIR%\*.java
