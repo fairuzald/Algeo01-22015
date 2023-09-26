@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-public class linearEquation {
+public class LinearEquationMenu {
   public void MenuOption() {
     System.out.println("-----------------------------------");
     System.out.println("------Sistem Persamaan Linier------");
