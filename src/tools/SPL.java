@@ -54,7 +54,7 @@ public class SPL extends Matrix {
       }
       if (countParametrix > 0) {
         char params = 'a';
-        sentence = "Dengan";
+        sentence = "\nDengan";
         for (i = countParametrix; i > 0; i--) {
           sentence += String.valueOf(params);
           params++;
