@@ -1,14 +1,13 @@
 package tools;
 
 import java.io.IOException;
+import tools.types.SPLInterface;
 import java.io.FileWriter;
 
-public class SPL extends Matrix {
+public class SPL extends Matrix implements SPLInterface {
   /* ***** ATRIBUTE ***** */
   /* ***** ATRIBUTE ***** */
-  public enum categorySolution {
-    PARAMETRIX, UNIQUE, UNDEFINED, SUBSTITABLE
-  }
+
 
   // UNtuk menyimpan solusi unique dan koefisien parametrik
   public float[] Solution;
@@ -18,9 +17,6 @@ public class SPL extends Matrix {
 
   // Identifikasi solusi unique, paratmetrix atau undefined
   public categorySolution[] Status;
-
-
-  /* ***** METHODS ***** */
 
   /* *** Konstruktor membentuk MATRIKS AUGMENTED SPL *** */
   public SPL(int rowEff, int colEff) {
@@ -68,14 +64,13 @@ public class SPL extends Matrix {
     }
   }
 
-  public void writeFileSPL(final String fileName) {
+  public void writeFileSPL(final String filePath) {
     int i;
     int countParametrix = 0;
     String sentence;
     FileWriter output = null;
     try {
-      String directory = "./test/" + fileName;
-      output = new FileWriter(directory);
+      output = new FileWriter(filePath);
       if (this.Status[0] == categorySolution.UNDEFINED) {
         output.write("SPL tidak memiliki solusi.");
       } else {
@@ -109,7 +104,7 @@ public class SPL extends Matrix {
       }
 
       output.close();
-      System.out.println("Berhasil menyimpan SPL pada folder test, file \"" + fileName + "\".");
+      System.out.println("Berhasil menyimpan SPL pada folder test, file \"" + filePath + "\".");
     } catch (IOException e) {
       System.out.println("Something went wrong.");
       e.printStackTrace();
@@ -186,14 +181,15 @@ public class SPL extends Matrix {
       this.Status[j] = categorySolution.UNIQUE;
     }
 
+
     for (i = 0; i < this.getLastIdxCol(); i++) {
-      if (this.Status[i] != categorySolution.UNIQUE) {
+      if (this.Status[i] != categorySolution.UNIQUE
+          && this.Status[i] != categorySolution.SUBSTITABLE) {
         this.Status[i] = categorySolution.PARAMETRIX;
       }
     }
 
   }
-
 
   public void gaussSolution() {
     int i, j;
@@ -209,9 +205,11 @@ public class SPL extends Matrix {
       }
       j = this.getFirstIdxCol();
       while (this.getElmt(i, j) != 1 && j < this.getLastIdxCol()) {
+        this.Equation[j] = "Bukan faktor solusi";
         j++;
       }
       // Cari leading one untuk matriks koefisien
+
       boolean isElmtAfterZero = true;
       // Cek apakah semua elemen setelah leading one adalah nol
       for (k = j + 1; k < this.getLastIdxCol(); k++) {
@@ -268,16 +266,13 @@ public class SPL extends Matrix {
 
               if (Math.abs(this.getElmt(i, k)) == 1) {
                 stringPersamaan += "-" + "(" + this.Equation[k] + ")";
-                this.Equation[j] = stringPersamaan;
               } else {
                 stringPersamaan +=
                     "-" + "(" + Math.abs(this.getElmt(i, k)) + this.Equation[k] + ")";
-                this.Equation[j] = stringPersamaan;
               }
             } else {
               if (Math.abs(this.getElmt(i, k)) == 1) {
                 stringPersamaan += "-" + "(" + this.Equation[k] + ")";
-                this.Equation[j] = stringPersamaan;
               } else {
                 stringPersamaan +=
                     "-" + "(" + Math.abs(this.getElmt(i, k)) + "(" + this.Equation[k] + "))";
@@ -291,30 +286,29 @@ public class SPL extends Matrix {
             if (isBelowZero) {
               if (Math.abs(this.getElmt(i, k)) == 1) {
                 stringPersamaan += "+" + this.Equation[k];
-                this.Equation[j] = stringPersamaan;
               } else {
                 stringPersamaan += "+" + Math.abs(this.getElmt(i, k)) + this.Equation[k];
-                this.Equation[j] = stringPersamaan;
+
               }
             } else {
               if (Math.abs(this.getElmt(i, k)) == 1) {
                 stringPersamaan += "+" + this.Equation[k];
-                this.Equation[j] = stringPersamaan;
+
               } else {
                 stringPersamaan +=
                     "+" + Math.abs(this.getElmt(i, k)) + "(" + this.Equation[k] + ")";
-                this.Equation[j] = stringPersamaan;
+
               }
             }
 
           }
+
         }
       }
 
+      this.Equation[j] = stringPersamaan;
     }
-    this.displayMatrix();
   }
-
 
   public void gJordanMethodSPL() {
     this.gJordanElimination();
@@ -384,7 +378,7 @@ public class SPL extends Matrix {
 
   public void inversMethodSPL() {
     // Split koefisien matrix dan vector solution
-    int i, j;
+    int i;
     Matrix vectorSolution;
 
     Matrix koefMatrix = this.getKoefMatrix();

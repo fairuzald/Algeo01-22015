@@ -5,8 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import tools.types.MatrixInterface;
 
-public class Matrix {
+public class Matrix implements MatrixInterface {
   /* ***** ATRIBUTE ***** */
   private float[][] matrix; // Inisialisasi matrix
   private int rowEff; // Ukuran baris terdefinisi
@@ -235,11 +236,11 @@ public class Matrix {
    * readMatrix dari File Txt I.S. File txt berisi Array Matriks F.S. Terbaca Matriks dan disimpan
    * dalam variabel
    */
-  public void readFileMatrix(final String fileName) {
+  public void readFileMatrix(final String filePath) {
     try {
       /* KAMUS */
-      String directory = "./src/data/" + fileName;
-      File file = new File(directory);
+
+      File file = new File(filePath);
       int Nrow = 0;
       int Ncol = 0;
       int i, j; // Indeks
@@ -285,7 +286,7 @@ public class Matrix {
       this.rowEff = Nrow;
       this.colEff = Ncol;
     } catch (FileNotFoundException e) {
-      System.err.printf("Error: File \"%s\" tidak ditemukan\n", fileName);
+      System.err.printf("Error: File \"%s\" tidak ditemukan\n", filePath);
     }
   }
 

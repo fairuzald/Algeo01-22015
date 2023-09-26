@@ -1,6 +1,7 @@
 package tools.types;
 
-// Interface SPLInterface yang mendefinisikan metode dan enum tipe solusi SPL
+import tools.Matrix;
+
 public interface SPLInterface {
   // Metode untuk membaca SPL
   // Input: Tidak ada input khusus
@@ -8,91 +9,129 @@ public interface SPLInterface {
   // Contoh Kasus:
   // - Meminta pengguna untuk memasukkan SPL dari keyboard.
   // - Membaca SPL dari file yang ditentukan pengguna.
-  public void readSPL();
+  void readSPL();
 
   // Metode untuk membaca SPL dari file
   // Input: Nama file yang berisi SPL
   // Output: SPL akan dibaca dari file yang ditentukan.
   // Contoh Kasus:
-  // - Membaca SPL dari file "input_spl.txt".
-  public void readFileSPL(String fileName);
+  // - Membaca SPL dari file dengan nama "input.txt".
+  void readFileSPL(String fileName);
 
   // Metode untuk menampilkan SPL
   // Input: Tidak ada input khusus
-  // Output: SPL akan ditampilkan ke layar.
+  // Output: Menampilkan SPL ke layar atau output yang ditentukan.
   // Contoh Kasus:
-  // - Menampilkan SPL yang telah dibaca kepada pengguna.
-  public void displaySPL();
+  // - Menampilkan SPL ke layar.
+  void displaySPL();
 
-  // Metode untuk menulis SPL ke dalam file
+  // Metode untuk menyimpan SPL ke file
   // Input: Nama file tujuan untuk menyimpan SPL
-  // Output: SPL akan ditulis ke dalam file yang ditentukan.
+  // Output: SPL akan disimpan ke file yang ditentukan.
   // Contoh Kasus:
-  // - Menyimpan SPL ke dalam file "output_spl.txt".
-  public void writeFileSPL(final String fileName);
+  // - Menyimpan SPL ke dalam file dengan nama "output.txt".
+  void writeFileSPL(String filePath);
 
-  // Enum yang berisi nilai-nilai tipe solusi yang mungkin
-  public categorySolution solutionType();
-
-  // Metode untuk memeriksa apakah semua koefisien matriks diagonal adalah 1
+  // Metode untuk memeriksa apakah semua koefisien matriks diagonal satu
   // Input: Tidak ada input khusus
-  // Output: Mengembalikan true jika semua koefisien matriks diagonal adalah 1, false sebaliknya.
+  // Output: Mengembalikan true jika semua koefisien matriks diagonal adalah satu, sebaliknya false.
   // Contoh Kasus:
-  // - Memeriksa apakah semua elemen diagonal matriks adalah 1.
-  public boolean isAllCoefMatrixDiagonalOne();
+  // - Memeriksa apakah semua koefisien matriks diagonal adalah satu.
+  boolean isAllCoefMatrixDiagonalOne();
 
-  // Metode untuk memeriksa apakah semua koefisien dalam satu baris matriks adalah 0
-  // Input: Indeks baris yang akan diperiksa
-  // Output: Mengembalikan true jika semua koefisien dalam baris tertentu adalah 0, false
-  // sebaliknya.
+  // Metode untuk memeriksa apakah semua koefisien dalam baris matriks nol
+  // Input: Nomor baris yang akan diperiksa
+  // Output: Mengembalikan true jika semua koefisien dalam baris matriks adalah nol, sebaliknya
+  // false.
   // Contoh Kasus:
-  // - Memeriksa apakah semua elemen dalam baris ke-2 adalah 0.
-  public boolean isAllRowCoefMatrixZero(final int row);
+  // - Memeriksa apakah semua koefisien dalam baris matriks ke-3 adalah nol.
+  boolean isAllRowCoefMatrixZero(int row);
 
-  // Metode untuk memeriksa apakah hasil vektor dalam satu baris adalah 0
-  // Input: Indeks baris yang akan diperiksa
-  // Output: Mengembalikan true jika hasil vektor dalam baris tertentu adalah 0, false sebaliknya.
+  // Metode untuk memeriksa apakah vektor baris adalah nol
+  // Input: Nomor baris yang akan diperiksa
+  // Output: Mengembalikan true jika vektor baris adalah nol, sebaliknya false.
   // Contoh Kasus:
-  // - Memeriksa apakah hasil vektor dalam baris ke-3 adalah 0.
-  public boolean isRowVectorConstantZero(final int row);
+  // - Memeriksa apakah vektor baris ke-2 adalah nol.
+  boolean isRowVectorConstantZero(int row);
 
-  // Metode untuk menjalankan metode eliminasi Gauss pada SPL
+  // Metode untuk menentukan jenis solusi SPL
   // Input: Tidak ada input khusus
-  // Output: Mengubah matriks SPL menjadi bentuk tereduksi setelah eliminasi Gauss.
+  // Output: Mengembalikan kategori jenis solusi (UNIQUE, PARAMETRIX, atau UNDEFINED).
   // Contoh Kasus:
-  // - Melakukan eliminasi Gauss pada SPL.
-  public void gaussMethodSPL();
+  // - Menentukan jenis solusi SPL berdasarkan matriks koefisien.
+  categorySolution solutionType();
 
-  // Metode untuk menghitung solusi SPL setelah eliminasi Gauss
+  // Metode untuk menyelesaikan SPL dengan metode Gauss
   // Input: Tidak ada input khusus
-  // Output: Menghitung dan menyimpan solusi SPL setelah eliminasi Gauss.
+  // Output: Menentukan solusi SPL dan mengisi array Solution dan Equation.
   // Contoh Kasus:
-  // - Menghitung solusi SPL setelah eliminasi Gauss.
-  public void gaussSolution();
+  // - Menyelesaikan SPL dengan metode Gauss dan mengisi solusi.
+  void gaussMethodSPL();
 
-  // Metode untuk menjalankan metode eliminasi Gauss-Jordan pada SPL (belum diimplementasikan)
+  // Metode untuk menginisialisasi status solusi
   // Input: Tidak ada input khusus
-  // Output: Belum diimplementasikan.
+  // Output: Menginisialisasi status solusi ke dalam array Status.
   // Contoh Kasus:
-  // - (Belum diimplementasikan)
-  public void gJordanMethodSPL();
+  // - Menginisialisasi status solusi SPL.
+  void initializationStatus();
 
-  // Metode untuk menjalankan metode invers pada SPL (belum diimplementasikan)
+  // Metode untuk menemukan solusi SPL menggunakan metode Gauss
   // Input: Tidak ada input khusus
-  // Output: Belum diimplementasikan.
+  // Output: Menentukan solusi SPL dan mengisi array Solution dan Equation.
   // Contoh Kasus:
-  // - (Belum diimplementasikan)
-  public void inversMethodSPL();
+  // - Menentukan solusi SPL dengan metode Gauss dan mengisi solusi.
+  void gaussSolution();
 
-  // Metode untuk menjalankan metode Cramer pada SPL (belum diimplementasikan)
+  // Metode untuk menyelesaikan SPL dengan metode Gauss-Jordan
   // Input: Tidak ada input khusus
-  // Output: Belum diimplementasikan.
+  // Output: Menentukan solusi SPL dan mengisi array Solution dan Equation.
   // Contoh Kasus:
-  // - (Belum diimplementasikan)
-  public void cramerMethodSPL();
+  // - Menyelesaikan SPL dengan metode Gauss-Jordan dan mengisi solusi.
+  void gJordanMethodSPL();
 
-  // Enum yang berisi nilai-nilai tipe solusi yang mungkin
-  public enum categorySolution {
+  // Metode untuk mendapatkan matriks koefisien SPL
+  // Input: Tidak ada input khusus
+  // Output: Mengembalikan matriks koefisien dari SPL.
+  // Contoh Kasus:
+  // - Mendapatkan matriks koefisien dari SPL.
+  Matrix getKoefMatrix();
+
+  // Metode untuk mendapatkan vektor konstan SPL
+  // Input: Tidak ada input khusus
+  // Output: Mengembalikan vektor konstan dari SPL.
+  // Contoh Kasus:
+  // - Mendapatkan vektor konstan dari SPL.
+  Matrix getVectorConstant();
+
+  // Metode untuk menghitung numerator determinan Cramer
+  // Input: Indeks kolom yang akan digunakan
+  // Output: Mengembalikan nilai numerator determinan Cramer untuk kolom tertentu.
+  // Contoh Kasus:
+  // - Menghitung numerator determinan Cramer untuk kolom ke-2.
+  float determinanNumerator(int colIdx);
+
+  // Metode untuk memeriksa apakah vektor konstan SPL adalah nol
+  // Input: Tidak ada input khusus
+  // Output: Mengembalikan true jika vektor konstan SPL adalah nol, sebaliknya false.
+  // Contoh Kasus:
+  // - Memeriksa apakah vektor konstan SPL adalah nol.
+  boolean isAllVectorConstantZero();
+
+  // Metode untuk menyelesaikan SPL dengan metode invers
+  // Input: Tidak ada input khusus
+  // Output: Menentukan solusi SPL dan mengisi array Solution dan Equation.
+  // Contoh Kasus:
+  // - Menyelesaikan SPL dengan metode invers dan mengisi solusi.
+  void inversMethodSPL();
+
+  // Metode untuk menyelesaikan SPL dengan metode Cramer
+  // Input: Tidak ada input khusus
+  // Output: Menentukan solusi SPL dan mengisi array Solution dan Equation.
+  // Contoh Kasus:
+  // - Menyelesaikan SPL dengan metode Cramer dan mengisi solusi.
+  void cramerMethodSPL();
+
+  enum categorySolution {
     PARAMETRIX, UNIQUE, UNDEFINED, SUBSTITABLE
   }
 }
