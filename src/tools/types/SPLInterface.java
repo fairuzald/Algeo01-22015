@@ -54,7 +54,7 @@ public interface SPLInterface {
   // Output: Mengembalikan true jika hasil vektor dalam baris tertentu adalah 0, false sebaliknya.
   // Contoh Kasus:
   // - Memeriksa apakah hasil vektor dalam baris ke-3 adalah 0.
-  public boolean isRowVectorResultZero(final int row);
+  public boolean isRowVectorConstantZero(final int row);
 
   // Metode untuk menjalankan metode eliminasi Gauss pada SPL
   // Input: Tidak ada input khusus

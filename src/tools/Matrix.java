@@ -9,8 +9,8 @@ import java.util.Scanner;
 public class Matrix {
   /* ***** ATRIBUTE ***** */
   private float[][] matrix; // Inisialisasi matrix
-  protected int rowEff; // Ukuran baris terdefinisi
-  protected int colEff; // Ukuran Colom terdefinisi
+  private int rowEff; // Ukuran baris terdefinisi
+  private int colEff; // Ukuran Colom terdefinisi
 
   // * ***** METHOD ***** */
 

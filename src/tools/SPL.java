@@ -3,8 +3,8 @@ package tools;
 import java.io.IOException;
 import java.io.FileWriter;
 
-
 public class SPL extends Matrix {
+  /* ***** ATRIBUTE ***** */
   /* ***** ATRIBUTE ***** */
   public enum categorySolution {
     PARAMETRIX, UNIQUE, UNDEFINED, SUBSTITABLE
@@ -118,7 +118,7 @@ public class SPL extends Matrix {
 
   public boolean isAllCoefMatrixDiagonalOne() {
     int i;
-    for (i = this.getFirstIdxRow(); i < this.getLastIdxRow(); i++) {
+    for (i = this.getFirstIdxRow(); i <= this.getLastIdxRow(); i++) {
       if (this.getElmtDiagonal(i) != 1) {
         return false;
       }
@@ -142,9 +142,9 @@ public class SPL extends Matrix {
 
   // Validasi awal
   public categorySolution solutionType() {
-    if (this.isAllCoefMatrixDiagonalOne() && (this.rowEff == this.colEff - 1)) {
+    if (this.isAllCoefMatrixDiagonalOne() && (this.getRowEff() == this.getColEff() - 1)) {
       return categorySolution.UNIQUE;
-    } else if (this.isAllCoefMatrixDiagonalOne() && (this.rowEff != this.colEff - 1)) {
+    } else if (this.isAllCoefMatrixDiagonalOne() && (this.getRowEff() != this.getColEff() - 1)) {
       return categorySolution.PARAMETRIX;
     } else {
       for (int i = this.getLastIdxRow(); i >= this.getFirstIdxRow(); i--) {
@@ -158,101 +158,179 @@ public class SPL extends Matrix {
 
   public void gaussMethodSPL() {
     this.gaussElimination();
-    this.Solution = new float[this.colEff - 1];
-    this.Equation = new String[this.colEff - 1];
-    this.Status = new categorySolution[this.colEff - 1];
+    this.Solution = new float[this.getColEff() - 1];
+    this.Equation = new String[this.getColEff() - 1];
+    this.Status = new categorySolution[this.getColEff() - 1];
     categorySolution typeSolution = this.solutionType();
     if (typeSolution == categorySolution.UNIQUE || typeSolution == categorySolution.PARAMETRIX) {
       this.gaussSolution();
+    } else {
+      this.Status[0] = categorySolution.UNDEFINED;
     }
 
   }
 
+  public void initializationStatus() {
+    int i, j;
+    this.Status = new categorySolution[this.getColEff() - 1];
+    for (i = this.getLastIdxRow(); i >= this.getFirstIdxRow(); i--) {
+      j = this.getFirstIdxCol();
+      // Skip all zero
+      while (this.isAllRowCoefMatrixZero(i)) {
+        i--;
+      }
+      // Get Leading one first di suatu baris
+      while (j < this.getLastIdxCol() && this.getElmt(i, j) != 1) {
+        j++;
+      }
+      this.Status[j] = categorySolution.UNIQUE;
+    }
+
+    for (i = 0; i < this.getLastIdxCol(); i++) {
+      if (this.Status[i] != categorySolution.UNIQUE) {
+        this.Status[i] = categorySolution.PARAMETRIX;
+      }
+    }
+
+  }
+
+
   public void gaussSolution() {
     int i, j;
-    float vektorKonstan;
-    String stringPersamaan;
-    int k;
+    int k, h;
     char params = 'a';
-
+    this.initializationStatus();
     // Substitusi ke belakang
-    for (i = this.getLastIdxRow(); i >= this.getFirstIdxRow(); i--) { // Gunakan "--" bukan "++"
+    for (i = this.getLastIdxRow(); i >= this.getFirstIdxRow(); i--) {
+      String stringPersamaan = "";
       // Lewati baris dengan semua koefisien dalam matriks nol
       while (this.isAllRowCoefMatrixZero(i)) {
         i--;
       }
       j = this.getFirstIdxCol();
-      // Cari leading one untuk matriks koefisien
       while (this.getElmt(i, j) != 1 && j < this.getLastIdxCol()) {
         j++;
-        if (j == this.getLastIdxCol()) {
-          System.out.println("Tidak ditemukan leading one.");
+      }
+      // Cari leading one untuk matriks koefisien
+      boolean isElmtAfterZero = true;
+      // Cek apakah semua elemen setelah leading one adalah nol
+      for (k = j + 1; k < this.getLastIdxCol(); k++) {
+        if (this.getElmt(i, k) != 0) {
+          isElmtAfterZero = false;
+          break;
         }
       }
-
-      k = j;
-      // Asumsi awal: solusi unik pada leading one
-      this.Status[k] = categorySolution.UNIQUE;
-      j++;
-      vektorKonstan = this.getElmt(i, this.getLastIdxCol());
-      // Loop melalui elemen dalam kolom setelah leading one
-      // Tangani kasus substitusi
-      while (j < this.getLastIdxCol()) {
-        // Lewati elemen yang nol
-        if (this.getElmt(i, j) != 0) {
-          // Proses substitusi nilai
-          if (this.Status[j] == categorySolution.UNIQUE) {
-            vektorKonstan -= this.getElmt(i, j) * this.Solution[j];
+      // Ketika solusi eksak
+      if (isElmtAfterZero) {
+        this.Solution[j] = this.getElmt(i, this.getLastIdxCol());
+        this.Equation[j] = String.valueOf(this.getElmt(i, this.getLastIdxCol()));
+      }
+      float sum = this.getElmt(i, this.getLastIdxCol());
+      for (k = j + 1; k < this.getLastIdxCol(); k++) {
+        if (this.getElmt(i, k) != 0 && this.Status[k] == categorySolution.PARAMETRIX) {
+          this.Status[j] = categorySolution.PARAMETRIX;
+          boolean isBelowZero = true;
+          for (h = i + 1; h <= this.getLastIdxRow(); h++) {
+            if (this.getElmt(h, k) != 0) {
+              isBelowZero = false;
+              break;
+            }
           }
-          // Aksi ketika baris di bawahnya memiliki solusi yang tidak terdefinisi, tangani kasus
-          // parametrik
-          else if (this.Status[j] == categorySolution.UNDEFINED) {
-            this.Status[j] = categorySolution.PARAMETRIX;
-            this.Equation[j] = String.valueOf(params);
+          if (isBelowZero) {
+            this.Equation[k] = String.valueOf(params);
             params++;
           }
         }
-        // Lanjut ke kolom berikutnya untuk substitusi
-        j++;
+        // Kalau substitable
+        else if (this.getElmt(i, k) != 0 && this.Status[k] == categorySolution.UNIQUE) {
+          sum -= (this.getElmt(i, k) * this.Solution[k]);
+          this.Solution[j] = sum;
+          this.Equation[j] = Float.toString(sum);
+        }
       }
-      this.Solution[k] = vektorKonstan;
-      j = k + 1;
-      if (params != 0 || this.Status[k] == categorySolution.UNIQUE) {
-        stringPersamaan = params + " ";
-      } else {
-        stringPersamaan = "";
+
+      if (sum != 0) {
+        stringPersamaan += Float.toString(sum);
       }
-      // Tangani kasus substitusi ketika kolom setelah leading one tidak eksak
-      if (this.Status[k] == categorySolution.SUBSTITABLE) { // Diperbaiki dari SUBSTITUSI
-        // Lewati kolom setelah leading one yang nol
-        if (this.getElmt(i, j) != 0) {
-          if (this.Status[k] == categorySolution.PARAMETRIX) {
-            if (this.getElmt(i, j) > 0) {
-              if (Math.abs(this.getElmt(i, j)) == 1) {
-                stringPersamaan += "- " + this.Equation[j] + " ";
+
+      for (k = j + 1; k < this.getLastIdxCol(); k++) {
+        boolean isBelowZero = true;
+        for (h = i + 1; h <= this.getLastIdxRow(); h++) {
+          if (this.getElmt(h, k) != 0) {
+            isBelowZero = false;
+            break;
+          }
+        }
+        if (this.Status[k] == categorySolution.PARAMETRIX) {
+
+          if (this.getElmt(i, k) > 0) {
+            if (isBelowZero) {
+
+              if (Math.abs(this.getElmt(i, k)) == 1) {
+                stringPersamaan += "-" + "(" + this.Equation[k] + ")";
+                this.Equation[j] = stringPersamaan;
               } else {
-                stringPersamaan += "- " + Math.abs(this.getElmt(i, j)) + this.Equation[j] + " ";
+                stringPersamaan +=
+                    "-" + "(" + Math.abs(this.getElmt(i, k)) + this.Equation[k] + ")";
+                this.Equation[j] = stringPersamaan;
               }
             } else {
-              if (Math.abs(this.getElmt(i, j)) == 1) {
-                stringPersamaan += "+ " + this.Equation[j] + " ";
+              if (Math.abs(this.getElmt(i, k)) == 1) {
+                stringPersamaan += "-" + "(" + this.Equation[k] + ")";
+                this.Equation[j] = stringPersamaan;
               } else {
-                stringPersamaan += "+ " + Math.abs(this.getElmt(i, j)) + this.Equation[j] + " ";
+                stringPersamaan +=
+                    "-" + "(" + Math.abs(this.getElmt(i, k)) + "(" + this.Equation[k] + "))";
+                this.Equation[j] = stringPersamaan;
               }
             }
-          } else if (this.Status[k] == categorySolution.SUBSTITABLE) {
-            // Tangani kasus lain jika diperlukan
+
+          }
+
+          else if ((this.getElmt(i, k)) < 0) {
+            if (isBelowZero) {
+              if (Math.abs(this.getElmt(i, k)) == 1) {
+                stringPersamaan += "+" + this.Equation[k];
+                this.Equation[j] = stringPersamaan;
+              } else {
+                stringPersamaan += "+" + Math.abs(this.getElmt(i, k)) + this.Equation[k];
+                this.Equation[j] = stringPersamaan;
+              }
+            } else {
+              if (Math.abs(this.getElmt(i, k)) == 1) {
+                stringPersamaan += "+" + this.Equation[k];
+                this.Equation[j] = stringPersamaan;
+              } else {
+                stringPersamaan +=
+                    "+" + Math.abs(this.getElmt(i, k)) + "(" + this.Equation[k] + ")";
+                this.Equation[j] = stringPersamaan;
+              }
+            }
+
           }
         }
       }
+
     }
+    this.displayMatrix();
   }
 
 
-  public void gJordanMethodSPL() {}
+  public void gJordanMethodSPL() {
+    this.gJordanElimination();
+    this.Solution = new float[this.getColEff() - 1];
+    this.Equation = new String[this.getColEff() - 1];
+    this.Status = new categorySolution[this.getColEff() - 1];
+    categorySolution typeSolution = this.solutionType();
+    if (typeSolution == categorySolution.UNIQUE || typeSolution == categorySolution.PARAMETRIX) {
+      this.gaussSolution();
+    } else {
+      this.Status[0] = categorySolution.UNDEFINED;
+    }
+  }
 
   public Matrix getKoefMatrix() {
-    Matrix koefMatrix = new Matrix(this.rowEff, this.colEff - 1);
+    Matrix koefMatrix = new Matrix(this.getRowEff(), this.getColEff() - 1);
     int i, j;
     for (i = this.getFirstIdxRow(); i <= this.getLastIdxRow(); i++) {
       for (j = this.getFirstIdxCol(); j < this.getLastIdxCol(); j++) {
@@ -264,7 +342,7 @@ public class SPL extends Matrix {
   }
 
   public Matrix getVectorConstant() {
-    Matrix vectorConstant = new Matrix(this.rowEff, 1);
+    Matrix vectorConstant = new Matrix(this.getRowEff(), 1);
     int i;
     for (i = this.getFirstIdxRow(); i <= this.getLastIdxRow(); i++) {
       vectorConstant.setElmt(i, this.getFirstIdxCol(), this.getElmt(i, this.getLastIdxCol()));

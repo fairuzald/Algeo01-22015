@@ -31,16 +31,17 @@ public class TestSPL {
     spl.setElmt(3, 3, 2);
     spl.setElmt(3, 4, 6);
     SPL testcase2 = new SPL(0, 0);
-    testcase2.readFileSPL("testcase2.txt");
+    testcase2.readFileSPL("testcase2a.txt");
 
     // Menyelesaikan SPL menggunakan eliminasi Gauss
     // spl.cramerMethodSPL();
-    testcase2.inversMethodSPL();
+    // testcase2.gJordanMethodSPL();
+    testcase2.gaussMethodSPL();
 
     // Menampilkan solusi SPL
     System.out.println("\nSolusi SPL:");
     testcase2.displaySPL();
-    testcase2.writeFileSPL("testcase1.txt");
+    testcase2.writeFileSPL("testcase2aGauss.txt");
   }
 
 }
