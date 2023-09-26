@@ -1,7 +1,7 @@
 import tools.SPL;
 
 
-public class Test {
+public class TestSPL {
 
   public static void main(String[] args) {
     // Membuat matriks SPL

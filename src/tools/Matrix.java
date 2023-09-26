@@ -5,12 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import tools.types.MatrixInterface;
 
 public class Matrix implements MatrixInterface {
   /* ***** ATRIBUTE ***** */
   private float[][] matrix; // Inisialisasi matrix
-  protected int rowEff; // Ukuran baris terdefinisi
-  protected int colEff; // Ukuran Colom terdefinisi
+  private int rowEff; // Ukuran baris terdefinisi
+  private int colEff; // Ukuran Colom terdefinisi
 
   // * ***** METHOD ***** */
 
@@ -235,11 +236,11 @@ public class Matrix implements MatrixInterface {
    * readMatrix dari File Txt I.S. File txt berisi Array Matriks F.S. Terbaca Matriks dan disimpan
    * dalam variabel
    */
-  public void readFileMatrix(final String fileName) {
+  public void readFileMatrix(final String filePath) {
     try {
       /* KAMUS */
-      String directory = "./src/data/" + fileName;
-      File file = new File(directory);
+
+      File file = new File(filePath);
       int Nrow = 0;
       int Ncol = 0;
       int i, j; // Indeks
@@ -285,7 +286,7 @@ public class Matrix implements MatrixInterface {
       this.rowEff = Nrow;
       this.colEff = Ncol;
     } catch (FileNotFoundException e) {
-      System.err.printf("Error: File \"%s\" tidak ditemukan\n", fileName);
+      System.err.printf("Error: File \"%s\" tidak ditemukan\n", filePath);
     }
   }
 
@@ -397,24 +398,26 @@ public class Matrix implements MatrixInterface {
    * multiplyMatrix Mengalikan dua matriks dan mengembalikan hasil perkaliannya.
    */
   public Matrix multiplyMatrix(final Matrix m1, final Matrix m2) {
-    // KAMUS
+    int rows1 = m1.rowEff;
+    int cols1 = m1.colEff;
+    int rows2 = m2.rowEff;
+    int cols2 = m2.colEff;
     int i, j, k;
-    int nRows = m1.getRowEff();
-    int nCols = m2.getColEff();
-    Matrix result = new Matrix(nRows, nCols);
 
-    // ALGORITMA
-    if (!isMatrixSizeEqual(m1, m2)) {
-      throw new IllegalArgumentException("Dimensi matriks tidak memungkinkan perkalian.");
+    // Periksa apakah kedua matriks dapat dikalikan
+    if (cols1 != rows2) {
+      throw new IllegalArgumentException("Kedua matriks tidak dapat dikalikan.");
     }
 
-    for (i = m1.getFirstIdxRow(); i < nRows; i++) {
-      for (j = m1.getFirstIdxCol(); j < nCols; j++) {
-        float sum = 0;
-        for (k = 0; k < nCols; k++) {
-          sum += m1.getElmt(i, k) * m2.getElmt(k, j);
+    // Buat matriks hasil dengan ukuran yang sesuai
+    Matrix result = new Matrix(rows1, cols2);
+
+    // Lakukan perkalian matriks
+    for (i = 0; i < rows1; i++) {
+      for (j = 0; j < cols2; j++) {
+        for (k = 0; k < cols1; k++) {
+          result.setElmt(i, j, (result.getElmt(i, j) + (m1.getElmt(i, k) * m2.getElmt(k, j))));
         }
-        result.setElmt(i, j, sum);
       }
     }
 
@@ -452,12 +455,12 @@ public class Matrix implements MatrixInterface {
     int i, j;
     int nCols = this.colEff;
     int nRows = this.rowEff;
-    Matrix result = new Matrix(nRows, nCols);
+    Matrix result = new Matrix(nCols, nRows);
 
     // ALGORITMA
-    if (!this.isSquare()) {
-      throw new IllegalArgumentException("Dimensi matriks tidak memungkinkan perkalian.");
-    }
+    // if (!this.isSquare()) {
+    // throw new IllegalArgumentException("Dimensi matriks tidak memungkinkan perkalian.");
+    // }
 
     for (i = this.getFirstIdxRow(); i < nRows; i++) {
       for (j = this.getFirstIdxCol(); j < nCols; j++) {

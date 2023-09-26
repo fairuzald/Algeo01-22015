@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import tools.LinearEquationMenu;
 
 public class Main {
   public static void main(String[] args) {
@@ -24,6 +25,8 @@ public class Main {
       int pilihan = scan.nextInt();
       switch (pilihan) {
         case 1:
+          LinearEquationMenu tes = new LinearEquationMenu();
+          tes.LinearEquation();
           break;
         case 2:
           break;
