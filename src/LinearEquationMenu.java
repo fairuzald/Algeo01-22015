@@ -5,7 +5,7 @@ import java.util.Scanner;
 import tools.SPL;
 
 public class LinearEquationMenu {
-  public void MenuOption() {
+  public void MenuSPLOption() {
     System.out.println("-----------------------------------");
     System.out.println("------Sistem Persamaan Linier------");
     System.out.println("-----------------------------------");
@@ -15,7 +15,7 @@ public class LinearEquationMenu {
     System.out.println("2. Metode Eliminasi Gauss Jordan");
     System.out.println("3. Metode Matriks Balikan");
     System.out.println("4. Metode Kaidah Cramer");
-    System.out.println("4. Kembali");
+    System.out.println("5. Kembali");
     System.out.println("-----------------------------------");
     System.out.print("Masukkan pilihan : ");
   }
@@ -32,13 +32,13 @@ public class LinearEquationMenu {
       input = new Scanner(System.in);
 
       // PILIHAN METHOD
-      this.MenuOption();
+      this.MenuSPLOption();
       inputMethod = input.nextInt();
       // Looping jika input tidak sesuai
       while (inputMethod != 1 && inputMethod != 2 && inputMethod != 3 && inputMethod != 4
           && inputMethod != 5) {
         Menu.WarnWrongInput();
-        this.MenuOption();
+        this.MenuSPLOption();
         inputMethod = input.nextInt();
       }
       if (inputMethod == 1 | inputMethod == 2 | inputMethod == 3 | inputMethod == 4) {
