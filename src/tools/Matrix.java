@@ -9,7 +9,7 @@ import tools.types.MatrixInterface;
 
 public class Matrix implements MatrixInterface {
   /* ***** ATRIBUTE ***** */
-  private float[][] matrix; // Inisialisasi matrix
+  private double[][] matrix; // Inisialisasi matrix
   private int rowEff; // Ukuran baris terdefinisi
   private int colEff; // Ukuran Colom terdefinisi
 
@@ -18,7 +18,7 @@ public class Matrix implements MatrixInterface {
   /* *** Konstruktor create MATRIKS *** */
   public Matrix(int nRows, int nCols) {
     // Inisialisasi matrix
-    this.matrix = new float[nRows][nCols];
+    this.matrix = new double[nRows][nCols];
     this.rowEff = nRows;
     this.colEff = nCols;
   }
@@ -36,7 +36,7 @@ public class Matrix implements MatrixInterface {
   }
 
   // Mengembalikan elemen matrix colom dan baris tertentu
-  public float getElmt(final int i, final int j) {
+  public double getElmt(final int i, final int j) {
     return this.matrix[i][j];
   }
 
@@ -61,7 +61,7 @@ public class Matrix implements MatrixInterface {
   }
 
   /* Mengembalikan elemen diagonal! */
-  public float getElmtDiagonal(final int i) {
+  public double getElmtDiagonal(final int i) {
     return isIdxEff(i, i) ? this.getElmt(i, i) : -1f;
   }
 
@@ -154,7 +154,7 @@ public class Matrix implements MatrixInterface {
   /**
    * setElmt melakukan assign value terhadapp suatu matriks pada baris dan kolom tertentu
    */
-  public void setElmt(final int i, final int j, final float value) {
+  public void setElmt(final int i, final int j, final double value) {
     this.matrix[i][j] = value;
   }
 
@@ -165,10 +165,10 @@ public class Matrix implements MatrixInterface {
 
   /* ********** Assignment Matrix ********** */
   /** Mengcopy nilai elemen suatu array matriks ke tempat lain */
-  public float[][] copyElmtMatrix() {
+  public double[][] copyElmtMatrix() {
     /* KAMUS */
     int i, j;
-    final float[][] result = new float[this.rowEff][this.colEff];
+    final double[][] result = new double[this.rowEff][this.colEff];
 
     /* ALGORITMA */
 
@@ -205,30 +205,25 @@ public class Matrix implements MatrixInterface {
    */
   public void readMatrix() {
     int i, j;
-    Scanner input = null;
-    try {
-      input = new Scanner(System.in);
-      System.out.print("Masukkan banyak baris matriks : ");
-      int nRows = input.nextInt();
-      System.out.print("Masukkan banyak kolom matriks : ");
-      int nCols = input.nextInt();
-      Matrix result = new Matrix(nRows, nCols);
+    Scanner input = new Scanner(System.in);
+    System.out.print("Masukkan banyak baris matriks : ");
+    int nRows = input.nextInt();
+    System.out.print("Masukkan banyak kolom matriks : ");
+    int nCols = input.nextInt();
+    Matrix result = new Matrix(nRows, nCols);
 
-      System.out.println("Masukkan elemen matriks :");
-      for (i = 0; i < result.rowEff; i++) {
-        for (j = 0; j < result.colEff; j++) {
-          result.matrix[i][j] = input.nextFloat();
-        }
+    System.out.println("Masukkan elemen matriks :");
+    for (i = 0; i < result.rowEff; i++) {
+      for (j = 0; j < result.colEff; j++) {
+        result.matrix[i][j] = input.nextDouble();
       }
-
-      this.matrix = result.copyElmtMatrix();
-      this.rowEff = result.rowEff;
-      this.colEff = result.colEff;
-
-
-    } catch (Exception e) {
-      System.err.println("Error saat readMatrix");
     }
+
+    this.matrix = result.copyElmtMatrix();
+    this.rowEff = result.rowEff;
+    this.colEff = result.colEff;
+
+
   }
 
 
@@ -259,9 +254,9 @@ public class Matrix implements MatrixInterface {
       matrix = new Scanner(file);
       Scanner line = new Scanner(matrix.nextLine());
       // Menghitung total kolom baris matrix
-      while (line.hasNextFloat()) {
+      while (line.hasNextDouble()) {
         Ncol++;
-        line.nextFloat();
+        line.nextDouble();
       }
       line.close();
       matrix.close();
@@ -269,13 +264,13 @@ public class Matrix implements MatrixInterface {
       matrix = new Scanner(file);
 
       // Inisialisasi matrix temp
-      float[][] tempMatrix = new float[Nrow][Ncol];
+      double[][] tempMatrix = new double[Nrow][Ncol];
 
       // Read and populate the matrix
       for (i = 0; i < Nrow; i++) {
         for (j = 0; j < Ncol; j++) {
-          if (matrix.hasNextFloat()) {
-            tempMatrix[i][j] = matrix.nextFloat();
+          if (matrix.hasNextDouble()) {
+            tempMatrix[i][j] = matrix.nextDouble();
           }
         }
       }
@@ -319,8 +314,8 @@ public class Matrix implements MatrixInterface {
 
       for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
         for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
-          // Convert the float value to String and write it
-          output.write(Float.toString(this.matrix[i][j]));
+          // Convert the double value to String and write it
+          output.write(Double.toString(this.matrix[i][j]));
 
           // Tambahkan spasi sebagai separator
           if (j < this.colEff - 1) {
@@ -427,7 +422,7 @@ public class Matrix implements MatrixInterface {
   /**
    * multiplyByConst I.S Matriks terdefinisi dan memiliki nilai F.S Mengalikan seluruh elemen
    */
-  public void multiplyByConst(final float k) {
+  public void multiplyByConst(final double k) {
     // KAMUS
     int i, j;
 
@@ -487,10 +482,10 @@ public class Matrix implements MatrixInterface {
   }
 
 
-  public void OBEPlusRow(final int idxRowOrigin, final int idxRowTarget, final float factor) {
+  public void OBEPlusRow(final int idxRowOrigin, final int idxRowTarget, final double factor) {
     // Diperuntukkan operasi antara 2 baris
     int i;
-    float value;
+    double value;
     for (i = this.getFirstIdxCol(); i <= this.getLastIdxCol(); i++) {
       value = this.getElmt(idxRowTarget, i) + (factor * this.getElmt(idxRowOrigin, i));
       if (value == -0.0f) {
@@ -503,7 +498,7 @@ public class Matrix implements MatrixInterface {
   public void OBESwapRow(final int idxRowOrigin, final int idxRowTarget) {
     // Diperuntukkan operasi pertukaran elemen antara 2 baris
     int i;
-    float temp;
+    double temp;
     for (i = this.getFirstIdxCol(); i <= this.getLastIdxCol(); i++) {
       temp = this.getElmt(idxRowOrigin, i);
       this.setElmt(idxRowOrigin, i, this.getElmt(idxRowTarget, i));
@@ -511,10 +506,10 @@ public class Matrix implements MatrixInterface {
     }
   }
 
-  public void OBEDivisionFactor(final int i, final float factor) {
+  public void OBEDivisionFactor(final int i, final double factor) {
     /* Membagi baris i dengan konstanta factor untuk membuat 1 utama */
     int j;
-    float value;
+    double value;
     for (j = this.getFirstIdxCol(); j <= this.getLastIdxCol(); j++) {
       value = (this.getElmt(i, j) / factor);
       if (value == -0.0f) {
@@ -526,7 +521,7 @@ public class Matrix implements MatrixInterface {
 
   public void gaussElimination() {
     int j, k;
-    float factor;
+    double factor;
     int i = this.getFirstIdxRow();
     // Iterasi kolom dengan for loop, tapi iterasi baris disesuaikan dengan case
     for (j =
@@ -572,7 +567,7 @@ public class Matrix implements MatrixInterface {
 
   public void gJordanElimination() {
     int j, k;
-    float factor;
+    double factor;
     int i = this.getFirstIdxRow();
     // Iterasi kolom dengan for loop, tapi iterasi baris disesuaikan dengan case
     for (j =
@@ -618,7 +613,7 @@ public class Matrix implements MatrixInterface {
 
   }
 
-  public float determinantCofactor() {
+  public double determinantCofactor() {
     if (!this.isSquare()) {
       throw new IllegalArgumentException("Matrix is not square. Determinant is undefined.");
     }
@@ -628,7 +623,7 @@ public class Matrix implements MatrixInterface {
       return this.getElmt(0, 0);
     }
 
-    float determinan = 0.0f;
+    double determinan = 0.0f;
 
     for (i = this.getFirstIdxRow(); i <= this.getLastIdxRow(); i++) {
       // Assign submatrix
@@ -644,7 +639,7 @@ public class Matrix implements MatrixInterface {
         }
       }
 
-      float cofactor = this.getElmt(i, 0) * subMatrix.determinantCofactor();
+      double cofactor = this.getElmt(i, 0) * subMatrix.determinantCofactor();
       if (i % 2 == 1) {
         cofactor = -cofactor;
       }
@@ -655,13 +650,13 @@ public class Matrix implements MatrixInterface {
     return determinan;
   }
 
-  public float determinantUpperTriangle() {
+  public double determinantUpperTriangle() {
     if (!this.isSquare()) {
       throw new IllegalArgumentException("Matrix is not square. Determinant is undefined.");
     }
-    float det = 1.0f;
+    double det = 1.0f;
     int i, j;
-    float factor;
+    double factor;
     Matrix mCopy = this.copyMatrix(); // Buat copy matrix
 
     for (i = mCopy.getFirstIdxRow(); i <= mCopy.getLastIdxRow(); i++) {
@@ -747,7 +742,7 @@ public class Matrix implements MatrixInterface {
 
   public Matrix inversAdjoin() {
     Matrix mInvers = this.adjoin();
-    float determinan = this.determinantCofactor();
+    double determinan = this.determinantCofactor();
     if (determinan == 0) {
       System.out.println("Natrix tidak memiliki invers karena nilai determinan = 0.");
     } else {
@@ -763,7 +758,7 @@ public class Matrix implements MatrixInterface {
     int i, j;
 
     // Merge identity with mTemp
-    float determinant = this.determinantCofactor();
+    double determinant = this.determinantCofactor();
 
     if (determinant == 0) {
       System.out.println("Matrix does not have an invers because the determinant is 0.");
