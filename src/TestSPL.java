@@ -12,8 +12,8 @@ public class TestSPL {
 
     // Create a Matrix instance
     Matrix tes = new Matrix(0, 0);
-    tes.readFileMatrix("./test/data/acoef.txt");
-    tes.inversGJordan();
+    tes.readFileMatrix("./test/data/testcase2b.txt");
+    tes.gaussElimination();
 
     // Call the generatePartial method or other necessary methods here
     // ...

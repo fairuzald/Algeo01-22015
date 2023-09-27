@@ -63,7 +63,6 @@ public class BicubicSpline extends Matrix implements BicubicSplineInterface {
 
   public void readFileBicubicSpline(final String filePath) {
     /* KAMUS */
-    double[] toPredict = new double[2];
     Matrix valueY = new Matrix(16, 1);
     File file = new File(filePath);
     int Nrow = 0;
@@ -96,17 +95,18 @@ public class BicubicSpline extends Matrix implements BicubicSplineInterface {
       matrix = new Scanner(file);
 
       // Inisialisasi matrix temp
-      Matrix tempMatrix = new Matrix(Nrow, Ncol);
+      Matrix tempMatrix = new Matrix(Nrow - 1, Ncol - 1);
 
       // Read and populate the matrix
-      for (i = 0; i < Nrow; i++) {
-        for (j = 0; j < Ncol; j++) {
+      for (i = 0; i < Nrow - 1; i++) {
+        for (j = 0; j < Ncol - 1; j++) {
           if (matrix.hasNextDouble()) {
             tempMatrix.setElmt(i, j, matrix.nextDouble());
           }
         }
       }
-      this.pointToPredict = toPredict;
+      this.pointToPredict[0] = matrix.nextDouble();
+      this.pointToPredict[1] = matrix.nextDouble();
       this.knownPoint = valueY;
       matrix.close();
     } catch (FileNotFoundException e) {
