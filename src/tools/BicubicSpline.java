@@ -32,14 +32,16 @@ public class BicubicSpline extends Matrix implements BicubicSplineInterface {
 
         switch (k / 4) {
           case 0:
-            System.out.print("f(" + x + ", " + y + "): ");
+            System.out.print("f(" + x + "," + y + "): ");
             break;
           case 1:
-            System.out.print("fx(" + x + ", " + y + "): ");
+            System.out.print("fx(" + x + "," + y + "): ");
+            break;
           case 2:
-            System.out.print("fy(" + x + ", " + y + "): ");
+            System.out.print("fy(" + x + "," + y + "): ");
+            break;
           default:
-            System.out.print("fxy(" + x + ", " + y + "): ");
+            System.out.print("fxy(" + x + "," + y + "): ");
 
         }
         valueY.setElmt(k, 0, globalScanner.nextDouble());
@@ -52,7 +54,7 @@ public class BicubicSpline extends Matrix implements BicubicSplineInterface {
       System.out.print("y: ");
       toPredict[1] = globalScanner.nextDouble();
       this.pointToPredict = toPredict;
-      this.knownPoint = valueY;
+      this.knownPoint = valueY.copyMatrix();
       globalScanner.close();
     } catch (Exception e) {
       System.out.println("An error occurred.");
@@ -63,13 +65,11 @@ public class BicubicSpline extends Matrix implements BicubicSplineInterface {
 
   public void readFileBicubicSpline(final String filePath) {
     /* KAMUS */
-    Matrix valueY = new Matrix(16, 1);
     File file = new File(filePath);
     int Nrow = 0;
     int Ncol = 0;
     int i, j; // Indeks
     try {
-
       Scanner matrix = new Scanner(file); // Untuk ambil matrix
 
       /* ALGORITMA */
@@ -84,39 +84,56 @@ public class BicubicSpline extends Matrix implements BicubicSplineInterface {
       matrix = new Scanner(file);
       Scanner line = new Scanner(matrix.nextLine());
       // Menghitung total kolom baris
-      // matrix///////////////////////////////////////////////////////////////////////////////////////
+      // matrix
       while (line.hasNextDouble()) {
         Ncol++;
         line.nextDouble();
       }
       line.close();
       matrix.close();
+
       // Reopen the file for reading
       matrix = new Scanner(file);
 
       // Inisialisasi matrix temp
-      Matrix tempMatrix = new Matrix(Nrow - 1, Ncol - 1);
-
+      Matrix valueY = new Matrix(Ncol * (Nrow - 1), 1);
       // Read and populate the matrix
       for (i = 0; i < Nrow - 1; i++) {
-        for (j = 0; j < Ncol - 1; j++) {
+        for (j = 0; j < Ncol; j++) {
           if (matrix.hasNextDouble()) {
-            tempMatrix.setElmt(i, j, matrix.nextDouble());
+            valueY.setElmt(4 * i + j, 0, matrix.nextDouble());
           }
         }
       }
-      this.pointToPredict[0] = matrix.nextDouble();
-      this.pointToPredict[1] = matrix.nextDouble();
-      this.knownPoint = valueY;
+
+      // Initialize pointToPredict array
+      this.pointToPredict = new double[2];
+
+      // Read the last row as the point to predict
+      if (matrix.hasNextDouble()) {
+        this.pointToPredict[0] = matrix.nextDouble();
+      }
+      if (matrix.hasNextDouble()) {
+        this.pointToPredict[1] = matrix.nextDouble();
+      }
+
+      // Close the matrix file
       matrix.close();
+
+      // Set the knownPoint matrix to valueY
+      this.knownPoint = valueY.copyMatrix();
+
+      // Call your predictBicubicSplineValue method here with this.pointToPredict[0]
+      // and this.pointToPredict[1] to compute the predicted value.
+      // Replace the last row of knownPoint with the predicted values.
+
     } catch (FileNotFoundException e) {
       System.err.printf("Error: File \"%s\" tidak ditemukan\n", filePath);
     }
-
   }
 
   public void displayBicubicSpline() {
-    System.out.print("Solusi Predicted Value untuk f(" + this.pointToPredict[0] + ","
+    System.out.println("Solusi Predicted Value untuk f(" + this.pointToPredict[0] + ","
         + this.pointToPredict[1] + "): " + this.predictedValue);
   }
 
@@ -209,16 +226,15 @@ public class BicubicSpline extends Matrix implements BicubicSplineInterface {
 
   public Matrix getCoefficientA(Matrix X, Matrix Y) {
     Matrix aCoefficient = new Matrix(1, 16);
-    Matrix xInvers = X.inversAdjoin();
+    Matrix xInvers = X.inversGJordan();
     aCoefficient = xInvers.multiplyMatrix(xInvers, Y);
     aCoefficient = aCoefficient.transpose();
-
     return aCoefficient;
   }
 
   public void predictBicubicSplineValue() {
     double result = 0, a, b;
-    int i, j = 0, k = 0;
+    int i, j = 0;
     Matrix aCoefficient = getCoefficientA(this.getBicubicSplineXMatrix(), this.knownPoint);;
     double x = this.pointToPredict[0];
     double y = this.pointToPredict[1];
@@ -226,8 +242,7 @@ public class BicubicSpline extends Matrix implements BicubicSplineInterface {
       for (j = 0; j <= 3; j++) {
         a = Math.pow(x, i);
         b = Math.pow(y, j);
-        result += (aCoefficient.getElmt(0, k) * a * b);
-        k += 1;
+        result += (aCoefficient.getElmt(0, 4 * i + j) * a * b);
       }
     }
     this.predictedValue = result;

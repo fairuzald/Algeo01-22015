@@ -647,7 +647,7 @@ public class Matrix implements MatrixInterface {
 
   public Matrix inversAdjoin() {
     Matrix mInvers = this.adjoin();
-    double determinan = this.determinantCofactor();
+    double determinan = this.determinantUpperTriangle();
     if (determinan == 0) {
       System.out.println("Natrix tidak memiliki invers karena nilai determinan = 0.");
     } else {
@@ -663,7 +663,7 @@ public class Matrix implements MatrixInterface {
     int i, j;
 
     // Merge identity with mTemp
-    double determinant = this.determinantCofactor();
+    double determinant = this.determinantUpperTriangle();
 
     if (determinant == 0) {
       System.out.println("Matrix does not have an invers because the determinant is 0.");
