@@ -108,7 +108,7 @@ public interface SPLInterface {
   // Output: Mengembalikan nilai numerator determinan Cramer untuk kolom tertentu.
   // Contoh Kasus:
   // - Menghitung numerator determinan Cramer untuk kolom ke-2.
-  double determinanNumerator(int colIdx);
+  float determinanNumerator(int colIdx);
 
   // Metode untuk memeriksa apakah vektor konstan SPL adalah nol
   // Input: Tidak ada input khusus
