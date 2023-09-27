@@ -11,5 +11,5 @@ public interface BicubicSplineInterface {
 
   Matrix getCoefficientA(Matrix X, Matrix Y);
 
-  double predictBicubicSplineValue(double x, double y, Matrix aCoefficient);
+  void predictBicubicSplineValue();
 }

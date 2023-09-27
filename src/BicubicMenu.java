@@ -1,10 +1,10 @@
-package tools;
 
-import java.io.File;
+
 import java.util.Scanner;
+import tools.BicubicSpline;
 
 public class BicubicMenu {
-  public void MenuOption() {
+  public void MenuSPLOption() {
     System.out.println("-----------------------------------");
     System.out.println("------Sistem Persamaan Linier------");
     System.out.println("-----------------------------------");
@@ -14,78 +14,65 @@ public class BicubicMenu {
     System.out.println("2. Metode Eliminasi Gauss Jordan");
     System.out.println("3. Metode Matriks Balikan");
     System.out.println("4. Metode Kaidah Cramer");
-    System.out.println("4. Kembali");
+    System.out.println("5. Kembali");
     System.out.println("-----------------------------------");
     System.out.print("Masukkan pilihan : ");
   }
 
-  public void WarnWrongInput() {
-    System.out.println("Masukkan opsi angka dengan input benar");
-  }
-
-  public void InputOption(String title) {
-    System.out.println("-----------------------------------");
-    System.out.println("               " + title);
-    System.out.println("-----------------------------------");
-    System.out.println("           PILIH CARA INPUT");
-    System.out.println("-----------------------------------");
-    System.out.println("1. Input Dari Terminal");
-    System.out.println("2. Input Dari File");
-    System.out.println("3. Kembali");
-    System.out.println("-----------------------------------");
-  }
-
-  public String getFilePath(Scanner input, String directory) {
-    String dirPath, fileName;
-    File checkFile;
-
-    do {
-      System.out.print("Masukkan nama file dalam txt: ");
-      fileName = input.nextLine();
-      dirPath = directory + fileName;
-      checkFile = new File(dirPath);
-
-      if (!checkFile.exists()) {
-        System.out.println("File yang anda masukkan tidak ada");
-      }
-
-    } while (!checkFile.exists());
-
-    return dirPath;
-  }
-
-  /** List input file yang valid */
-  public static void getAllDataFiles(String curDir) {
-    File dataFile = new File(curDir);
-    File[] listFile = dataFile.listFiles();
-    for (File f : listFile) {
-      System.out.println(f.getName());
+  public void BicubicSpline(Scanner inputScanner) {
+    int fileOption;
+    BicubicSpline bic = new BicubicSpline(16, 16);
+    Menu.InputFileOption("Interpolasi Bicubic Spline");
+    fileOption = inputScanner.nextInt();
+    // Looping jika input tidak sesuai
+    while (fileOption != 1 && fileOption != 2 && fileOption != 3) {
+      Menu.WarnWrongInput();
+      Menu.InputFileOption("Interpolasi Bicubic Spline");
+      fileOption = inputScanner.nextInt();
     }
-  }
 
-  public String getOutputFileLoc(Scanner input, String directory) {
-    String fileName;
+    if (fileOption == 1) {
+      System.out.println("-----------------------------------");
 
-    do {
-      System.out.print("Masukkan nama file output: ");
-      fileName = input.nextLine();
-      String dirPath = directory + fileName;
-      File output = new File(dirPath);
+      bic.readBicubicSpline();
 
-      if (output.exists()) {
-        System.out.println("File yang anda masukkan sudah ada");
-      }
-    } while (new File(directory + fileName).exists());
-
-    return directory + fileName;
-  }
-
-  public void clearScreen() {
-    try {
-      new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-    } catch (Exception e) {
-      e.printStackTrace();
+      System.out.println("-----------------------------------");
+      System.out.println("Data Bicubic Berhasil Terbaca");
     }
-  }
 
+    else if (fileOption == 2) {
+      String dirPath, filePath = "";
+      dirPath = System.getProperty("user.dir") + "\\test\\data\\";
+      System.out.println("-----------------------------------");
+      System.out.println("List file valid :");
+      Menu.getAllDataFiles(dirPath);
+      System.out.println("------------------------------------");
+      filePath = Menu.getFilePath(inputScanner, dirPath);
+
+      bic.readFileBicubicSpline(filePath);
+
+      System.out.println("-----------------------------------");
+      System.out.println("Data matriks SPL Berhasil Terbaca");
+    } else if (fileOption == 3) {
+      Menu.clearScreen();
+      // MainMenu();
+    }
+
+    // MAU DISIMPAN?
+    if (fileOption == 1 || fileOption == 2) {
+      System.out.println("-----------------------------------");
+      bic.displayBicubicSpline();
+      System.out.println("-----------------------------------");
+      System.out.print("Simpan Hasil? (y/n) : ");
+
+      char saveStatus = inputScanner.next().charAt(0);
+      if (saveStatus == 'y') {
+        System.out.println("-----------------------------------");
+        String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
+        String outputPath = Menu.getOutputFileLoc(inputScanner, outputDir);
+        bic.writeFileBicubicSpline(outputPath);
+      }
+    }
+
+  }
 }
