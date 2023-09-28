@@ -1,14 +1,11 @@
-package tools;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
+
 import java.util.Scanner;
+import tools.SPL;
 
 public class LinearEquationMenu {
-  public void MenuOption() {
+  public void MenuSPLOption() {
     System.out.println("-----------------------------------");
     System.out.println("------Sistem Persamaan Linier------");
     System.out.println("-----------------------------------");
@@ -18,89 +15,9 @@ public class LinearEquationMenu {
     System.out.println("2. Metode Eliminasi Gauss Jordan");
     System.out.println("3. Metode Matriks Balikan");
     System.out.println("4. Metode Kaidah Cramer");
-    System.out.println("4. Kembali");
+    System.out.println("5. Kembali");
     System.out.println("-----------------------------------");
     System.out.print("Masukkan pilihan : ");
-  }
-
-  public void WarnWrongInput() {
-    System.out.println("Masukkan opsi angka dengan input benar");
-  }
-
-  public void InputOption() {
-    System.out.println("-----------------------------------");
-    System.out.println("               MENU SPL");
-    System.out.println("-----------------------------------");
-    System.out.println("           PILIH CARA INPUT");
-    System.out.println("-----------------------------------");
-    System.out.println("1. Input Dari Terminal");
-    System.out.println("2. Input Dari File");
-    System.out.println("3. Kembali");
-    System.out.println("-----------------------------------");
-  }
-
-  public String getFilePath(Scanner input, String directory) {
-    String dirPath, fileName;
-    File checkFile;
-
-    do {
-      System.out.print("Masukkan nama file dalam txt: ");
-      fileName = input.nextLine();
-      dirPath = directory + fileName;
-      checkFile = new File(dirPath);
-
-      if (!checkFile.exists()) {
-        System.out.println("File yang anda masukkan tidak ada");
-      }
-
-    } while (!checkFile.exists());
-
-    return dirPath;
-  }
-
-  /** List input file yang valid */
-  public static void getAllDataFiles(String curDir) {
-    File dataFile = new File(curDir);
-    File[] listFile = dataFile.listFiles();
-    for (File f : listFile) {
-      System.out.println(f.getName());
-    }
-  }
-
-  public String getOutputFileLoc(Scanner input, String fileDir) {
-    String fileName;
-
-    do {
-      System.out.print("Masukkan nama file output: ");
-      fileName = input.nextLine();
-      String dirPath = fileDir + fileName;
-      File output = new File(dirPath);
-
-      if (output.exists()) {
-        System.out.println("File yang anda masukkan sudah ada");
-      }
-    } while (new File(fileDir + fileName).exists());
-
-    return fileDir + fileName;
-  }
-
-  public void outputFile(String content, String fileName) {
-    try {
-      PrintWriter writer = new PrintWriter(fileName, StandardCharsets.UTF_8);
-      writer.println(content);
-      writer.close();
-    } catch (IOException e) {
-      System.out.println("An error occurred");
-      e.printStackTrace();
-    }
-  }
-
-  public void clearScreen() {
-    try {
-      new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 
   public void LinearEquation() {
@@ -115,28 +32,24 @@ public class LinearEquationMenu {
       input = new Scanner(System.in);
 
       // PILIHAN METHOD
-      this.MenuOption();
+      this.MenuSPLOption();
       inputMethod = input.nextInt();
-      input.nextLine();
       // Looping jika input tidak sesuai
       while (inputMethod != 1 && inputMethod != 2 && inputMethod != 3 && inputMethod != 4
           && inputMethod != 5) {
-        this.WarnWrongInput();
-        this.MenuOption();
+        Menu.WarnWrongInput();
+        this.MenuSPLOption();
         inputMethod = input.nextInt();
-        input.nextLine();
       }
       if (inputMethod == 1 | inputMethod == 2 | inputMethod == 3 | inputMethod == 4) {
         // KONDISI UNTUK READ FILE
-        this.InputOption();
+        Menu.InputFileOption("SPL");
         readInput = input.nextInt();
-        input.nextLine();
         // Looping jika input tidak sesuai
         while (readInput != 1 && readInput != 2 && readInput != 3) {
-          this.WarnWrongInput();
-          this.InputOption();
+          Menu.WarnWrongInput();
+          Menu.InputFileOption("SPL");
           readInput = input.nextInt();
-          input.nextLine();
         }
 
         if (readInput == 1) {
@@ -153,17 +66,16 @@ public class LinearEquationMenu {
           dirPath = System.getProperty("user.dir") + "\\test\\data\\";
           System.out.println("-----------------------------------");
           System.out.println("List file valid :");
-          getAllDataFiles(dirPath);
-          System.out.println("----- ------------------------------");
-          System.out.print("Masukkan nama file data matriks SPL : ");
-          filePath = getFilePath(input, dirPath);
+          Menu.getAllDataFiles(dirPath);
+          System.out.println("------------------------------------");
+          filePath = Menu.getFilePath(input, dirPath);
 
           mSPL.readFileSPL(filePath);
 
           System.out.println("-----------------------------------");
           System.out.println("Data matriks SPL Berhasil Terbaca");
         } else if (readInput == 3) {
-          clearScreen();
+          Menu.clearScreen();
           // MainMenu();
         }
 
@@ -200,14 +112,14 @@ public class LinearEquationMenu {
           if (saveStatus == 'y') {
             System.out.println("-----------------------------------");
             String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
-            String outputPath = getOutputFileLoc(input, outputDir);
+            String outputPath = Menu.getOutputFileLoc(input, outputDir);
             mSPL.writeFileSPL(outputPath);
           }
         }
       }
 
       else {
-        clearScreen();
+        Menu.clearScreen();
       }
     } catch (Exception e) {
       System.out.println("Terjadi Error");

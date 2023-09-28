@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import tools.LinearEquationMenu;
-import tools.Regression;
 
 public class Main {
   public static void main(String[] args) {
@@ -44,7 +43,7 @@ public class Main {
           System.out.print("Masukkan banyak sampel : ");
           int m = globalScan.nextInt();
           Regression regresi = new Regression(m, n + 1);
-          regresi.readRegression(m, n);
+          regresi.readRegressionKeyboard(m, n);
           regresi.compileMatrix();
           regresi.displayMatrix();
           regresi.inversMethodSPL();
