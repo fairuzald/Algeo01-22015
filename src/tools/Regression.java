@@ -15,7 +15,7 @@ public class Regression extends SPL {
     super(rowEff, colEff);
   }
 
-  public void readRegression(int m, int n) {
+  public void readRegressionKeyboard(int m, int n) {
     /* KAMUS LOKAL */
     int i, j;
     Scanner input = new Scanner(System.in);
@@ -25,8 +25,8 @@ public class Regression extends SPL {
     try {
       Matrix mat = new Matrix(m, n + 1);
 
-      for (i = 1; i <= n; i++) {
-        System.out.println("Masukkan nilai x" + i + "i:");
+      for (i = 0; i < n; i++) {
+        System.out.println("Masukkan nilai x" + (i + 1) + "i:");
         for (j = 0; j < m; j++) {
           float inputan = input.nextFloat();
           mat.setElmt(j, i, inputan);
@@ -52,7 +52,7 @@ public class Regression extends SPL {
     }
   }
 
-  public void readFileRegression(final String fileName) throws FileNotFoundException {
+  public void readRegressionFile(final String fileName) throws FileNotFoundException {
     try {
       /* KAMUS */
       String directory = "./src/data/" + fileName;
@@ -132,8 +132,12 @@ public class Regression extends SPL {
   public float estimate() {
     float result = 0;
     int i;
-    for (i = 0; i < this.getRowEff(); i++) {
-      result += this.Solution[i] * this.estimationPoint[i];
+    for (i = 0; i < this.Solution.length; i++) {
+      if (i == 0) {
+        result = this.Solution[i];
+      } else {
+        result += this.Solution[i] * this.estimationPoint[i - 1];
+      }
     }
     return result;
   }
