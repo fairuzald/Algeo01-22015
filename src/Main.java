@@ -38,26 +38,19 @@ public class Main {
         case 5:
           break;
         case 6:
-          System.out.print("Masukkan jumlah peubah x : ");
-          int n = globalScan.nextInt();
-
-          System.out.print("Masukkan banyak sampel : ");
-          int m = globalScan.nextInt();
-          Regression regresi = new Regression(m, n + 1);
-          regresi.readRegression(m, n);
-          regresi.compileMatrix();
-          regresi.displayMatrix();
-          regresi.inversMethodSPL();
-          System.out.println(regresi.Equation[0]);
+          Regression driver = new Regression(0, 0);
+          driver.regressionDriver();
           break;
         case 7:
           System.out.println("Progam ditutup...");
           globalScan.close();
           return;
       }
-    } catch (Exception e) {
-      System.err.println("Error saatnya.");
+    } catch (
 
+    Exception e) {
+      System.err.println("Error saatnya.");
+      e.printStackTrace();
     }
 
   }

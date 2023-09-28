@@ -4,8 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import tools.types.RegressionInterface;
 
-public class Regression extends SPL {
+public class Regression extends SPL implements RegressionInterface {
   /* **** ATRIBUTE ***** */
   public Matrix allPoint; // Matrix yang menyimpan semua titik yang dibutuhkan dalam proses regresi
   private float[] estimationPoint; // array of float yang menyimpan semua titik yang akan diuji
@@ -53,11 +54,10 @@ public class Regression extends SPL {
     }
   }
 
-  public void readRegressionFile(final String fileName, int n, int m) {
+  public void readRegressionFile(final String filePath, int n, int m) {
     try {
       /* KAMUS */
-      String directory = "test/data/" + fileName;
-      File file = new File(directory);
+      File file = new File(filePath);
       int i, j;
 
       Scanner scan = new Scanner(file);
@@ -87,12 +87,6 @@ public class Regression extends SPL {
 
       this.allPoint = mat.copyMatrix();
       scan.close();
-
-      this.allPoint.displayMatrix();
-      for (i = 0; i < estimationPoint.length; i++) {
-        System.out.println(estimationPoint[i]);
-      }
-      System.out.println();
     } catch (Exception e) {
       e.printStackTrace();;
     }
@@ -183,7 +177,6 @@ public class Regression extends SPL {
     if (this.Status[0] == categorySolution.UNDEFINED) {
       System.out.println("Permasalahan Regresi tidak memiliki solusi.");
     } else {
-
       for (i = 0; i < this.Equation.length; i++) {
         // JIka solusi adalah parametrix maka hitung jumlahnya
         if (this.Status[i] == categorySolution.PARAMETRIX) {
@@ -263,64 +256,68 @@ public class Regression extends SPL {
 
   public void regressionDriver() {
     int pilihanInput, pilihanOutput;
+    Regression reg = new Regression(0, 0);
     Scanner scan = new Scanner(System.in);
 
     System.out.println("Metode Input: ");
     System.out.println("1. Keyboard (melalui terminal)");
     System.out.println("2. File");
     System.out.println("Katakan pilihanmu: ");
-    pilihanInput = scan.nextInt();
+    pilihanInput = Integer.parseInt(scan.nextLine());
 
     System.out.println("Metode Output: ");
     System.out.println("1. Terminal");
     System.out.println("2. File Output");
     System.out.println("Katakan pilihanmu: ");
-    pilihanOutput = scan.nextInt();
+    pilihanOutput = Integer.parseInt(scan.nextLine());
 
     switch (pilihanInput) {
       case 1:
+        int n = 0, m = 0;
+        System.out.print("Masukkan jumlah peubah x : ");
+        n = Integer.parseInt(scan.nextLine());
+
+        System.out.print("Masukkan banyak sampel : ");
+        m = Integer.parseInt(scan.nextLine());
+
+        reg = new Regression(n + 1, n + 2);
+        reg.readRegressionKeyboard(m, n);
+        reg.compileMatrix();
+        reg.gaussMethodSPL();
+        break;
       case 2:
-      default:
+        n = 0;
+        m = 0;
+        File file = new File("test/data/testRegresi2.txt");
+        try {
+          Scanner scanFile = new Scanner(file);
+          if (scanFile.hasNextInt()) {
+            n = scanFile.nextInt();
+          }
+          if (scanFile.hasNextInt()) {
+            m = scanFile.nextInt();
+          }
+          reg = new Regression(n + 1, n + 2);
+          reg.readRegressionFile("test/data/testRegresi2.txt", n, m);
+          reg.compileMatrix();
+          reg.gaussMethodSPL();
+
+          scanFile.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+        break;
     }
 
     switch (pilihanOutput) {
       case 1:
+        reg.displayRegression();
+        break;
       case 2:
-      default:
+        reg.writeFileRegression("./test/output/hasilRegresi.txt");
+        break;
     }
 
     scan.close();
   }
 }
-
-
-// /* CARA MENGGUNAKAN READREGRESSIONKEYBOARD (DRIVER) -> tuliskan di main.java */
-// System.out.print("Masukkan jumlah peubah x : ");
-// int n = globalScan.nextInt();
-// System.out.print("Masukkan banyak sampel : ");
-// int m = globalScan.nextInt();
-
-// Regression regresi = new Regression(n + 1, n + 2);
-// regresi.readRegressionKeyboard(m, n);
-// regresi.compileMatrix();
-// regresi.gaussMethodSPL();
-// System.out.println("Nilai estimasinya adalah " + regresi.estimate());
-
-// /* CARA MENGGUNAKAN READREGRESSIONFILE (DRIVER) -> tuliskan di main.java*/
-// n = 0;
-// m = 0;
-// File file = new File("./test/data/testRegresi.txt");
-// Scanner scan = new Scanner(file);
-// if (scan.hasNextInt()) {
-// n = scan.nextInt();
-// }
-// if (scan.hasNextInt()) {
-// m = scan.nextInt();
-// }
-// Regression reg = new Regression(n + 1, n + 2);
-// reg.readRegressionFile("testRegresi.txt", n, m);
-// reg.gaussMethodSPL();
-// System.out.println("\nSolusi SPL:");
-// reg.displaySPL();
-// System.out.println("Nilai estimasinya adalah " + reg.estimate());
-// scan.close();
