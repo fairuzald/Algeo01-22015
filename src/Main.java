@@ -1,8 +1,10 @@
 import java.util.Scanner;
+import tools.LinearEquationMenu;
+import tools.Regression;
 
 public class Main {
   public static void main(String[] args) {
-    Scanner scan = new Scanner(System.in);
+    Scanner globalScan = new Scanner(System.in);
     System.out.println("Selamat datang di TUBES ALGEO 1");
     System.out.println("by: ucup tampan");
     System.out.println("Anggota:");
@@ -11,7 +13,7 @@ public class Main {
     System.out.println("3. (13522057) Moh Fairuz Alauddin Yahya");
     System.out.println("===================================================================");
 
-    while (true) {
+    try {
       System.out.println("MENU");
       System.out.println("1. Sistem Persamaan Linier");
       System.out.println("2. Determinan");
@@ -21,7 +23,7 @@ public class Main {
       System.out.println("6. Regresi Linier Balikan");
       System.out.println("7. Keluar");
       System.out.println("Katakan Pilihanmu:");
-      int pilihan = scan.nextInt();
+      int pilihan = globalScan.nextInt();
       switch (pilihan) {
         case 1:
           LinearEquationMenu tes = new LinearEquationMenu();
@@ -36,12 +38,19 @@ public class Main {
         case 5:
           break;
         case 6:
+          Regression driver = new Regression(0, 0);
+          driver.regressionDriver();
           break;
         case 7:
           System.out.println("Progam ditutup...");
-          scan.close();
+          globalScan.close();
           return;
       }
+    } catch (
+
+    Exception e) {
+      System.err.println("Error saatnya.");
+      e.printStackTrace();
     }
 
   }
