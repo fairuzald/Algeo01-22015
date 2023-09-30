@@ -78,6 +78,19 @@ public interface MatrixInterface {
     // Contoh Case:
     // Jika matriks memiliki 3 baris dan 3 kolom, maka isSquare() akan mengembalikan true.
 
+    // Memeriksa apakah matriks adalah matriks simetris
+    boolean isSymmetric();
+    // Input: Tidak ada
+    // Output: true jika matriks simetris, false jika tidak
+    // Contoh Case:
+    // Jika matriks adalah matriks simetris, maka isSymmetric() akan mengembalikan true.
+
+    // Memeriksa apakah matriks adalah matriks identitas
+    boolean isIdentity();
+    // Input: Tidak ada
+    // Output: true jika matriks identitas, false jika tidak
+    // Contoh Case:
+    // Jika matriks adalah matriks identitas, maka isIdentity() akan mengembalikan true.
 
     // Menetapkan nilai elemen matriks pada baris i dan kolom j
     void setElmt(int i, int j, double value);
@@ -87,7 +100,13 @@ public interface MatrixInterface {
     // Jika kita ingin mengatur nilai elemen pada baris 1 dan kolom 1 menjadi 5,
     // maka kita akan memanggil setElmt(0, 0, 5).
 
-
+    // Memeriksa apakah indeks baris dan kolom valid pada matriks
+    boolean isMatrixIdxValid(int i, int j);
+    // Input: Baris (i) dan Kolom (j)
+    // Output: true jika indeks valid, false jika tidak valid
+    // Contoh Case:
+    // Jika matriks memiliki 3 baris dan 4 kolom, maka isMatrixIdxValid(2, 3) akan mengembalikan
+    // true.
 
     // Menyalin elemen-elemen matriks ke dalam array 2D baru
     double[][] copyElmtMatrix();
@@ -128,7 +147,7 @@ public interface MatrixInterface {
 
     Matrix transpose();
 
-    Matrix createIdentityMatrix(int n);
+    Matrix createIdentityMatrix(int rows, int cols);
 
     void OBEPlusRow(int idxRowOrigin, int idxRowTarget, double factor);
 

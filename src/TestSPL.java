@@ -1,7 +1,6 @@
-import tools.BicubicSpline;
 import tools.ImageScaling;
 import tools.Matrix;
-import tools.SPL;
+
 
 public class TestSPL {
 

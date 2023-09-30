@@ -5,9 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import tools.types.BicubicSplineInterface;
 
-public class BicubicSpline extends Matrix implements BicubicSplineInterface {
+public class BicubicSpline extends Matrix {
   public double predictedValue;
   public double[] pointToPredict;
   public Matrix knownPoint;

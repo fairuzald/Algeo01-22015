@@ -19,8 +19,8 @@ if %ERRORLEVEL% NEQ 0 (
   exit /b %ERRORLEVEL%
 )
 
-:: Jalankan aplikasi Anda dari folder bin dengan heap size 2GB
-java -Xmx2048m -cp %CLASSPATH% TestSPL
+:: Jalankan aplikasi Anda dari folder bin
+java -cp %CLASSPATH% Test
 
 :: Tunggu sebentar sebelum menutup jendela
 pause
