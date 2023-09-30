@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 import tools.Matrix;
+import tools.Regression;
 
 public class Main {
   public static void main(String[] args) {
@@ -46,6 +47,8 @@ public class Main {
           bicubicAsikJos.BicubicSpline(scan);
           break;
         case 6:
+          Regression regresiEuy = new Regression(0, 0);
+          regresiEuy.regressionDriver();
           break;
         case 7:
           System.out.println("Progam ditutup...");
