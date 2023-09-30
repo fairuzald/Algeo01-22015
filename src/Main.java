@@ -38,6 +38,8 @@ public class Main {
           inversMatrix.calculatingInversMatrix();
           break;
         case 4:
+          InterpolationMenu interpolasiPolinomial = new InterpolationMenu();
+          interpolasiPolinomial.calculatingPolinomialInterpolation();
           break;
         case 5:
           break;
