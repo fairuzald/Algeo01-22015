@@ -62,12 +62,36 @@ public class Matrix implements MatrixInterface {
 
   /* Mengembalikan elemen diagonal! */
   public double getElmtDiagonal(final int i) {
-    return this.getElmt(i, i);
+    return isIdxEff(i, i) ? this.getElmt(i, i) : -1f;
   }
 
   /* Mengembalikan ukuran matrix */
   public int getSize() {
     return this.colEff * this.rowEff;
+  }
+
+  // ** VALIDATION **//
+  // Mengembalikan boolean pengecekan elemen matriks apakah sama antara 2 matrix
+  public static boolean isMatrixEqual(final Matrix m1, final Matrix m2) {
+    // KAMUS
+    int i, j;
+
+    // ALGORITMA
+    // Ukuran harus sama
+    if (isMatrixSizeEqual(m1, m2)) {
+      return false;
+    }
+
+    // Checking similaritas elemen
+    for (i = m1.getFirstIdxRow(); i < m1.getRowEff(); i++) {
+      for (j = m1.getFirstIdxCol(); j < m1.getColEff(); j++) {
+        if (m1.getElmt(i, j) != m2.getElmt(i, j)) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   // Mengembalikan boolean pengecekan kesamaan ukuran baris dan kolom antara 2 matrix
@@ -80,6 +104,51 @@ public class Matrix implements MatrixInterface {
     return this.rowEff == this.colEff;
   }
 
+  // Mengembalikan boolean pengecekan kesamaan elemen berseberangan suatu matrix
+  public boolean isSymmetric() {
+    // KAMUS
+    int i, j;
+
+    // ALGORITMA
+    if (!this.isSquare()) {
+      return false;
+    }
+
+    for (i = this.getFirstIdxRow(); i < this.rowEff; i++) {
+      for (j = this.getFirstIdxCol(); j < this.colEff; j++) {
+        if (matrix[i][j] != matrix[j][i]) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  // Mengembalikan boolean pengecekan semua elemen biner 1 atau 0
+  public boolean isIdentity() {
+    // KAMUS
+    int i, j;
+
+    // ALGORITMA
+    if (!isSquare()) {
+      return false;
+    }
+
+    for (i = 0; i < rowEff; i++) {
+      for (j = 0; j < colEff; j++) {
+        if (i == j && matrix[i][j] != 1) {
+          return false;
+        } else if (i != j && matrix[i][j] != 0) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+
   // ** SELEKTOR SETTER */
 
   /**
@@ -87,6 +156,11 @@ public class Matrix implements MatrixInterface {
    */
   public void setElmt(final int i, final int j, final double value) {
     this.matrix[i][j] = value;
+  }
+
+  // Memvalidasi apakah index yang diinputkan valid pada suatu matrix
+  public boolean isMatrixIdxValid(final int i, final int j) {
+    return i >= 0 && i < matrix.length && j >= 0 && j < matrix[0].length;
   }
 
   /* ********** Assignment Matrix ********** */
@@ -118,6 +192,11 @@ public class Matrix implements MatrixInterface {
     return mCopy;
   }
 
+  // Memvalidasi apakah index yang diinputkan valid pada suatu matrix
+  public boolean isIdxEff(int i, int j) {
+    return i >= 0 && j >= 0 && i < rowEff && j < colEff;
+  }
+
   // ** BACA TULIS METHOD */
 
   /**
@@ -126,25 +205,30 @@ public class Matrix implements MatrixInterface {
    */
   public void readMatrix() {
     int i, j;
-    Scanner input = new Scanner(System.in);
-    System.out.print("Masukkan banyak baris matriks : ");
-    int nRows = input.nextInt();
-    System.out.print("Masukkan banyak kolom matriks : ");
-    int nCols = input.nextInt();
-    Matrix result = new Matrix(nRows, nCols);
+    Scanner input = null;
+    try {
+      input = new Scanner(System.in);
+      System.out.print("Masukkan banyak baris matriks : ");
+      int nRows = input.nextInt();
+      System.out.print("Masukkan banyak kolom matriks : ");
+      int nCols = input.nextInt();
+      Matrix result = new Matrix(nRows, nCols);
 
-    System.out.println("Masukkan elemen matriks :");
-    for (i = 0; i < result.rowEff; i++) {
-      for (j = 0; j < result.colEff; j++) {
-        result.matrix[i][j] = input.nextDouble();
+      System.out.println("Masukkan elemen matriks :");
+      for (i = 0; i < result.rowEff; i++) {
+        for (j = 0; j < result.colEff; j++) {
+          result.matrix[i][j] = input.nextFloat();
+        }
       }
+
+      this.matrix = result.copyElmtMatrix();
+      this.rowEff = result.rowEff;
+      this.colEff = result.colEff;
+
+
+    } catch (Exception e) {
+      System.err.println("Error saat readMatrix");
     }
-
-    this.matrix = result.copyElmtMatrix();
-    this.rowEff = result.rowEff;
-    this.colEff = result.colEff;
-
-
   }
 
 
@@ -175,9 +259,9 @@ public class Matrix implements MatrixInterface {
       matrix = new Scanner(file);
       Scanner line = new Scanner(matrix.nextLine());
       // Menghitung total kolom baris matrix
-      while (line.hasNextDouble()) {
+      while (line.hasNextFloat()) {
         Ncol++;
-        line.nextDouble();
+        line.nextFloat();
       }
       line.close();
       matrix.close();
@@ -190,8 +274,8 @@ public class Matrix implements MatrixInterface {
       // Read and populate the matrix
       for (i = 0; i < Nrow; i++) {
         for (j = 0; j < Ncol; j++) {
-          if (matrix.hasNextDouble()) {
-            tempMatrix[i][j] = matrix.nextDouble();
+          if (matrix.hasNextFloat()) {
+            tempMatrix[i][j] = matrix.nextFloat();
           }
         }
       }
@@ -206,6 +290,7 @@ public class Matrix implements MatrixInterface {
     }
   }
 
+
   /**
    * displayMatrix I.S. Matriks terdefinisi dan memiliki nilai F.S. Menampilkan matriks pada layar
    */
@@ -213,7 +298,7 @@ public class Matrix implements MatrixInterface {
     int i, j;
     for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
       for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
-        if (j == this.getLastIdxCol()) {
+        if (j == this.getColEff() - 1) {
           System.out.println(matrix[i][j]);
         } else {
           System.out.print(matrix[i][j] + " ");
@@ -338,16 +423,19 @@ public class Matrix implements MatrixInterface {
    */
   public Matrix addMatrix(final Matrix m1, final Matrix m2) {
     // KAMUS
+    int i, j;
+    int nRows = m1.getRowEff();
+    int nCols = m1.getColEff();
+    Matrix result = new Matrix(nRows, nCols);
+
     // ALGORITMA
     if (!isMatrixSizeEqual(m1, m2)) {
-      System.out.println("Ukuran matriks tidak sama.");
-      return this;
+      throw new IllegalArgumentException("Ukuran matriks tidak sama.");
     }
 
-    int i, j;
-    Matrix result = new Matrix(m1.getRowEff(), m1.getColEff());
-    for (i = m1.getFirstIdxRow(); i < m1.getRowEff(); i++) {
-      for (j = m1.getFirstIdxCol(); j < m1.getColEff(); j++) {
+
+    for (i = m1.getFirstIdxRow(); i < nRows; i++) {
+      for (j = m1.getFirstIdxCol(); j < nCols; j++) {
         result.setElmt(i, j, m1.getElmt(i, j) + m2.getElmt(i, j));
       }
     }
@@ -359,18 +447,20 @@ public class Matrix implements MatrixInterface {
    * substractMatrix Mengurangkan dua matriks dan mengembalikan hasil pengurangannya.
    */
   public Matrix subtractMatrix(final Matrix m1, final Matrix m2) {
-    // ALGORITMA
-    if (!isMatrixSizeEqual(m1, m2)) {
-      System.out.println("Ukuran matriks tidak sama.");
-      return this;
-    }
-
     // KAMUS
     int i, j;
-    Matrix result = new Matrix(m1.getRowEff(), m1.getColEff());
+    int nRows = m1.getRowEff();
+    int nCols = m1.getColEff();
+    Matrix result = new Matrix(nRows, nCols);
 
-    for (i = m1.getFirstIdxRow(); i < m1.getRowEff(); i++) {
-      for (j = m1.getFirstIdxCol(); j < m1.getColEff(); j++) {
+    // ALGORITMA
+    if (!isMatrixSizeEqual(m1, m2)) {
+      throw new IllegalArgumentException("Ukuran matriks tidak sama.");
+    }
+
+
+    for (i = m1.getFirstIdxRow(); i < nRows; i++) {
+      for (j = m1.getFirstIdxCol(); j < nCols; j++) {
         result.setElmt(i, j, m1.getElmt(i, j) - m2.getElmt(i, j));
       }
     }
@@ -382,21 +472,24 @@ public class Matrix implements MatrixInterface {
    * multiplyMatrix Mengalikan dua matriks dan mengembalikan hasil perkaliannya.
    */
   public Matrix multiplyMatrix(final Matrix m1, final Matrix m2) {
+    int rows1 = m1.rowEff;
+    int cols1 = m1.colEff;
+    int rows2 = m2.rowEff;
+    int cols2 = m2.colEff;
+    int i, j, k;
 
     // Periksa apakah kedua matriks dapat dikalikan
-    if (m1.getColEff() != m2.getRowEff()) {
-      System.out.println("Kedua matriks tidak dapat dikalikan.");
-      return this;
+    if (cols1 != rows2) {
+      throw new IllegalArgumentException("Kedua matriks tidak dapat dikalikan.");
     }
 
     // Buat matriks hasil dengan ukuran yang sesuai
-    int i, j, k;
-    Matrix result = new Matrix(m1.getRowEff(), m2.getColEff());
+    Matrix result = new Matrix(rows1, cols2);
 
     // Lakukan perkalian matriks
-    for (i = 0; i < m1.getRowEff(); i++) {
-      for (j = 0; j < m2.getColEff(); j++) {
-        for (k = 0; k < m1.getColEff(); k++) {
+    for (i = 0; i < rows1; i++) {
+      for (j = 0; j < cols2; j++) {
+        for (k = 0; k < cols1; k++) {
           result.setElmt(i, j, (result.getElmt(i, j) + (m1.getElmt(i, k) * m2.getElmt(k, j))));
         }
       }
@@ -434,12 +527,17 @@ public class Matrix implements MatrixInterface {
   public Matrix transpose() {
     // KAMUS
     int i, j;
-    Matrix result = new Matrix(this.getColEff(), this.getRowEff());
+    int nCols = this.colEff;
+    int nRows = this.rowEff;
+    Matrix result = new Matrix(nCols, nRows);
 
     // ALGORITMA
+    // if (!this.isSquare()) {
+    // throw new IllegalArgumentException("Dimensi matriks tidak memungkinkan perkalian.");
+    // }
 
-    for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
-      for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
+    for (i = this.getFirstIdxRow(); i < nRows; i++) {
+      for (j = this.getFirstIdxCol(); j < nCols; j++) {
         result.setElmt(j, i, this.getElmt(i, j));
       }
     }
@@ -447,15 +545,16 @@ public class Matrix implements MatrixInterface {
     return result;
   }
 
-
-  public Matrix createIdentityMatrix(int n) {
-    if (n <= 0) {
-      throw new IllegalArgumentException("Size matriks harus lebih dari 0");
+  public Matrix createIdentityMatrix(int rows, int cols) {
+    if (rows <= 0 || cols <= 0) {
+      throw new IllegalArgumentException("Rows and columns must be greater than zero.");
+    } else if (rows != cols) {
+      throw new IllegalArgumentException("Harus matrix persegi");
     }
-    Matrix identityMatrix = new Matrix(n, n);
+    Matrix identityMatrix = new Matrix(rows, cols);
     int i;
-    for (i = 0; i < n; i++) {
-      identityMatrix.setElmt(i, i, 1.0d);
+    for (i = 0; i < rows; i++) {
+      identityMatrix.setElmt(i, i, 1.0f);
     }
 
     return identityMatrix;
@@ -544,7 +643,6 @@ public class Matrix implements MatrixInterface {
       }
     }
   }
-
 
   public void gJordanElimination() {
     int j, k;
@@ -635,7 +733,7 @@ public class Matrix implements MatrixInterface {
     if (!this.isSquare()) {
       throw new IllegalArgumentException("Matrix is not square. Determinant is undefined.");
     }
-    double det = 1.0d;
+    double det = 1.0f;
     int i, j;
     double factor;
     Matrix mCopy = this.copyMatrix(); // Buat copy matrix
@@ -650,7 +748,7 @@ public class Matrix implements MatrixInterface {
         while (j <= mCopy.getLastIdxRow() && !found) {
           if (mCopy.getElmt(i, j) != 0) {
             mCopy.OBESwapRow(j, i);
-            det *= -1.0d;
+            det *= -1.0f;
             found = true;
           } else {
             j += 1;
@@ -705,7 +803,7 @@ public class Matrix implements MatrixInterface {
         if ((i + j) % 2 == 0) {
           mCofactor.setElmt(i, j, mSub.determinantCofactor());
         } else {
-          mCofactor.setElmt(i, j, -1.0d * mSub.determinantCofactor());
+          mCofactor.setElmt(i, j, -1.0f * mSub.determinantCofactor());
 
         }
       }
@@ -715,29 +813,31 @@ public class Matrix implements MatrixInterface {
   }
 
   public Matrix adjoin() {
-    Matrix mAdj = this.cofactor().transpose();
+    Matrix mAdj = this.cofactor();
+    mAdj = mAdj.transpose();
     return mAdj;
+
   }
 
   public Matrix inversAdjoin() {
     Matrix mInvers = this.adjoin();
-    double determinan = this.determinantUpperTriangle();
+    double determinan = this.determinantCofactor();
     if (determinan == 0) {
       System.out.println("Natrix tidak memiliki invers karena nilai determinan = 0.");
     } else {
-      mInvers.multiplyByConst(1.0d / determinan);
+      mInvers.multiplyByConst(1 / determinan);
     }
     return mInvers;
   }
 
   public Matrix inversGJordan() {
     Matrix mTemp = new Matrix(this.getRowEff(), this.getColEff() * 2);
-    Matrix mIdentity = this.createIdentityMatrix(this.getRowEff());
+    Matrix mIdentity = this.createIdentityMatrix(this.getRowEff(), this.getColEff());
     Matrix mInvers = new Matrix(this.getRowEff(), this.getColEff());
     int i, j;
 
     // Merge identity with mTemp
-    double determinant = this.determinantUpperTriangle();
+    double determinant = this.determinantCofactor();
 
     if (determinant == 0) {
       System.out.println("Matrix does not have an invers because the determinant is 0.");
