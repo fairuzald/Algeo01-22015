@@ -19,6 +19,7 @@ public class Menu {
     System.out.println("2. Input Dari File");
     System.out.println("3. Kembali");
     System.out.println("-----------------------------------");
+    System.out.print("Masukkan pilihan : ");
   }
 
   public static String getFilePath(Scanner input, String directory) {
