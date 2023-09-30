@@ -30,11 +30,12 @@ public class Main {
           tes.LinearEquation();
           break;
         case 2:
-          // Inisialisasi Matrix
           DeterminantMenu determinan = new DeterminantMenu();
           determinan.calculatingDeterminant();
           break;
         case 3:
+          InversMenu inversMatrix = new InversMenu();
+          inversMatrix.calculatingInversMatrix();
           break;
         case 4:
           break;
