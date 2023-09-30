@@ -42,6 +42,8 @@ public class Main {
           interpolasiPolinomial.calculatingPolinomialInterpolation();
           break;
         case 5:
+          BicubicMenu bicubicAsikJos = new BicubicMenu();
+          bicubicAsikJos.BicubicSpline(scan);
           break;
         case 6:
           break;
