@@ -248,4 +248,22 @@ public class BicubicSpline extends Matrix implements BicubicSplineInterface {
     this.predictedValue = result;
   }
 
+  public double predictBicubicSplineValueM(double x, double y, Matrix knownPoint) {
+    double result = 0, a, b;
+    int i, j = 0, k = 0;
+    while (j <= 3) {
+      i = 0;
+      while (i <= 3) {
+        a = Math.pow(x, i);
+        b = Math.pow(y, j);
+        result += (knownPoint.getElmt(k, 0) * a * b);
+        k += 1;
+        i += 1;
+      }
+      j += 1;
+    }
+
+    return result;
+  }
+
 }
