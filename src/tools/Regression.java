@@ -9,7 +9,7 @@ import tools.types.RegressionInterface;
 public class Regression extends SPL implements RegressionInterface {
   /* **** ATRIBUTE ***** */
   public Matrix allPoint; // Matrix yang menyimpan semua titik yang dibutuhkan dalam proses regresi
-  private float[] estimationPoint; // array of float yang menyimpan semua titik yang akan diuji
+  private double[] estimationPoint; // array of double yang menyimpan semua titik yang akan diuji
 
   /* **** METHODS ***** */
   /* Konstruktor Matrix */
@@ -21,7 +21,7 @@ public class Regression extends SPL implements RegressionInterface {
     /* KAMUS LOKAL */
     int i, j;
     Scanner input = new Scanner(System.in);
-    this.estimationPoint = new float[n];
+    this.estimationPoint = new double[n];
 
     /* ALGORITMA */
     try {
@@ -30,20 +30,20 @@ public class Regression extends SPL implements RegressionInterface {
       for (i = 0; i < n; i++) {
         System.out.println("Masukkan nilai x" + (i + 1) + "i:");
         for (j = 0; j < m; j++) {
-          float inputan = input.nextFloat();
+          double inputan = input.nextFloat();
           mat.setElmt(j, i, inputan);
         }
       }
 
       System.out.println("Masukkan nilai yi:");
       for (j = 0; j < m; j++) {
-        float inputan = input.nextFloat();
+        double inputan = input.nextFloat();
         mat.setElmt(j, n, inputan);
       }
 
       System.out.println("Masukkan nilai xki (nilai x yang akan diuji):");
       for (j = 0; j < n; j++) {
-        float inputan = input.nextFloat();
+        double inputan = input.nextFloat();
         this.estimationPoint[j] = inputan;
       }
 
@@ -64,14 +64,14 @@ public class Regression extends SPL implements RegressionInterface {
 
       /* ALGORITMA */
       Matrix mat = new Matrix(m, n + 1);
-      this.estimationPoint = new float[n];
+      this.estimationPoint = new double[n];
 
       scan.nextLine();
 
       for (i = 0; i < m; i++) {
         for (j = 0; j < n + 1; j++) {
           if (scan.hasNextFloat()) {
-            float inputan = scan.nextFloat();
+            double inputan = scan.nextFloat();
             mat.setElmt(i, j, inputan);
           }
         }
@@ -80,7 +80,7 @@ public class Regression extends SPL implements RegressionInterface {
 
       for (j = 0; j < n; j++) {
         if (scan.hasNextFloat()) {
-          float inputan = scan.nextFloat();
+          double inputan = scan.nextFloat();
           this.estimationPoint[j] = inputan;
         }
       }
@@ -96,11 +96,11 @@ public class Regression extends SPL implements RegressionInterface {
   public void compileMatrix() {
     /* KAMUS */
     int i, j;
-    float[] sigmaAllPointOne;
-    float[][] sigmaAllPointTwo;
+    double[] sigmaAllPointOne;
+    double[][] sigmaAllPointTwo;
     /* ALGORITMA */
-    sigmaAllPointOne = new float[this.allPoint.getColEff()];
-    sigmaAllPointTwo = new float[this.allPoint.getColEff() - 1][this.allPoint.getColEff()];
+    sigmaAllPointOne = new double[this.allPoint.getColEff()];
+    sigmaAllPointTwo = new double[this.allPoint.getColEff() - 1][this.allPoint.getColEff()];
 
     for (i = 0; i < this.allPoint.getColEff(); i++) {
       sigmaAllPointOne[i] = SigmaRegressionOne(i);
@@ -131,8 +131,8 @@ public class Regression extends SPL implements RegressionInterface {
     }
   }
 
-  public float estimate() {
-    float result = 0;
+  public double estimate() {
+    double result = 0;
     int i;
     for (i = 0; i < this.Solution.length; i++) {
       if (i == 0) {
@@ -144,9 +144,9 @@ public class Regression extends SPL implements RegressionInterface {
     return result;
   }
 
-  private float SigmaRegressionOne(int kolom) {
+  private double SigmaRegressionOne(int kolom) {
     /* KAMUS */
-    float result = 0;
+    double result = 0;
     int i;
     /* ALGORITMA */
     for (i = 0; i < this.allPoint.getRowEff(); i++) {
@@ -156,9 +156,9 @@ public class Regression extends SPL implements RegressionInterface {
     return result;
   }
 
-  private float SigmaRegressionTwo(int kolom1, int kolom2) {
+  private double SigmaRegressionTwo(int kolom1, int kolom2) {
     /* KAMUS */
-    float result = 0;
+    double result = 0;
     int i;
     /* ALGORITMA */
     for (i = 0; i < this.allPoint.getRowEff(); i++) {

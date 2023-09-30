@@ -1,47 +1,39 @@
-import tools.SPL;
+import tools.ImageScaling;
+import tools.Matrix;
 
 
 public class TestSPL {
 
+
   public static void main(String[] args) {
-    // Membuat matriks SPL
-    SPL spl = new SPL(4, 5); // Ganti dengan ukuran matriks SPL Anda
+    // Replace 'your_image_path_here' with the path to your image file.
+    String filePath = "./test/data/riil.png";
+    String outputPath = "./test/output/riil2.png";
 
-    // Mengisi matriks dengan koefisien SPL
-    spl.setElmt(0, 0, 1);
-    spl.setElmt(0, 1, 1);
-    spl.setElmt(0, 2, -1);
-    spl.setElmt(0, 3, -1);
-    spl.setElmt(0, 4, 1);
+    // Get the color matrix for the 'red' channel.
+    Matrix redMatrix = ImageScaling.getMatrixColor("red", filePath);
+    Matrix blueM = ImageScaling.getMatrixColor("blue", filePath);
+    Matrix greenM = ImageScaling.getMatrixColor("green", filePath);
+    Matrix alphaM = ImageScaling.getMatrixColor("alpha", filePath);
 
-    spl.setElmt(1, 0, 2);
-    spl.setElmt(1, 1, 5);
-    spl.setElmt(1, 2, -7);
-    spl.setElmt(1, 3, -5);
-    spl.setElmt(1, 4, -2);
+    // Get the image format type.
+    int imageType = ImageScaling.ImageFormatType(filePath);
 
-    spl.setElmt(2, 0, 2);
-    spl.setElmt(2, 1, -1);
-    spl.setElmt(2, 2, 1);
-    spl.setElmt(2, 3, 3);
-    spl.setElmt(2, 4, 4);
-    spl.setElmt(3, 0, 5);
-    spl.setElmt(3, 1, 2);
-    spl.setElmt(3, 2, -4);
-    spl.setElmt(3, 3, 2);
-    spl.setElmt(3, 4, 6);
-    SPL testcase2 = new SPL(0, 0);
-    testcase2.readFileSPL("./test/data/testcase1b.txt");
+    // Create a sample bordered matrix (you can replace this with your own data).
+    Matrix borderedImageMatrixRed = ImageScaling.getPaddingMatrix(redMatrix);
+    Matrix borderedImageMatrixBlue = ImageScaling.getPaddingMatrix(blueM);
+    Matrix borderedImageMatrixGreen = ImageScaling.getPaddingMatrix(greenM);
+    Matrix borderedImageMatrixAlpha = ImageScaling.getPaddingMatrix(alphaM);
 
-    // Menyelesaikan SPL menggunakan eliminasi Gauss
-    // spl.cramerMethodSPL();
-    // testcase2.gJordanMethodSPL();
-    testcase2.gaussMethodSPL();
+    // Get the scaled matrix.
+    ImageScaling test = new ImageScaling(1, 1);
+    Matrix scaledImageMatrixAlpha = test.getScaledMatrix(borderedImageMatrixAlpha, 10);
+    Matrix scaledImageMatrixRed = test.getScaledMatrix(borderedImageMatrixRed, 10);
+    Matrix scaledImageMatrixGreen = test.getScaledMatrix(borderedImageMatrixGreen, 10);
+    Matrix scaledImageMatrixBlue = test.getScaledMatrix(borderedImageMatrixBlue, 10);
+    ImageScaling.convertMatrix(scaledImageMatrixAlpha, scaledImageMatrixRed, scaledImageMatrixGreen,
+        scaledImageMatrixBlue, outputPath, imageType, "png");
 
-    // Menampilkan solusi SPL
-    System.out.println("\nSolusi SPL:");
-    testcase2.displaySPL();
-    testcase2.writeFileSPL("./test/output/testcase2bGauss.txt");
   }
 
 }

@@ -35,10 +35,10 @@ public interface RegressionInterface {
 
   // Metode untuk menaksir nilai yk yang dicari pengguna dengan memanfaatkan regresi
   // Input: -
-  // Output: nilai float yaitu yk
+  // Output: nilai double yaitu yk
   // Contoh Kasus:
   // - array Solution terdefinisi, hendak mencari estimasi nilai yk
-  float estimate();
+  double estimate();
 
   // Metode untuk menampilkan solusi regresi dan nilai estimasi yk ke layar
   // Input: tidak ada

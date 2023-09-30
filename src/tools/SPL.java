@@ -10,7 +10,7 @@ public class SPL extends Matrix implements SPLInterface {
 
 
   // UNtuk menyimpan solusi unique dan koefisien parametrik
-  public float[] Solution;
+  public double[] Solution;
 
   // MEnyimpan hasil solusi suatu persamaan
   public String[] Equation;
@@ -153,7 +153,7 @@ public class SPL extends Matrix implements SPLInterface {
 
   public void gaussMethodSPL() {
     this.gaussElimination();
-    this.Solution = new float[this.getColEff() - 1];
+    this.Solution = new double[this.getColEff() - 1];
     this.Equation = new String[this.getColEff() - 1];
     this.Status = new categorySolution[this.getColEff() - 1];
     categorySolution typeSolution = this.solutionType();
@@ -223,7 +223,7 @@ public class SPL extends Matrix implements SPLInterface {
         this.Solution[j] = this.getElmt(i, this.getLastIdxCol());
         this.Equation[j] = String.valueOf(this.getElmt(i, this.getLastIdxCol()));
       }
-      float sum = this.getElmt(i, this.getLastIdxCol());
+      double sum = this.getElmt(i, this.getLastIdxCol());
       for (k = j + 1; k < this.getLastIdxCol(); k++) {
         if (this.getElmt(i, k) != 0 && this.Status[k] == categorySolution.PARAMETRIX) {
           this.Status[j] = categorySolution.PARAMETRIX;
@@ -243,12 +243,12 @@ public class SPL extends Matrix implements SPLInterface {
         else if (this.getElmt(i, k) != 0 && this.Status[k] == categorySolution.UNIQUE) {
           sum -= (this.getElmt(i, k) * this.Solution[k]);
           this.Solution[j] = sum;
-          this.Equation[j] = Float.toString(sum);
+          this.Equation[j] = Double.toString(sum);
         }
       }
 
       if (sum != 0) {
-        stringPersamaan += Float.toString(sum);
+        stringPersamaan += Double.toString(sum);
       }
 
       for (k = j + 1; k < this.getLastIdxCol(); k++) {
@@ -312,7 +312,7 @@ public class SPL extends Matrix implements SPLInterface {
 
   public void gJordanMethodSPL() {
     this.gJordanElimination();
-    this.Solution = new float[this.getColEff() - 1];
+    this.Solution = new double[this.getColEff() - 1];
     this.Equation = new String[this.getColEff() - 1];
     this.Status = new categorySolution[this.getColEff() - 1];
     categorySolution typeSolution = this.solutionType();
@@ -344,12 +344,12 @@ public class SPL extends Matrix implements SPLInterface {
     return vectorConstant;
   }
 
-  public float determinanNumerator(int colIdx) {
+  public double determinanNumerator(int colIdx) {
     int i;
-    float[] temp = new float[this.getLastIdxCol()];
+    double[] temp = new double[this.getLastIdxCol()];
     Matrix koefMatrix = this.getKoefMatrix();
     Matrix vectorConstant = this.getVectorConstant();
-    float determinant;
+    double determinant;
 
     for (i = koefMatrix.getFirstIdxRow(); i <= koefMatrix.getLastIdxRow(); i++) {
       temp[i] = koefMatrix.getElmt(i, colIdx);
@@ -384,9 +384,9 @@ public class SPL extends Matrix implements SPLInterface {
     Matrix koefMatrix = this.getKoefMatrix();
     Matrix vectorConstant = this.getVectorConstant();
 
-    float determinant = koefMatrix.determinantCofactor();
+    double determinant = koefMatrix.determinantCofactor();
     if (determinant == 0) {
-      this.Solution = new float[1];
+      this.Solution = new double[1];
       this.Equation = new String[1];
       this.Status = new categorySolution[1];
       // Handle the case where the determinant is zero or numerator is zero
@@ -410,13 +410,13 @@ public class SPL extends Matrix implements SPLInterface {
       vectorSolution = vectorSolution.transpose();
 
       // Assign solution
-      this.Solution = new float[vectorSolution.getColEff()];
+      this.Solution = new double[vectorSolution.getColEff()];
       this.Equation = new String[vectorSolution.getColEff()];
       this.Status = new categorySolution[vectorSolution.getColEff()];
 
       for (i = vectorSolution.getFirstIdxCol(); i < vectorSolution.getColEff(); i++) {
         this.Solution[i] = vectorSolution.getElmt(0, i);
-        this.Equation[i] = Float.toString(vectorSolution.getElmt(0, i));
+        this.Equation[i] = Double.toString(vectorSolution.getElmt(0, i));
         this.Status[i] = categorySolution.UNIQUE;
       }
 
@@ -426,16 +426,16 @@ public class SPL extends Matrix implements SPLInterface {
   public void cramerMethodSPL() {
     Matrix mEntry = this.getKoefMatrix();
     int i;
-    float determinantDenominator = mEntry.determinantCofactor();
-    float determinanNumerator;
-    this.Solution = new float[this.getColEff() - 1];
+    double determinantDenominator = mEntry.determinantCofactor();
+    double determinanNumerator;
+    this.Solution = new double[this.getColEff() - 1];
     this.Equation = new String[this.getColEff() - 1];
     this.Status = new categorySolution[this.getColEff() - 1];
     for (i = mEntry.getFirstIdxCol(); i <= mEntry.getLastIdxCol(); i++) {
       determinanNumerator = this.determinanNumerator(i);
 
       if (determinantDenominator == 0) {
-        this.Solution = new float[1];
+        this.Solution = new double[1];
         this.Equation = new String[1];
         this.Status = new categorySolution[1];
         // Handle the case where the determinant is zero or numerator is zero
@@ -453,11 +453,11 @@ public class SPL extends Matrix implements SPLInterface {
         System.out.println(
             "Bukan matrix singular sehingga solusi SPL tidak ditemukan dengan metode invers");
       } else {
-        float solution = determinanNumerator / determinantDenominator;
+        double solution = determinanNumerator / determinantDenominator;
         System.out.println(solution);
 
         this.Solution[i] = solution;
-        this.Equation[i] = Float.toString(solution);
+        this.Equation[i] = Double.toString(solution);
         this.Status[i] = categorySolution.UNIQUE;
       }
     }
