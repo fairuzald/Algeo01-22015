@@ -257,6 +257,80 @@ public class Matrix implements MatrixInterface {
     }
   }
 
+  public void writeFileDeterminantCofactor(final String fileName)
+  {
+    try {
+      /* KAMUS */
+      String directory = "./test/" + fileName;
+      FileWriter output = new FileWriter(directory);
+      int i, j;
+
+      output.write("Determinan dari matriks berikut");
+      output.write(System.lineSeparator());
+      // Nulis matriksnya
+      for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
+        for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
+          // Convert the double value to String and write it
+          output.write(Double.toString(this.matrix[i][j]));
+
+          // Tambahkan spasi sebagai separator
+          if (j < this.colEff - 1) {
+            output.write(" ");
+          }
+        }
+        // tambahkan line baru tiap baris kecuali baris terakhir
+        if (i < this.getLastIdxRow()) {
+          output.write(System.lineSeparator());
+        }
+      }
+      output.write(System.lineSeparator());
+      output.write("adalah " + this.determinantCofactor());
+      output.close();
+      System.out.println("Berhasil menyimpan hasil determinan pada folder test, file \"" + fileName + "\".");
+
+    } catch (IOException e) {
+      System.out.println("Error: Kesalahan Simpan File");
+      e.printStackTrace();
+    }
+  }
+
+  public void writeFileDeterminantUpperTriangle(final String fileName)
+  {
+    try {
+      /* KAMUS */
+      String directory = "./test/" + fileName;
+      FileWriter output = new FileWriter(directory);
+      int i, j;
+
+      output.write("Determinan dari matriks berikut");
+      output.write(System.lineSeparator());
+      // Nulis matriksnya
+      for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
+        for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
+          // Convert the double value to String and write it
+          output.write(Double.toString(this.matrix[i][j]));
+
+          // Tambahkan spasi sebagai separator
+          if (j < this.colEff - 1) {
+            output.write(" ");
+          }
+        }
+        // tambahkan line baru tiap baris kecuali baris terakhir
+        if (i < this.getLastIdxRow()) {
+          output.write(System.lineSeparator());
+        }
+      }
+      output.write(System.lineSeparator());
+      output.write("adalah " + this.determinantUpperTriangle());
+      output.close();
+      System.out.println("Berhasil menyimpan hasil determinan pada folder test, file \"" + fileName + "\".");
+
+    } catch (IOException e) {
+      System.out.println("Error: Kesalahan Simpan File");
+      e.printStackTrace();
+    }
+  }
+
   // ** OPERATION **//
   /**
    * addMatrix I.S Matriks terdefinisi dan memiliki nilai F.S Menambahkan dua matriks dan
