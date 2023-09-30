@@ -125,9 +125,9 @@ public class InversMenu {
                             if (inputMethod == 1) {             // Metode Gauss Jordan dengan Matriks Identitas
                                 masukkanMatrix.inversGJordan().writeFileMatrix(outputPath);
                             } else if (inputMethod == 2) {      // Metode Matriks Adjoin
-                                masukkanMatrix.inversAdjoin().writeFileMatrix(saveStatus);
+                                masukkanMatrix.inversAdjoin().writeFileMatrix(outputPath);
                             }
-                            
+
                         } else if (saveStatus != "n") {
                             System.out.println("Ulangi! Input haruslah 'y' atau 'n'");
                             System.out.print("Simpan Hasil? (y/n) : ");
