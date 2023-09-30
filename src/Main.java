@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import tools.Matrix;
+
 public class Main {
   public static void main(String[] args) {
     Scanner scan = new Scanner(System.in);
@@ -28,6 +30,9 @@ public class Main {
           tes.LinearEquation();
           break;
         case 2:
+          // Inisialisasi Matrix
+          DeterminantMenu determinan = new DeterminantMenu();
+          determinan.calculatingDeterminant();
           break;
         case 3:
           break;
