@@ -49,8 +49,8 @@ public class Main {
         case 6:
           break;
         case 7:
-          // ImageScallingMenu imageScaling = new ImageScallingMenu();
-          // imageScaling.runImageScaledProcedure(scan);
+          ImageScallingMenu imageScaling = new ImageScallingMenu();
+          imageScaling.runImageScaledProcedure(scan);
           break;
         case 8:
           System.out.println("Progam ditutup...");

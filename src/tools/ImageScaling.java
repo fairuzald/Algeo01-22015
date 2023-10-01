@@ -257,7 +257,6 @@ public class ImageScaling extends BicubicSpline {
         // Mendapatkan index pada image asli
         int rowOriginIdx = (int) Math.floor(i / (double) n);
         int colOriginIdx = (int) Math.floor(j / (double) n);
-        System.out.println(colOriginIdx);
         // Menyiapkan untuk melakukan predict value coordinate dengan bicubic spline
         double x = (i % n + 0.5) / (double) n;
         double y = (j % n + 0.5) / (double) n;

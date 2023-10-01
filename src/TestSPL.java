@@ -8,7 +8,7 @@ public class TestSPL {
   public static void main(String[] args) {
     // Replace 'your_image_path_here' with the path to your image file.
     String filePath = "./test/data/tes.png";
-    String outputPath = "./test/output/teses2.png";
+    String outputPath = "./test/output/teseaaas2.png";
 
     ImageScaling test = new ImageScaling(1, 1);
     // Get the color matrix for the 'red' channel.
