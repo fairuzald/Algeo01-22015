@@ -95,7 +95,8 @@ public class DeterminantMenu {
                         if (determinanMatrix.isSquare()) {
                             System.out.println("Determinan dari matriks berikut");
                             determinanMatrix.displayMatrix();
-                            System.out.println("adalah " + determinanMatrix.determinantUpperTriangle());
+                            System.out.println(
+                                    "adalah " + determinanMatrix.determinantUpperTriangle());
                         } else {
                             determinanMatrix.determinantUpperTriangle();
                         }
@@ -117,9 +118,9 @@ public class DeterminantMenu {
                             System.out.println("-----------------------------------");
                             String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
                             String outputPath = Menu.getOutputFileLoc(globalScanner, outputDir);
-                            if (inputMethod == 1) {             // Metode Ekspansi Kofaktor
+                            if (inputMethod == 1) { // Metode Ekspansi Kofaktor
                                 determinanMatrix.writeFileDeterminantCofactor(outputPath);
-                            } else if (inputMethod == 2) {      // Metode Reduksi Baris
+                            } else if (inputMethod == 2) { // Metode Reduksi Baris
                                 determinanMatrix.writeFileDeterminantUpperTriangle(outputPath);
                             }
                         } else if (saveStatus != "n") {

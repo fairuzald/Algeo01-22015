@@ -90,4 +90,21 @@ public class Menu {
     }
   }
 
+  public static void startLoadingAnimation() {
+    String loadingText = "Loading";
+    int maxDots = 6;
+    int intervalMillis = 1000; // Interval waktu antara perubahan teks (dalam milidetik)
+
+    while (true) {
+      for (int i = 1; i <= maxDots; i++) {
+        String dots = ".".repeat(i);
+        System.out.print("\r" + loadingText + dots);
+        try {
+          Thread.sleep(intervalMillis);
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+        }
+      }
+    }
+  }
 }

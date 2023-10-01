@@ -7,31 +7,31 @@ public class TestSPL {
 
   public static void main(String[] args) {
     // Replace 'your_image_path_here' with the path to your image file.
-    String filePath = "./test/data/riil.png";
-    String outputPath = "./test/output/riil2.png";
+    String filePath = "./test/data/tes.png";
+    String outputPath = "./test/output/teses2.png";
 
+    ImageScaling test = new ImageScaling(1, 1);
     // Get the color matrix for the 'red' channel.
-    Matrix redMatrix = ImageScaling.getMatrixColor("red", filePath);
-    Matrix blueM = ImageScaling.getMatrixColor("blue", filePath);
-    Matrix greenM = ImageScaling.getMatrixColor("green", filePath);
-    Matrix alphaM = ImageScaling.getMatrixColor("alpha", filePath);
+    Matrix redMatrix = test.getMatrixColor("red", filePath);
+    Matrix blueM = test.getMatrixColor("blue", filePath);
+    Matrix greenM = test.getMatrixColor("green", filePath);
+    Matrix alphaM = test.getMatrixColor("alpha", filePath);
 
     // Get the image format type.
-    int imageType = ImageScaling.ImageFormatType(filePath);
+    int imageType = test.getImageFormatType(filePath);
 
     // Create a sample bordered matrix (you can replace this with your own data).
-    Matrix borderedImageMatrixRed = ImageScaling.getPaddingMatrix(redMatrix);
-    Matrix borderedImageMatrixBlue = ImageScaling.getPaddingMatrix(blueM);
-    Matrix borderedImageMatrixGreen = ImageScaling.getPaddingMatrix(greenM);
-    Matrix borderedImageMatrixAlpha = ImageScaling.getPaddingMatrix(alphaM);
+    Matrix borderedImageMatrixRed = test.getPaddingImageMatrix(redMatrix);
+    Matrix borderedImageMatrixBlue = test.getPaddingImageMatrix(blueM);
+    Matrix borderedImageMatrixGreen = test.getPaddingImageMatrix(greenM);
+    Matrix borderedImageMatrixAlpha = test.getPaddingImageMatrix(alphaM);
 
     // Get the scaled matrix.
-    ImageScaling test = new ImageScaling(1, 1);
-    Matrix scaledImageMatrixAlpha = test.getScaledMatrix(borderedImageMatrixAlpha, 10);
-    Matrix scaledImageMatrixRed = test.getScaledMatrix(borderedImageMatrixRed, 10);
-    Matrix scaledImageMatrixGreen = test.getScaledMatrix(borderedImageMatrixGreen, 10);
-    Matrix scaledImageMatrixBlue = test.getScaledMatrix(borderedImageMatrixBlue, 10);
-    ImageScaling.convertMatrix(scaledImageMatrixAlpha, scaledImageMatrixRed, scaledImageMatrixGreen,
+    Matrix scaledImageMatrixAlpha = test.getScaledImageMatrix(borderedImageMatrixAlpha, 2);
+    Matrix scaledImageMatrixRed = test.getScaledImageMatrix(borderedImageMatrixRed, 2);
+    Matrix scaledImageMatrixGreen = test.getScaledImageMatrix(borderedImageMatrixGreen, 2);
+    Matrix scaledImageMatrixBlue = test.getScaledImageMatrix(borderedImageMatrixBlue, 2);
+    test.convertMatrixImage(scaledImageMatrixAlpha, scaledImageMatrixRed, scaledImageMatrixGreen,
         scaledImageMatrixBlue, outputPath, imageType, "png");
 
   }

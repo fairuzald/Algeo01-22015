@@ -2,16 +2,81 @@ package tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 public class ImageScaling extends BicubicSpline {
   public ImageScaling(int nRows, int nCols) {
     super(nRows, nCols);
-    // TODO Auto-generated constructor stub
   }
 
-  public static Matrix getMatrixColor(String color, String filePath) {
+  public void runImageScaledProcedure(final String filePath, Scanner globalScanner) {
+
+    System.out.println("\nMasukkan faktor pembesar (bilangan bulat) : ");
+    double n = globalScanner.nextDouble();
+    globalScanner.nextLine(); // Consume the newline character
+
+    // get Matrix color from image
+    Matrix MatrixAlpha = this.getMatrixColor("alpha", filePath);
+    Matrix MatrixRed = this.getMatrixColor("red", filePath);
+    Matrix MatrixGreen = this.getMatrixColor("green", filePath);
+    Matrix MatrixBlue = this.getMatrixColor("blue", filePath);
+
+    // Identify the image format type
+    int imageType = this.getImageFormatType(filePath);
+
+    // Create a border matrix to interpolate
+    Matrix borderedMatrixAlpha = this.getPaddingImageMatrix(MatrixAlpha);
+    Matrix borderedMatrixRed = this.getPaddingImageMatrix(MatrixRed);
+    Matrix borderedMatrixGreen = this.getPaddingImageMatrix(MatrixGreen);
+    Matrix borderedMatrixBlue = this.getPaddingImageMatrix(MatrixBlue);
+
+    // Scaled matrix
+    Matrix scaledImageMatrixAlpha = this.getScaledImageMatrix(borderedMatrixAlpha, n);
+    Matrix scaledImageMatrixRed = this.getScaledImageMatrix(borderedMatrixRed, n);
+    Matrix scaledImageMatrixGreen = this.getScaledImageMatrix(borderedMatrixGreen, n);
+    Matrix scaledImageMatrixBlue = this.getScaledImageMatrix(borderedMatrixBlue, n);
+
+    String outputFilePath = "", outputFileName, imageExtension;
+    String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
+
+    do {
+      System.out.print("\nMasukkan nama file hasil perbesaran (tanpa ekstensi): ");
+      outputFileName = globalScanner.nextLine();
+      System.out.print("\nMasukkan jenis gambar (jpg/png): ");
+      imageExtension = globalScanner.nextLine();
+
+      if (!(imageExtension.equals("png") || imageExtension.equals("jpg"))) {
+        System.out.println("Jenis gambar yang Anda masukkan tidak valid!");
+        continue; // Continue the loop to re-enter valid input
+      }
+
+      outputFilePath = outputDir + outputFileName + "." + imageExtension;
+
+      File output = new File(outputFilePath);
+
+      // Check if the file already exists
+      if (output.exists()) {
+        System.out
+            .print("File yang Anda masukkan sudah ada. Apakah Anda ingin menindihnya? (y/n): ");
+        String overwriteChoice = globalScanner.nextLine().toLowerCase();
+
+        if (overwriteChoice.equals("n")) {
+          continue; // Continue the loop to enter a different file name
+        } else if (!overwriteChoice.equals("y")) {
+          System.out.println("Pilihan tidak valid. Harap masukkan 'y' atau 'n'.");
+          continue; // Continue the loop to re-enter valid input
+        }
+      }
+    } while (new File(outputFilePath).exists());
+
+    this.convertMatrixImage(scaledImageMatrixAlpha, scaledImageMatrixRed, scaledImageMatrixGreen,
+        scaledImageMatrixBlue, outputFilePath, imageType, imageExtension);
+    System.out.println("\nGambar berhasil diperbesar!\n");
+  }
+
+  public Matrix getMatrixColor(final String color, final String filePath) {
     Matrix colorMatrix;
     int width = 0, height = 0, shifting;
     BufferedImage image = null;
@@ -64,7 +129,7 @@ public class ImageScaling extends BicubicSpline {
     return colorMatrix;
   }
 
-  public static int ImageFormatType(String filePath) {
+  public int getImageFormatType(final String filePath) {
     File inputFile = null;
     BufferedImage image = null;
     try {
@@ -77,7 +142,7 @@ public class ImageScaling extends BicubicSpline {
     return image.getType();
   }
 
-  public static Matrix getXImageMatrix() {
+  public Matrix getXImageMatrix() {
     Matrix mKoef = new Matrix(16, 16);
     int x = 0;
     int y = 0;
@@ -138,15 +203,15 @@ public class ImageScaling extends BicubicSpline {
     return mKoef;
   }
 
-  public static Matrix getCoeffImageMatrix(Matrix X, Matrix D, Matrix I) {
-    Matrix aCoef;
-    X = X.inversGJordan();
-    aCoef = X.multiplyMatrix(X, D);
-    aCoef = aCoef.multiplyMatrix(aCoef, I);
+  public Matrix getCoeffImageMatrix(final Matrix X, final Matrix D, final Matrix I) {
+    Matrix aCoef, xInv;
+    xInv = X.inversGJordan();
+    aCoef = this.multiplyMatrix(xInv, D);
+    aCoef = this.multiplyMatrix(aCoef, I);
     return aCoef;
   }
 
-  public static Matrix getPaddingMatrix(Matrix m) {
+  public Matrix getPaddingImageMatrix(final Matrix m) {
     // Menyiapkan border matix dengan menambahkan padding sebanyak 2 baris y dan 2 kolom x
     Matrix borderM = new Matrix(m.getRowEff() + 4, m.getColEff() + 4);
 
@@ -161,7 +226,7 @@ public class ImageScaling extends BicubicSpline {
     return borderM;
   }
 
-  public static Matrix getInterpolaterMatrix(Matrix borderedMatrix, int x, int y) {
+  public Matrix getInterpolaterImageMatrix(final Matrix borderedMatrix, final int x, final int y) {
     Matrix I = new Matrix(16, 1);
     // Melakukan interpolasi menggunakan bordered matrix dengan x,y [-1..2] sesuai mekanisme bicubic
     // spline atau dalam hal ini [0..3]]
@@ -176,7 +241,7 @@ public class ImageScaling extends BicubicSpline {
     return I;
   }
 
-  public Matrix getScaledMatrix(Matrix borderedMatrix, double n) {
+  public Matrix getScaledImageMatrix(final Matrix borderedMatrix, final double n) {
     int i, j;
     // Mengambil matrix asli tanpa mengambil nilai padding dan ass
     int rowEff = (int) Math.floor((borderedMatrix.getRowEff() - 4) * n);
@@ -192,25 +257,26 @@ public class ImageScaling extends BicubicSpline {
         // Mendapatkan index pada image asli
         int rowOriginIdx = (int) Math.floor(i / (double) n);
         int colOriginIdx = (int) Math.floor(j / (double) n);
-
+        System.out.println(colOriginIdx);
         // Menyiapkan untuk melakukan predict value coordinate dengan bicubic spline
         double x = (i % n + 0.5) / (double) n;
         double y = (j % n + 0.5) / (double) n;
 
         // Mencari nilai koefisien dengan korelasi persamaan image dan persamaan umum bicubic spline
-        koef = ImageScaling.getCoeffImageMatrix(X, ImageScaling.getXImageMatrix(),
-            getInterpolaterMatrix(borderedMatrix, rowOriginIdx, colOriginIdx));
+        koef = this.getCoeffImageMatrix(X, getXImageMatrix(),
+            getInterpolaterImageMatrix(borderedMatrix, rowOriginIdx, colOriginIdx));
 
         // Assign value pada scaled matrix dengan predict value dari bicubic spline
-        double value = this.predictBicubicSplineValueM(y, x, koef);
+        double value = this.predictBicubicSplineValue(y, x, koef);
         scaledMatrix.setElmt(i, j, value);
       }
     }
     return scaledMatrix;
   }
 
-  public static void convertMatrix(Matrix alphaMatrix, Matrix redMatrix, Matrix greenMatrix,
-      Matrix blueMatrix, String filePath, int imageType, String imgExtension) {
+  public void convertMatrixImage(final Matrix alphaMatrix, final Matrix redMatrix,
+      final Matrix greenMatrix, Matrix blueMatrix, String filePath, int imageType,
+      String imgExtension) {
     // Inisialisasi image dengan ukuran yang sesuai dengan matriks
     int rowEff = alphaMatrix.getRowEff();
     int colEff = alphaMatrix.getColEff();

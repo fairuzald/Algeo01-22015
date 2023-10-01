@@ -342,8 +342,7 @@ public class Matrix implements MatrixInterface {
     }
   }
 
-  public void writeFileDeterminantCofactor(final String fileName)
-  {
+  public void writeFileDeterminantCofactor(final String fileName) {
     try {
       /* KAMUS */
       String directory = "./test/" + fileName;
@@ -371,7 +370,8 @@ public class Matrix implements MatrixInterface {
       output.write(System.lineSeparator());
       output.write("adalah " + this.determinantCofactor());
       output.close();
-      System.out.println("Berhasil menyimpan hasil determinan pada folder test, file \"" + fileName + "\".");
+      System.out.println(
+          "Berhasil menyimpan hasil determinan pada folder test, file \"" + fileName + "\".");
 
     } catch (IOException e) {
       System.out.println("Error: Kesalahan Simpan File");
@@ -379,8 +379,7 @@ public class Matrix implements MatrixInterface {
     }
   }
 
-  public void writeFileDeterminantUpperTriangle(final String fileName)
-  {
+  public void writeFileDeterminantUpperTriangle(final String fileName) {
     try {
       /* KAMUS */
       String directory = "./test/" + fileName;
@@ -408,7 +407,8 @@ public class Matrix implements MatrixInterface {
       output.write(System.lineSeparator());
       output.write("adalah " + this.determinantUpperTriangle());
       output.close();
-      System.out.println("Berhasil menyimpan hasil determinan pada folder test, file \"" + fileName + "\".");
+      System.out.println(
+          "Berhasil menyimpan hasil determinan pada folder test, file \"" + fileName + "\".");
 
     } catch (IOException e) {
       System.out.println("Error: Kesalahan Simpan File");

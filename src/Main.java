@@ -21,7 +21,8 @@ public class Main {
       System.out.println("4. Interpolasi Polinom");
       System.out.println("5. Interpolasi Bicubic Spline");
       System.out.println("6. Regresi Linier Balikan");
-      System.out.println("7. Keluar");
+      System.out.println("7. Image Scaling");
+      System.out.println("8. Keluar");
       System.out.println("Katakan Pilihanmu:");
       int pilihan = scan.nextInt();
       switch (pilihan) {
@@ -48,6 +49,10 @@ public class Main {
         case 6:
           break;
         case 7:
+          // ImageScallingMenu imageScaling = new ImageScallingMenu();
+          // imageScaling.runImageScaledProcedure(scan);
+          break;
+        case 8:
           System.out.println("Progam ditutup...");
           scan.close();
           return;
