@@ -2,11 +2,11 @@ package tools;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import tools.types.ImageScalingInterface;
 
-public class ImageScaling extends BicubicSpline {
+public class ImageScaling extends BicubicSpline implements ImageScalingInterface {
   public ImageScaling(int nRows, int nCols) {
     super(nRows, nCols);
   }
