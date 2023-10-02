@@ -1,5 +1,0 @@
-x_1=3.0+1.5+1.5(-1.0+a)+0.5(a)-(a)
-x_2=1.5+1.5(-1.0+a)+0.5(a)
-x_3=null
-x_4=-1.0+a
-x_5=aDengan a, b, c, d, e anggota bilangan real

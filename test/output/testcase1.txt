@@ -1,4 +1,0 @@
-x_1=-1.0++2.0a-2.0(a)+b
-x_2=+2.0a
-x_3=a
-x_4=bDengan a, b, c, d anggota bilangan real

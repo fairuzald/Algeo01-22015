@@ -40,51 +40,47 @@ public class ImageScallingMenu {
     return fileName;
   }
 
-  public static String getOutputFilePath(Scanner scanner, String directory, String imgExtension) {
+  public static String getOutputFilePath(Scanner scanner, String directory) {
     String outputFileName = "";
     String filePath = "";
     File outputFile;
+    boolean validFile = false;
 
     do {
-      System.out.print("Masukkan nama file hasil perbesaran (tanpa ekstensi): ");
+      System.out.print("Masukkan nama file hasil perbesaran beserta ekstensi: ");
       outputFileName = scanner.nextLine();
-      filePath = directory + outputFileName + "." + imgExtension;
+      filePath = directory + outputFileName;
 
       outputFile = new File(filePath);
 
-      // Cek apakah file sudah ada
-      if (outputFile.exists()) {
-        System.out
-            .print("File yang Anda masukkan sudah ada. Apakah Anda ingin menindihnya? (y/n): ");
-        String overwriteChoice = scanner.nextLine().toLowerCase();
+      // Pengecekan ekstensi file
+      if (filePath.toLowerCase().endsWith(".png") || filePath.toLowerCase().endsWith(".jpg")) {
 
-        if (overwriteChoice.equals("n")) {
-          // Jika pengguna memilih "n", lakukan loop untuk meminta nama file yang berbeda
-          continue;
-        } else if (!overwriteChoice.equals("y")) {
-          System.out.println("Pilihan tidak valid. Harap masukkan 'y' atau 'n'.");
-          continue; // Lanjutkan iterasi untuk meminta input yang valid
+        if (outputFile.exists()) {
+          System.out
+              .print("File yang Anda masukkan sudah ada. Apakah Anda ingin menindihnya? (y/n): ");
+          String overwriteChoice = scanner.nextLine().toLowerCase();
+
+          if (overwriteChoice.equals("n")) {
+            // Jika pengguna memilih "n", lakukan loop untuk meminta nama file yang berbeda
+            continue;
+          } else if (!overwriteChoice.equals("y")) {
+            System.out.println("Pilihan tidak valid. Harap masukkan 'y' atau 'n'.");
+            continue; // Lanjutkan iterasi untuk meminta input yang valid
+          }
         }
+
+        // Input valid
+        validFile = true;
+
+      } else {
+        System.out.println("Ekstensi file tidak valid. Harus berupa .png atau .jpg.");
       }
-    } while (outputFile.exists());
+    } while (!validFile);
 
     return filePath;
   }
 
-  public static String getImageExtension(Scanner scanner) {
-    String imageExtension = "";
-
-    do {
-      System.out.print("\nMasukkan jenis gambar output yang ingin dihasilkan (jpg/png): ");
-      imageExtension = scanner.nextLine();
-
-      if (!(imageExtension.equals("png") || imageExtension.equals("jpg"))) {
-        System.out.println("Jenis gambar yang Anda masukkan tidak valid!");
-      }
-    } while (!(imageExtension.equals("png") || imageExtension.equals("jpg")));
-
-    return imageExtension;
-  }
 
 
   public void runImageScaledProcedure() {
@@ -116,16 +112,17 @@ public class ImageScallingMenu {
         // Validasi input skala pembesaran
         double n = 0;
         do {
-          System.out.print("\nMasukkan faktor pembesar (bilangan bulat positif): ");
-          while (!globalScanner.hasNextInt()) {
-            System.out.println("Input harus berupa bilangan bulat positif.");
+          System.out.print("\nMasukkan faktor skala : ");
+          while (!globalScanner.hasNextDouble()) {
+            System.out.println("Input harus berupa bilangan positif.");
             globalScanner.next(); // Konsumsi input yang tidak valid
           }
-          n = globalScanner.nextInt();
+          n = globalScanner.nextDouble();
           globalScanner.nextLine(); // Konsumsi newline character
         } while (n <= 0);
 
         // ALGORITMA PEMROSESAN
+        System.out.println("Processing...");
         // get Matrix color from image
         Matrix MatrixAlpha = scaling.getMatrixColor("alpha", filePath);
         Matrix MatrixRed = scaling.getMatrixColor("red", filePath);
@@ -146,10 +143,9 @@ public class ImageScallingMenu {
         Matrix scaledImageMatrixRed = scaling.getScaledImageMatrix(borderedMatrixRed, n);
         Matrix scaledImageMatrixGreen = scaling.getScaledImageMatrix(borderedMatrixGreen, n);
         Matrix scaledImageMatrixBlue = scaling.getScaledImageMatrix(borderedMatrixBlue, n);
-
+        imageExtension = filePath.toLowerCase().endsWith(".png") ? "png" : "jpg";
         String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
-        imageExtension = getImageExtension(globalScanner);
-        outputFilePath = getOutputFilePath(globalScanner, outputDir, imageExtension);
+        outputFilePath = getOutputFilePath(globalScanner, outputDir);
 
 
         scaling.saveImageToFile(scaledImageMatrixAlpha, scaledImageMatrixRed,
@@ -158,7 +154,6 @@ public class ImageScallingMenu {
       } else {
         // Menu.clearScreen();
       }
-      globalScanner.close();
     } catch (Exception e) {
       System.out.println("An error occurred.");
     }

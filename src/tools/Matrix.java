@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import tools.types.MatrixInterface;
 
-public class Matrix {
+public class Matrix implements MatrixInterface {
   /* ***** ATRIBUTE ***** */
   private double[][] matrix; // Inisialisasi matrix
   private int rowEff; // Ukuran baris terdefinisi
