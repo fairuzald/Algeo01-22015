@@ -52,8 +52,8 @@ public class Main {
           Menu.delay(2000);
           break;
         case 6:
-          Regression regresiEuy = new Regression(0, 0);
-          regresiEuy.regressionDriver();
+          RegressionMenu regresiEuy = new RegressionMenu();
+          regresiEuy.calculateRegression();
           Menu.delay(2000);
           break;
         case 7:

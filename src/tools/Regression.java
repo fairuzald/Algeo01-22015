@@ -58,7 +58,8 @@ public class Regression extends SPL implements RegressionInterface {
     try {
       /* KAMUS */
       File file = new File(filePath);
-      int i, j;
+      double inputan;
+      int i, j, k;
 
       Scanner scan = new Scanner(file);
 
@@ -66,23 +67,17 @@ public class Regression extends SPL implements RegressionInterface {
       Matrix mat = new Matrix(m, n + 1);
       this.estimationPoint = new double[n];
 
-      scan.nextLine();
-
       for (i = 0; i < m; i++) {
         for (j = 0; j < n + 1; j++) {
-          if (scan.hasNextFloat()) {
-            double inputan = scan.nextFloat();
-            mat.setElmt(i, j, inputan);
-          }
+          inputan = scan.nextFloat();
+          mat.setElmt(i, j, inputan);
         }
         scan.nextLine();
       }
 
-      for (j = 0; j < n; j++) {
-        if (scan.hasNextFloat()) {
-          double inputan = scan.nextFloat();
-          this.estimationPoint[j] = inputan;
-        }
+      for (k = 0; k < n; k++) {
+        inputan = scan.nextFloat();
+        this.estimationPoint[k] = inputan;
       }
 
       this.allPoint = mat.copyMatrix();
