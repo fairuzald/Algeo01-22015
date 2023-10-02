@@ -100,12 +100,6 @@ public class RegressionMenu {
               reg = new Regression(n, n + 1);
               reg.readRegressionFile(filePath, n - 1, m - 1);
               reg.compileMatrix();
-
-              System.out.println();
-              reg.allPoint.displayMatrix();
-              System.out.println();
-              reg.displayMatrix();
-
               reg.gaussMethodSPL();
 
             } catch (Exception e) {
