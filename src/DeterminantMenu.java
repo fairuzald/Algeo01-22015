@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import tools.Matrix;
-import tools.SPL;
 
 public class DeterminantMenu {
     Scanner globalScanner = new Scanner(System.in);
@@ -54,6 +53,7 @@ public class DeterminantMenu {
                     System.out.println("-----------------------------------");
 
                     determinanMatrix.readMatrix();
+                    globalScanner.nextLine();
 
                     System.out.println("-----------------------------------");
                     System.out.println("Data Matriks Berhasil Terbaca");
@@ -74,6 +74,7 @@ public class DeterminantMenu {
                     System.out.println("Data Matriks Berhasil Terbaca");
                 } else if (readInput == 3) {
                     Menu.clearScreen();
+                    return;
                     // MainMenu();
                 }
 
@@ -103,41 +104,31 @@ public class DeterminantMenu {
                     }
                     case 3 -> {
                         Menu.clearScreen();
-                        // Main Menu
                     }
-
                 }
                 // MAU DISIMPAN?
                 if (inputMethod == 1 || inputMethod == 2) {
                     System.out.println("-----------------------------------");
                     System.out.print("Simpan Hasil? (y/n) : ");
-
                     saveStatus = globalScanner.nextLine();
-                    saveStatus = globalScanner.nextLine();
-                    while (saveStatus == "y" || saveStatus == "n") {
-                        if (saveStatus == "y") {
-                            saveStatus = globalScanner.nextLine();
-                            System.out.println("-----------------------------------");
-                            String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
-                            String outputPath = Menu.getOutputFileLoc(globalScanner, outputDir);
-                            System.out.print("Masukkan nama file : ");
-                            String nameFile = globalScanner.nextLine();
-                            outputPath += nameFile;
-                            if (inputMethod == 1) { // Metode Ekspansi Kofaktor
-                                determinanMatrix.writeFileDeterminantCofactor(outputPath);
-                            } else if (inputMethod == 2) { // Metode Reduksi Baris
-                                determinanMatrix.writeFileDeterminantUpperTriangle(outputPath);
-                            }
-                        } else if (saveStatus != "n") {
-                            System.out.println("Ulangi! Input haruslah 'y' atau 'n'");
-                            System.out.print("Simpan Hasil? (y/n) : ");
-                            saveStatus = globalScanner.nextLine();
+                    while (!saveStatus.equals("y") && !saveStatus.equals("n")) {
+                        System.out.println("Ulangi! Input haruslah 'y' atau 'n'");
+                        System.out.print("Simpan Hasil? (y/n) : ");
+                        saveStatus = globalScanner.nextLine();
+                    }
+                    if (saveStatus.equals("y")) {
+                        System.out.println("-----------------------------------");
+                        String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
+                        String outputPath = Menu.getOutputFileLoc(globalScanner, outputDir);
+                        if (inputMethod == 1) { // Metode Ekspansi Kofaktor
+                            determinanMatrix.writeFileDeterminantCofactor(outputPath);
+                        } else if (inputMethod == 2) { // Metode Reduksi Baris
+                            determinanMatrix.writeFileDeterminantUpperTriangle(outputPath);
                         }
                     }
                 }
-            }
 
-            else {
+            } else {
                 Menu.clearScreen();
             }
         } catch (Exception e) {

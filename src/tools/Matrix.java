@@ -225,11 +225,10 @@ public class Matrix implements MatrixInterface {
   /**
    * writeMatrix I.S. Matriks terdefinisi dan memiliki nilai F.S. Menyimpan matriks pada suatu file
    */
-  public void writeFileMatrix(final String fileName) {
+  public void writeFileMatrix(final String filePath) {
     try {
       /* KAMUS */
-      String directory = "./test/" + fileName;
-      FileWriter output = new FileWriter(directory);
+      FileWriter output = new FileWriter(filePath);
       int i, j;
 
       for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
@@ -249,7 +248,7 @@ public class Matrix implements MatrixInterface {
 
       }
       output.close();
-      System.out.println("Berhasil menyimpan matriks pada folder test, file \"" + fileName + "\".");
+      System.out.println("Berhasil menyimpan matriks pada" + filePath + "\".");
 
     } catch (IOException e) {
       System.out.println("Error: Kesalahan Simpan File");
@@ -258,6 +257,45 @@ public class Matrix implements MatrixInterface {
   }
 
   public void writeFileDeterminantCofactor(final String filePath) {
+    try {
+      FileWriter output = new FileWriter(filePath);
+      int i, j;
+      output.write("Determinan dari matriks berikut");
+      output.write(System.lineSeparator());
+
+      // Tulis matriksnya
+      for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
+        for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
+          // Convert nilai double ke String dan tulis
+          output.write(Double.toString(this.matrix[i][j]));
+
+          // Tambahkan spasi sebagai pemisah
+          if (j < this.getColEff() - 1) {
+            output.write(" ");
+          }
+        }
+        // Tambahkan baris baru setiap baris kecuali baris terakhir
+        if (i < this.getLastIdxRow()) {
+          output.write(System.lineSeparator());
+        }
+      }
+
+      output.write(System.lineSeparator());
+      if (this.isSquare()) {
+        output.write("adalah " + this.determinantCofactor());
+      } else {
+        output.write("adalah undefined karena bukan matrix persegi.");
+      }
+      System.out.println("Berhasil menyimpan hasil determinan pada " + filePath + ".");
+      output.close();
+    } catch (IOException e) {
+      System.out.println("Error: Kesalahan Simpan File");
+      e.printStackTrace();
+    }
+  }
+
+
+  public void writeFileDeterminantUpperTriangle(final String filePath) {
     try {
       /* KAMUS */
       FileWriter output = new FileWriter(filePath);
@@ -282,46 +320,14 @@ public class Matrix implements MatrixInterface {
         }
       }
       output.write(System.lineSeparator());
-      output.write("adalah " + this.determinantCofactor());
-      output.close();
-      System.out.println("Berhasil menyimpan hasil determinan pada " + filePath + ".");
-
-    } catch (IOException e) {
-      System.out.println("Error: Kesalahan Simpan File");
-      e.printStackTrace();
-    }
-  }
-
-  public void writeFileDeterminantUpperTriangle(final String fileName) {
-    try {
-      /* KAMUS */
-      String directory = "./test/" + fileName;
-      FileWriter output = new FileWriter(directory);
-      int i, j;
-
-      output.write("Determinan dari matriks berikut");
-      output.write(System.lineSeparator());
-      // Nulis matriksnya
-      for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
-        for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
-          // Convert the double value to String and write it
-          output.write(Double.toString(this.matrix[i][j]));
-
-          // Tambahkan spasi sebagai separator
-          if (j < this.colEff - 1) {
-            output.write(" ");
-          }
-        }
-        // tambahkan line baru tiap baris kecuali baris terakhir
-        if (i < this.getLastIdxRow()) {
-          output.write(System.lineSeparator());
-        }
+      if (this.isSquare()) {
+        output.write("adalah " + this.determinantCofactor());
+      } else {
+        output.write("adalah undefined karena bukan matrix persegi.");
       }
-      output.write(System.lineSeparator());
-      output.write("adalah " + this.determinantUpperTriangle());
-      output.close();
       System.out.println(
-          "Berhasil menyimpan hasil determinan pada folder test, file \"" + fileName + "\".");
+          "Berhasil menyimpan hasil determinan pada folder test, file \"" + filePath + ".");
+      output.close();
 
     } catch (IOException e) {
       System.out.println("Error: Kesalahan Simpan File");
@@ -448,7 +454,7 @@ public class Matrix implements MatrixInterface {
 
   public Matrix createIdentityMatrix(int n) {
     if (n <= 0) {
-      throw new IllegalArgumentException("Size matriks harus lebih dari 0");
+      System.out.println("Size matriks harus lebih dari 0");
     }
     Matrix identityMatrix = new Matrix(n, n);
     int i;
@@ -594,7 +600,8 @@ public class Matrix implements MatrixInterface {
 
   public double determinantCofactor() {
     if (!this.isSquare()) {
-      throw new IllegalArgumentException("Matrix is not square. Determinant is undefined.");
+      System.out.println("Matrix is not square. Determinant is undefined.");
+      return Double.NaN;
     }
     Matrix subMatrix;
     int i, j, k, rowSub;
@@ -631,7 +638,8 @@ public class Matrix implements MatrixInterface {
 
   public double determinantUpperTriangle() {
     if (!this.isSquare()) {
-      throw new IllegalArgumentException("Matrix is not square. Determinant is undefined.");
+      System.out.println("Matrix is not square. Determinant is undefined.");
+      return Double.NaN;
     }
     double det = 1.0d;
     int i, j;

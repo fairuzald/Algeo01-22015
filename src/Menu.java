@@ -32,26 +32,24 @@ public class Menu {
   }
 
   public static String getFilePath(Scanner input, String directory) {
-    // Inisialisasi
     String filePath, fileName;
     File checkFile;
 
-    do {
+    input.nextLine();
+    while (true) {
       System.out.print("Masukkan nama file (tanpa ekstensi file): ");
-      // Input fileName dalam string
       fileName = input.nextLine();
       filePath = directory + fileName + ".txt";
       checkFile = new File(filePath);
 
-      // Cek ketersediaan file
-      if (!checkFile.exists()) {
-        System.out.println("File yang anda masukkan tidak ditemukan");
+      if (checkFile.exists()) {
+        return filePath; // Mengembalikan filePath jika file sudah ada
+      } else {
+        System.out.println("File yang Anda masukkan tidak ditemukan");
       }
-
-    } while (!checkFile.exists());
-
-    return filePath;
+    }
   }
+
 
 
   public static void getAllDataFiles(String currentDir, boolean isImageFile) {
@@ -80,10 +78,11 @@ public class Menu {
 
   public static String getOutputFileLoc(Scanner input, String directory) {
     String fileName;
-    String filePath;
+    String filePath = directory;
+    boolean shouldContinue = true; // Inisialisasi shouldContinue sebagai true
 
-    do {
-      System.out.print("Masukkan nama file output(tanpa ekstensi file): ");
+    while (shouldContinue) {
+      System.out.print("Masukkan nama file output (tanpa ekstensi file): ");
       fileName = input.nextLine();
       filePath = directory + fileName + ".txt";
       File output = new File(filePath);
@@ -93,18 +92,20 @@ public class Menu {
         System.out
             .print("File yang Anda masukkan sudah ada. Apakah Anda ingin menindihnya? (y/n): ");
         String overwriteChoice = input.nextLine().toLowerCase();
-
-        if (overwriteChoice.equals("n")) {
-          continue; // Lanjutkan iterasi untuk meminta nama file yang berbeda
-        } else if (!overwriteChoice.equals("y")) {
+        if (overwriteChoice.equals("y")) {
+          shouldContinue = false; // Keluar dari perulangan jika memilih 'y' untuk menindih
+        } else if (!overwriteChoice.equals("n")) {
           System.out.println("Pilihan tidak valid. Harap masukkan 'y' atau 'n'.");
-          continue; // Lanjutkan iterasi untuk meminta input yang valid
         }
+      } else {
+        shouldContinue = false; // Keluar dari perulangan jika file tidak ada
       }
-    } while (new File(directory + fileName).exists());
+    }
 
     return filePath;
   }
+
+
 
   public static void clearScreen() {
     try {
