@@ -29,30 +29,38 @@ public class Main {
         case 1:
           LinearEquationMenu tes = new LinearEquationMenu();
           tes.LinearEquation();
+          Menu.delay(2000);
           break;
         case 2:
           DeterminantMenu determinan = new DeterminantMenu();
           determinan.calculatingDeterminant();
+          Menu.delay(2000);
           break;
         case 3:
           InversMenu inversMatrix = new InversMenu();
           inversMatrix.calculatingInversMatrix();
+          Menu.delay(2000);
           break;
         case 4:
           InterpolationMenu interpolasiPolinomial = new InterpolationMenu();
           interpolasiPolinomial.calculatingPolinomialInterpolation();
+          Menu.delay(2000);
           break;
         case 5:
           BicubicMenu bicubicAsikJos = new BicubicMenu();
           bicubicAsikJos.BicubicSpline(scan);
+          Menu.delay(2000);
           break;
         case 6:
           Regression regresiEuy = new Regression(0, 0);
           regresiEuy.regressionDriver();
+          Menu.delay(2000);
           break;
         case 7:
           ImageScallingMenu imageScaling = new ImageScallingMenu();
           imageScaling.runImageScaledProcedure();
+          Menu.delay(2000);
+          break;
         case 8:
           System.out.println("Progam ditutup...");
           scan.close();

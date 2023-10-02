@@ -193,8 +193,8 @@ public class ImageScaling extends BicubicSpline implements ImageScalingInterface
         int rowOriginIdx = (int) Math.floor(i / (double) n);
         int colOriginIdx = (int) Math.floor(j / (double) n);
         // Menyiapkan untuk melakukan predict value coordinate dengan bicubic spline
-        double x = (i % n + 0.5) / (double) n;
-        double y = (j % n + 0.5) / (double) n;
+        double x = (i % n) / (double) n;
+        double y = (j % n) / (double) n;
 
         // Mencari nilai koefisien dengan korelasi persamaan image dan persamaan umum bicubic spline
         koef = this.getCoeffImageMatrix(X, getXImageMatrix(),

@@ -85,7 +85,7 @@ public class ImageScallingMenu {
 
   public void runImageScaledProcedure() {
     Scanner globalScanner = new Scanner(System.in);
-    String outputFilePath = "", outputFileName, imageExtension;
+    String outputFilePath = "", imageExtension;
     ImageScaling scaling = new ImageScaling(0, 0);
     try {
       this.menuOptionScalingImage();
@@ -152,7 +152,7 @@ public class ImageScallingMenu {
             scaledImageMatrixGreen, scaledImageMatrixBlue, outputFilePath, imageType,
             imageExtension);
       } else {
-        // Menu.clearScreen();
+        Menu.clearScreen();
       }
     } catch (Exception e) {
       System.out.println("An error occurred.");

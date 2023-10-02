@@ -113,11 +113,16 @@ public class DeterminantMenu {
                     System.out.print("Simpan Hasil? (y/n) : ");
 
                     saveStatus = globalScanner.nextLine();
+                    saveStatus = globalScanner.nextLine();
                     while (saveStatus == "y" || saveStatus == "n") {
                         if (saveStatus == "y") {
+                            saveStatus = globalScanner.nextLine();
                             System.out.println("-----------------------------------");
                             String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
                             String outputPath = Menu.getOutputFileLoc(globalScanner, outputDir);
+                            System.out.print("Masukkan nama file : ");
+                            String nameFile = globalScanner.nextLine();
+                            outputPath += nameFile;
                             if (inputMethod == 1) { // Metode Ekspansi Kofaktor
                                 determinanMatrix.writeFileDeterminantCofactor(outputPath);
                             } else if (inputMethod == 2) { // Metode Reduksi Baris

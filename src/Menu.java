@@ -10,6 +10,14 @@ public class Menu {
     System.out.println("Masukkan opsi angka dengan input benar");
   }
 
+  public static void delay(long milliseconds) {
+    try {
+      Thread.sleep(milliseconds);
+    } catch (InterruptedException e) {
+      Thread.currentThread().interrupt(); // Melempar ulang interrupted exception
+    }
+  }
+
   public static void InputFileOption(String title) {
     System.out.println("-----------------------------------");
     System.out.println("               " + title);

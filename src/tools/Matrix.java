@@ -257,11 +257,10 @@ public class Matrix implements MatrixInterface {
     }
   }
 
-  public void writeFileDeterminantCofactor(final String fileName) {
+  public void writeFileDeterminantCofactor(final String filePath) {
     try {
       /* KAMUS */
-      String directory = "./test/" + fileName;
-      FileWriter output = new FileWriter(directory);
+      FileWriter output = new FileWriter(filePath);
       int i, j;
 
       output.write("Determinan dari matriks berikut");
@@ -285,8 +284,7 @@ public class Matrix implements MatrixInterface {
       output.write(System.lineSeparator());
       output.write("adalah " + this.determinantCofactor());
       output.close();
-      System.out.println(
-          "Berhasil menyimpan hasil determinan pada folder test, file \"" + fileName + "\".");
+      System.out.println("Berhasil menyimpan hasil determinan pada " + filePath + ".");
 
     } catch (IOException e) {
       System.out.println("Error: Kesalahan Simpan File");
