@@ -1,6 +1,5 @@
 package tools.types;
 
-import java.awt.image.BufferedImage;
 import tools.Matrix;
 
 public interface ImageScalingInterface {
