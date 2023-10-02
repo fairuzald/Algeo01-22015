@@ -43,11 +43,10 @@
     git clone https://github.com/fairuzald/Algeo01-22015.git
    ```
 3. Navigate to the directory that contains the downloaded files and folders.
-   4 Compile & Run program by typing this :
-
-```bash
- ./Run.bat
-```
+4. Compile & Run program by typing this :
+   ```bash
+   ./Run.bat
+   ```
 
 ## Maintainers : ucup tampan
 
