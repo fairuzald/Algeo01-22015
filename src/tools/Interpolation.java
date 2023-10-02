@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import tools.types.InterpolationInterface;
 
-public class Interpolation {
-
+public class Interpolation implements InterpolationInterface {
     public Matrix koordinat;
     public SPL matrixSPL;
     public int n;
@@ -32,7 +32,9 @@ public class Interpolation {
                 matrixKoordinat.setElmt(i, j, masukkanTitik);
             }
         }
-        System.out.print("Masukkan nilai x yang ingin ditaksir nilai fungsinya: "); // anyng kalo disini code nya, jadi
+        System.out.print("Masukkan nilai x yang ingin ditaksir nilai fungsinya: "); // anyng kalo
+                                                                                    // disini code
+                                                                                    // nya, jadi
                                                                                     // kaga error
         double masukanX;
         masukanX = input.nextDouble();

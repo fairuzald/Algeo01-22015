@@ -20,7 +20,7 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 :: Jalankan aplikasi Anda dari folder bin
-java -cp %CLASSPATH% Test
+java -cp %CLASSPATH% TestSPL
 
 :: Tunggu sebentar sebelum menutup jendela
 pause

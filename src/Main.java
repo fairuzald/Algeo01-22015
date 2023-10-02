@@ -1,10 +1,10 @@
 import java.util.Scanner;
-import tools.LinearEquationMenu;
+
 import tools.Regression;
 
 public class Main {
   public static void main(String[] args) {
-    Scanner globalScan = new Scanner(System.in);
+    Scanner scan = new Scanner(System.in);
     System.out.println("Selamat datang di TUBES ALGEO 1");
     System.out.println("by: ucup tampan");
     System.out.println("Anggota:");
@@ -13,7 +13,7 @@ public class Main {
     System.out.println("3. (13522057) Moh Fairuz Alauddin Yahya");
     System.out.println("===================================================================");
 
-    try {
+    while (true) {
       System.out.println("MENU");
       System.out.println("1. Sistem Persamaan Linier");
       System.out.println("2. Determinan");
@@ -21,36 +21,43 @@ public class Main {
       System.out.println("4. Interpolasi Polinom");
       System.out.println("5. Interpolasi Bicubic Spline");
       System.out.println("6. Regresi Linier Balikan");
-      System.out.println("7. Keluar");
+      System.out.println("7. Image Scaling");
+      System.out.println("8. Keluar");
       System.out.println("Katakan Pilihanmu:");
-      int pilihan = globalScan.nextInt();
+      int pilihan = scan.nextInt();
       switch (pilihan) {
         case 1:
           LinearEquationMenu tes = new LinearEquationMenu();
           tes.LinearEquation();
           break;
         case 2:
+          DeterminantMenu determinan = new DeterminantMenu();
+          determinan.calculatingDeterminant();
           break;
         case 3:
+          InversMenu inversMatrix = new InversMenu();
+          inversMatrix.calculatingInversMatrix();
           break;
         case 4:
+          InterpolationMenu interpolasiPolinomial = new InterpolationMenu();
+          interpolasiPolinomial.calculatingPolinomialInterpolation();
           break;
         case 5:
+          BicubicMenu bicubicAsikJos = new BicubicMenu();
+          bicubicAsikJos.BicubicSpline(scan);
           break;
         case 6:
-          Regression driver = new Regression(0, 0);
-          driver.regressionDriver();
+          Regression regresiEuy = new Regression(0, 0);
+          regresiEuy.regressionDriver();
           break;
         case 7:
+          ImageScallingMenu imageScaling = new ImageScallingMenu();
+          imageScaling.runImageScaledProcedure();
+        case 8:
           System.out.println("Progam ditutup...");
-          globalScan.close();
+          scan.close();
           return;
       }
-    } catch (
-
-    Exception e) {
-      System.err.println("Error saatnya.");
-      e.printStackTrace();
     }
 
   }
