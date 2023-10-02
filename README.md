@@ -31,9 +31,9 @@
 
 ### Installing
 
-- Download dan Install [Java](https://www.java.com/en/download/)
-- Download dan Install [Java Development Kit](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-- Download semua file dan folder pada repository ini
+- Download and Install [Java](https://www.java.com/en/download/)
+- Download and Install [Java Development Kit](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+- Download all files on this repository
 
 ### Executing program
 
