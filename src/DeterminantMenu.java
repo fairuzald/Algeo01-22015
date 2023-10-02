@@ -28,7 +28,6 @@ public class DeterminantMenu {
 
         // ALGORITMA
         try {
-
             // PILIHAN METHOD
             this.menuOpsiMetodeDeterminan();
             inputMethod = globalScanner.nextInt();
@@ -78,7 +77,7 @@ public class DeterminantMenu {
                     // MainMenu();
                 }
 
-                System.out.println("Perhitungan determinan: ");
+                System.out.println("Perhitungan Determinan: ");
                 System.out.println("-----------------------------------");
                 switch (inputMethod) {
                     case 1 -> {

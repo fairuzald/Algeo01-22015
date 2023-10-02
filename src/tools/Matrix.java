@@ -213,40 +213,34 @@ public class Matrix implements MatrixInterface {
     int i, j;
     for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
       for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
-        if (j == this.getLastIdxCol()) {
-          System.out.println(matrix[i][j]);
+        double value = this.getElmt(i, j);
+        String formattedValue;
+
+        // Check if the value is an integer (has no decimal part)
+        if (value == (int) value) {
+          formattedValue = String.valueOf((int) value); // No formatting for integers
         } else {
-          System.out.print(matrix[i][j] + " ");
+          // Format the double value with four decimal places
+          formattedValue = String.format("%.3f", value);
+        }
+
+        if (j == this.getLastIdxCol()) {
+          System.out.println(formattedValue);
+        } else {
+          System.out.print(formattedValue + " ");
         }
       }
     }
   }
+
 
   /**
    * writeMatrix I.S. Matriks terdefinisi dan memiliki nilai F.S. Menyimpan matriks pada suatu file
    */
   public void writeFileMatrix(final String filePath) {
     try {
-      /* KAMUS */
       FileWriter output = new FileWriter(filePath);
-      int i, j;
-
-      for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
-        for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
-          // Convert the double value to String and write it
-          output.write(Double.toString(this.matrix[i][j]));
-
-          // Tambahkan spasi sebagai separator
-          if (j < this.colEff - 1) {
-            output.write(" ");
-          }
-        }
-        // tambahkan line baru tiap baris kecuali baris terakhir
-        if (i < this.getLastIdxRow()) {
-          output.write(System.lineSeparator());
-        }
-
-      }
+      this.writeFileValidation(output);
       output.close();
       System.out.println("Berhasil menyimpan matriks pada" + filePath + "\".");
 
@@ -259,77 +253,159 @@ public class Matrix implements MatrixInterface {
   public void writeFileDeterminantCofactor(final String filePath) {
     try {
       FileWriter output = new FileWriter(filePath);
-      int i, j;
       output.write("Determinan dari matriks berikut");
       output.write(System.lineSeparator());
 
       // Tulis matriksnya
-      for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
-        for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
-          // Convert nilai double ke String dan tulis
-          output.write(Double.toString(this.matrix[i][j]));
-
-          // Tambahkan spasi sebagai pemisah
-          if (j < this.getColEff() - 1) {
-            output.write(" ");
-          }
-        }
-        // Tambahkan baris baru setiap baris kecuali baris terakhir
-        if (i < this.getLastIdxRow()) {
-          output.write(System.lineSeparator());
-        }
-      }
+      this.writeFileValidation(output);
 
       output.write(System.lineSeparator());
       if (this.isSquare()) {
-        output.write("adalah " + this.determinantCofactor());
+        // Format the determinant value with four decimal places
+        String determinant = String.format("%.3f", this.determinantCofactor());
+
+        // Check if the determinant is an integer (has no decimal part)
+        if (Double.parseDouble(determinant) == (int) Double.parseDouble(determinant)) {
+          output.write("adalah " + (int) Double.parseDouble(determinant)); // No formatting for
+                                                                           // integers
+        } else {
+          output.write("adalah " + determinant);
+        }
       } else {
         output.write("adalah undefined karena bukan matrix persegi.");
       }
       System.out.println("Berhasil menyimpan hasil determinan pada " + filePath + ".");
       output.close();
+
     } catch (IOException e) {
       System.out.println("Error: Kesalahan Simpan File");
       e.printStackTrace();
     }
   }
 
-
   public void writeFileDeterminantUpperTriangle(final String filePath) {
     try {
       /* KAMUS */
       FileWriter output = new FileWriter(filePath);
-      int i, j;
 
       output.write("Determinan dari matriks berikut");
       output.write(System.lineSeparator());
       // Nulis matriksnya
+      this.writeFileValidation(output);
+      output.write(System.lineSeparator());
+      if (this.isSquare()) {
+        // Format the determinant value with four decimal places
+        String determinant = String.format("%.3f", this.determinantCofactor());
+
+        // Check if the determinant is an integer (has no decimal part)
+        if (Double.parseDouble(determinant) == (int) Double.parseDouble(determinant)) {
+          output.write("adalah " + (int) Double.parseDouble(determinant)); // No formatting for
+                                                                           // integers
+        } else {
+          output.write("adalah " + determinant);
+        }
+      } else {
+        output.write("adalah undefined karena bukan matrix persegi.");
+      }
+      System.out.println("Berhasil menyimpan hasil determinan pada\"" + filePath + ".");
+      output.close();
+
+    } catch (
+
+    IOException e) {
+      System.out.println("Error: Kesalahan Simpan File");
+      e.printStackTrace();
+    }
+  }
+
+  public void writeFileValidation(FileWriter output) {
+    try {
+      int i, j;
       for (i = this.getFirstIdxRow(); i < this.getRowEff(); i++) {
         for (j = this.getFirstIdxCol(); j < this.getColEff(); j++) {
-          // Convert the double value to String and write it
-          output.write(Double.toString(this.matrix[i][j]));
+          double value = this.matrix[i][j];
+          String formattedValue;
 
-          // Tambahkan spasi sebagai separator
+          // Check if the value is an integer (has no decimal part)
+          if (value == (int) value) {
+            formattedValue = String.valueOf((int) value); // No formatting for integers
+          } else {
+            // Format the double value with four decimal places
+            formattedValue = String.format("%.3f", value);
+          }
+
+          output.write(formattedValue);
           if (j < this.colEff - 1) {
             output.write(" ");
           }
         }
-        // tambahkan line baru tiap baris kecuali baris terakhir
         if (i < this.getLastIdxRow()) {
           output.write(System.lineSeparator());
         }
       }
+      // Add a space as a separator
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void writeFileInversGJordan(final String filePath) {
+    try {
+      /* KAMUS */
+      FileWriter output = new FileWriter(filePath);
+      output.write("Balikan dari matriks berikut");
+      output.write(System.lineSeparator());
+      // Nulis matriksnya
+      this.writeFileValidation(output);
       output.write(System.lineSeparator());
       if (this.isSquare()) {
-        output.write("adalah " + this.determinantCofactor());
+        output.write("adalah");
+        if (this.inversAdjoin() != null) {
+          output.write(System.lineSeparator());
+          this.inversGJordan().writeFileValidation(output);
+        } else {
+          output.write(" undefined karena determinan matriks 0.");
+        }
       } else {
         output.write("adalah undefined karena bukan matrix persegi.");
       }
-      System.out.println(
-          "Berhasil menyimpan hasil determinan pada folder test, file \"" + filePath + ".");
+      System.out.println("Berhasil menyimpan hasil invers pada\"" + filePath + ".");
       output.close();
 
-    } catch (IOException e) {
+    } catch (
+
+    IOException e) {
+      System.out.println("Error: Kesalahan Simpan File");
+      e.printStackTrace();
+    }
+  }
+
+  public void writeFileInversAdjoin(final String filePath) {
+    try {
+      /* KAMUS */
+      FileWriter output = new FileWriter(filePath);
+      output.write("Balikan dari matriks berikut");
+      output.write(System.lineSeparator());
+      // Nulis matriksnya
+      this.writeFileValidation(output);
+      output.write(System.lineSeparator());
+      if (this.isSquare()) {
+        output.write("adalah");
+        if (this.inversAdjoin() != null) {
+          output.write(System.lineSeparator());
+          this.inversAdjoin().writeFileValidation(output);
+        } else {
+          output.write(" undefined karena determinan matriks 0.");
+        }
+      } else {
+        output.write("adalah undefined karena bukan matrix persegi.");
+      }
+      System.out.println("Berhasil menyimpan hasil invers pada\"" + filePath + ".");
+      output.close();
+
+    } catch (
+
+    IOException e) {
       System.out.println("Error: Kesalahan Simpan File");
       e.printStackTrace();
     }
@@ -451,7 +527,6 @@ public class Matrix implements MatrixInterface {
     return result;
   }
 
-
   public Matrix createIdentityMatrix(int n) {
     if (n <= 0) {
       System.out.println("Size matriks harus lebih dari 0");
@@ -464,7 +539,6 @@ public class Matrix implements MatrixInterface {
 
     return identityMatrix;
   }
-
 
   public void OBEPlusRow(final int idxRowOrigin, final int idxRowTarget, final double factor) {
     // Diperuntukkan operasi antara 2 baris
@@ -548,7 +622,6 @@ public class Matrix implements MatrixInterface {
       }
     }
   }
-
 
   public void gJordanElimination() {
     int j, k;
@@ -689,7 +762,6 @@ public class Matrix implements MatrixInterface {
     for (i = 0; i <= this.getLastIdxRow(); i++) {
       for (j = 0; j <= this.getLastIdxCol(); j++) {
 
-
         // Set Submatrix
         for (k = 0, rowSub = 0; k <= mSub.getLastIdxRow(); k++) {
           if (rowSub == i) {
@@ -729,12 +801,14 @@ public class Matrix implements MatrixInterface {
     Matrix mInvers = this.adjoin();
     double determinan = this.determinantUpperTriangle();
     if (determinan == 0) {
-      System.out.println("Natrix tidak memiliki invers karena nilai determinan = 0.");
+      System.out.println("Matrix tidak memiliki invers karena nilai determinan = 0.");
+      return null; // Mengembalikan null ketika determinan = 0
     } else {
       mInvers.multiplyByConst(1.0d / determinan);
     }
     return mInvers;
   }
+
 
   public Matrix inversGJordan() {
     Matrix mTemp = new Matrix(this.getRowEff(), this.getColEff() * 2);
@@ -746,7 +820,8 @@ public class Matrix implements MatrixInterface {
     double determinant = this.determinantUpperTriangle();
 
     if (determinant == 0) {
-      System.out.println("Matrix does not have an invers because the determinant is 0.");
+      System.out.println("Matrix tidak memiliki invers karena nilai determinan = 0.");
+      return null;
     } else {
       for (i = 0; i < this.getRowEff(); i++) {
         for (j = 0; j < this.getColEff(); j++) {

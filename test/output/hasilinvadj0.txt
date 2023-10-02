@@ -1,0 +1,6 @@
+Balikan dari matriks berikut
+1 2 3 4
+2 5 7 3
+4 10 14 6
+3 4 2 7
+adalah undefined karena determinan matriks 0.

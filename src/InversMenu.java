@@ -25,11 +25,9 @@ public class InversMenu {
         int inputMethod, readInput;
         String saveStatus;
         Matrix masukkanMatrix = new Matrix(0, 0);
-        Matrix keluaranMatrix = new Matrix(0, 0);
 
         // ALGORITMA
         try {
-
             // PILIHAN METHOD
             this.menuOpsiMetodeInvers();
             inputMethod = globalScanner.nextInt();
@@ -54,6 +52,7 @@ public class InversMenu {
                     System.out.println("-----------------------------------");
 
                     masukkanMatrix.readMatrix();
+                    globalScanner.nextLine();
 
                     System.out.println("-----------------------------------");
                     System.out.println("Data Matriks Berhasil Terbaca");
@@ -85,8 +84,10 @@ public class InversMenu {
                         if (masukkanMatrix.isSquare()) {
                             System.out.println("Balikan dari matriks berikut");
                             masukkanMatrix.displayMatrix();
-                            System.out.println("\nadalah ");
-                            masukkanMatrix.inversGJordan().displayMatrix();
+                            System.out.println("adalah ");
+                            Matrix inv = masukkanMatrix.inversGJordan();
+                            if (inv != null)
+                                inv.displayMatrix();
                             System.out.println("\n");
                         } else {
                             System.out.println(
@@ -98,8 +99,10 @@ public class InversMenu {
                         if (masukkanMatrix.isSquare()) {
                             System.out.println("Balikan dari matriks berikut");
                             masukkanMatrix.displayMatrix();
-                            System.out.println("\nadalah ");
-                            masukkanMatrix.inversAdjoin().displayMatrix();
+                            System.out.println("adalah ");
+                            Matrix inv = masukkanMatrix.inversAdjoin();
+                            if (inv != null)
+                                inv.displayMatrix();
                             System.out.println("\n");
                         } else {
                             System.out.println(
@@ -116,24 +119,20 @@ public class InversMenu {
                 if (inputMethod == 1 || inputMethod == 2) {
                     System.out.println("-----------------------------------");
                     System.out.print("Simpan Hasil? (y/n) : ");
-
                     saveStatus = globalScanner.nextLine();
-                    while (saveStatus == "y" || saveStatus == "n") {
-                        if (saveStatus == "y") {
-                            System.out.println("-----------------------------------");
-                            String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
-                            String outputPath = Menu.getOutputFileLoc(globalScanner, outputDir);
-
-                            if (inputMethod == 1) { // Metode Gauss Jordan dengan Matriks Identitas
-                                masukkanMatrix.inversGJordan().writeFileMatrix(outputPath);
-                            } else if (inputMethod == 2) { // Metode Matriks Adjoin
-                                masukkanMatrix.inversAdjoin().writeFileMatrix(outputPath);
-                            }
-
-                        } else if (saveStatus != "n") {
-                            System.out.println("Ulangi! Input haruslah 'y' atau 'n'");
-                            System.out.print("Simpan Hasil? (y/n) : ");
-                            saveStatus = globalScanner.nextLine();
+                    while (!saveStatus.equals("y") && !saveStatus.equals("n")) {
+                        System.out.println("Ulangi! Input haruslah 'y' atau 'n'");
+                        System.out.print("Simpan Hasil? (y/n) : ");
+                        saveStatus = globalScanner.nextLine();
+                    }
+                    if (saveStatus.equals("y")) {
+                        System.out.println("-----------------------------------");
+                        String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
+                        String outputPath = Menu.getOutputFileLoc(globalScanner, outputDir);
+                        if (inputMethod == 1) { // Metode Gauss Jordan dengan Matriks Identitas
+                            masukkanMatrix.writeFileInversGJordan(outputPath);
+                        } else if (inputMethod == 2) { // Metode Matriks Adjoin
+                            masukkanMatrix.writeFileInversAdjoin(outputPath);
                         }
                     }
                 }
