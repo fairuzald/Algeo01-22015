@@ -11,71 +11,6 @@ public class ImageScaling extends BicubicSpline {
     super(nRows, nCols);
   }
 
-  public void runImageScaledProcedure(final String filePath, Scanner globalScanner) {
-
-    System.out.println("\nMasukkan faktor pembesar (bilangan bulat) : ");
-    double n = globalScanner.nextDouble();
-    globalScanner.nextLine(); // Consume the newline character
-
-    // get Matrix color from image
-    Matrix MatrixAlpha = this.getMatrixColor("alpha", filePath);
-    Matrix MatrixRed = this.getMatrixColor("red", filePath);
-    Matrix MatrixGreen = this.getMatrixColor("green", filePath);
-    Matrix MatrixBlue = this.getMatrixColor("blue", filePath);
-
-    // Identify the image format type
-    int imageType = this.getImageFormatType(filePath);
-
-    // Create a border matrix to interpolate
-    Matrix borderedMatrixAlpha = this.getPaddingImageMatrix(MatrixAlpha);
-    Matrix borderedMatrixRed = this.getPaddingImageMatrix(MatrixRed);
-    Matrix borderedMatrixGreen = this.getPaddingImageMatrix(MatrixGreen);
-    Matrix borderedMatrixBlue = this.getPaddingImageMatrix(MatrixBlue);
-
-    // Scaled matrix
-    Matrix scaledImageMatrixAlpha = this.getScaledImageMatrix(borderedMatrixAlpha, n);
-    Matrix scaledImageMatrixRed = this.getScaledImageMatrix(borderedMatrixRed, n);
-    Matrix scaledImageMatrixGreen = this.getScaledImageMatrix(borderedMatrixGreen, n);
-    Matrix scaledImageMatrixBlue = this.getScaledImageMatrix(borderedMatrixBlue, n);
-
-    String outputFilePath = "", outputFileName, imageExtension;
-    String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
-
-    do {
-      System.out.print("\nMasukkan nama file hasil perbesaran (tanpa ekstensi): ");
-      outputFileName = globalScanner.nextLine();
-      System.out.print("\nMasukkan jenis gambar (jpg/png): ");
-      imageExtension = globalScanner.nextLine();
-
-      if (!(imageExtension.equals("png") || imageExtension.equals("jpg"))) {
-        System.out.println("Jenis gambar yang Anda masukkan tidak valid!");
-        continue; // Continue the loop to re-enter valid input
-      }
-
-      outputFilePath = outputDir + outputFileName + "." + imageExtension;
-
-      File output = new File(outputFilePath);
-
-      // Check if the file already exists
-      if (output.exists()) {
-        System.out
-            .print("File yang Anda masukkan sudah ada. Apakah Anda ingin menindihnya? (y/n): ");
-        String overwriteChoice = globalScanner.nextLine().toLowerCase();
-
-        if (overwriteChoice.equals("n")) {
-          continue; // Continue the loop to enter a different file name
-        } else if (!overwriteChoice.equals("y")) {
-          System.out.println("Pilihan tidak valid. Harap masukkan 'y' atau 'n'.");
-          continue; // Continue the loop to re-enter valid input
-        }
-      }
-    } while (new File(outputFilePath).exists());
-
-    this.convertMatrixImage(scaledImageMatrixAlpha, scaledImageMatrixRed, scaledImageMatrixGreen,
-        scaledImageMatrixBlue, outputFilePath, imageType, imageExtension);
-    System.out.println("\nGambar berhasil diperbesar!\n");
-  }
-
   public Matrix getMatrixColor(final String color, final String filePath) {
     Matrix colorMatrix;
     int width = 0, height = 0, shifting;
@@ -273,36 +208,33 @@ public class ImageScaling extends BicubicSpline {
     return scaledMatrix;
   }
 
-  public void convertMatrixImage(final Matrix alphaMatrix, final Matrix redMatrix,
-      final Matrix greenMatrix, Matrix blueMatrix, String filePath, int imageType,
+  public void saveImageToFile(final Matrix alphaMatrix, final Matrix redMatrix,
+      final Matrix greenMatrix, final Matrix blueMatrix, String filePath, int imageType,
       String imgExtension) {
-    // Inisialisasi image dengan ukuran yang sesuai dengan matriks
     int rowEff = alphaMatrix.getRowEff();
     int colEff = alphaMatrix.getColEff();
     BufferedImage image = new BufferedImage(colEff, rowEff, imageType);
-    File outputFile = new File(filePath);
 
     try {
       int[] pixelData = new int[colEff * rowEff];
 
-      // Mengambil nilai dari matriks dan memasukkannya ke dalam image
       for (int i = 0; i < rowEff; i++) {
         for (int j = 0; j < colEff; j++) {
-          // Melakukan shifting bitwise untuk mendapatkan biner value dari pixel
           int alpha = ((int) alphaMatrix.getElmt(i, j)) << 24;
           int red = ((int) redMatrix.getElmt(i, j)) << 16;
           int green = ((int) greenMatrix.getElmt(i, j)) << 8;
           int blue = ((int) blueMatrix.getElmt(i, j));
-          // Assign nilai pixel dengan nilai dari matriks
           pixelData[i * colEff + j] = alpha | red | green | blue;
         }
       }
-      // Menulis image ke dalam file
+
       image.setRGB(0, 0, colEff, rowEff, pixelData, 0, colEff);
+      File outputFile = new File(filePath);
       ImageIO.write(image, imgExtension, outputFile);
+      System.out.println("\nGambar berhasil diperbesar dan disimpan di " + filePath);
     } catch (IOException e) {
-      System.out.println(e);
+      System.out.println("Error saving image: " + e.getMessage());
+      e.printStackTrace();
     }
   }
-
 }

@@ -64,7 +64,7 @@ public class InversMenu {
                     dirPath = System.getProperty("user.dir") + "\\test\\data\\";
                     System.out.println("-----------------------------------");
                     System.out.println("List file valid :");
-                    Menu.getAllDataFiles(dirPath);
+                    Menu.getAllDataFiles(dirPath, false);
                     System.out.println("------------------------------------");
                     filePath = Menu.getFilePath(globalScanner, dirPath);
 
@@ -89,7 +89,8 @@ public class InversMenu {
                             masukkanMatrix.inversGJordan().displayMatrix();
                             System.out.println("\n");
                         } else {
-                            System.out.println("Bukan merupakan matrix persegi sehingga tidak dapat dicari balikannya");
+                            System.out.println(
+                                    "Bukan merupakan matrix persegi sehingga tidak dapat dicari balikannya");
                         }
                     }
                     case 2 -> {
@@ -101,7 +102,8 @@ public class InversMenu {
                             masukkanMatrix.inversAdjoin().displayMatrix();
                             System.out.println("\n");
                         } else {
-                            System.out.println("Bukan merupakan matrix persegi sehingga tidak dapat dicari balikannya");
+                            System.out.println(
+                                    "Bukan merupakan matrix persegi sehingga tidak dapat dicari balikannya");
                         }
                     }
                     case 3 -> {
@@ -122,9 +124,9 @@ public class InversMenu {
                             String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
                             String outputPath = Menu.getOutputFileLoc(globalScanner, outputDir);
 
-                            if (inputMethod == 1) {             // Metode Gauss Jordan dengan Matriks Identitas
+                            if (inputMethod == 1) { // Metode Gauss Jordan dengan Matriks Identitas
                                 masukkanMatrix.inversGJordan().writeFileMatrix(outputPath);
-                            } else if (inputMethod == 2) {      // Metode Matriks Adjoin
+                            } else if (inputMethod == 2) { // Metode Matriks Adjoin
                                 masukkanMatrix.inversAdjoin().writeFileMatrix(outputPath);
                             }
 

@@ -37,7 +37,7 @@ public class InterpolationMenu {
                 dirPath = System.getProperty("user.dir") + "\\test\\data\\";
                 System.out.println("-----------------------------------");
                 System.out.println("List file valid :");
-                Menu.getAllDataFiles(dirPath);
+                Menu.getAllDataFiles(dirPath, false);
                 System.out.println("------------------------------------");
                 filePath = Menu.getFilePath(globalScanner, dirPath);
 

@@ -4,17 +4,8 @@ import tools.BicubicSpline;
 public class BicubicMenu {
   public void MenuSPLOption() {
     System.out.println("-----------------------------------");
-    System.out.println("------Sistem Persamaan Linier------");
+    System.out.println("------Interpolasi Bicubic------");
     System.out.println("-----------------------------------");
-    System.out.println("           PILIH METODE");
-    System.out.println("-----------------------------------");
-    System.out.println("1. Metode Eliminasi Gauss");
-    System.out.println("2. Metode Eliminasi Gauss Jordan");
-    System.out.println("3. Metode Matriks Balikan");
-    System.out.println("4. Metode Kaidah Cramer");
-    System.out.println("5. Kembali");
-    System.out.println("-----------------------------------");
-    System.out.print("Masukkan pilihan : ");
   }
 
   public void BicubicSpline(Scanner inputScanner) {
@@ -43,7 +34,7 @@ public class BicubicMenu {
       dirPath = System.getProperty("user.dir") + "\\test\\data\\";
       System.out.println("-----------------------------------");
       System.out.println("List file valid :");
-      Menu.getAllDataFiles(dirPath);
+      Menu.getAllDataFiles(dirPath, false);
       System.out.println("------------------------------------");
       filePath = Menu.getFilePath(inputScanner, dirPath);
 

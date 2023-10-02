@@ -50,8 +50,7 @@ public class Main {
           break;
         case 7:
           ImageScallingMenu imageScaling = new ImageScallingMenu();
-          imageScaling.runImageScaledProcedure(scan);
-          break;
+          imageScaling.runImageScaledProcedure();
         case 8:
           System.out.println("Progam ditutup...");
           scan.close();

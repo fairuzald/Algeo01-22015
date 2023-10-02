@@ -1,6 +1,7 @@
 
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Scanner;
 
 public class Menu {
@@ -45,14 +46,29 @@ public class Menu {
   }
 
 
-  public static void getAllDataFiles(String currentDir) {
+  public static void getAllDataFiles(String currentDir, boolean isImageFile) {
     // Ambil semua nama file dalam current dir
     File dataFile = new File(currentDir);
-    File[] listFile = dataFile.listFiles();
-    for (File f : listFile) {
-      System.out.println(f.getName());
+    File[] listFile = dataFile.listFiles(new FilenameFilter() {
+      public boolean accept(File dir, String name) {
+        // Filter file berdasarkan apakah itu file gambar atau bukan
+        if (isImageFile) {
+          // Filter file gambar berdasarkan ekstensi yang sesuai (png, jpg)
+          return name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".jpg");
+        } else {
+          // Filter file bukan gambar berdasarkan ekstensi yang sesuai (txt)
+          return name.toLowerCase().endsWith(".txt");
+        }
+      }
+    });
+
+    if (listFile != null) {
+      for (File f : listFile) {
+        System.out.println(f.getName());
+      }
     }
   }
+
 
   public static String getOutputFileLoc(Scanner input, String directory) {
     String fileName;
@@ -87,24 +103,6 @@ public class Menu {
       new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
     } catch (Exception e) {
       e.printStackTrace();
-    }
-  }
-
-  public static void startLoadingAnimation() {
-    String loadingText = "Loading";
-    int maxDots = 6;
-    int intervalMillis = 1000; // Interval waktu antara perubahan teks (dalam milidetik)
-
-    while (true) {
-      for (int i = 1; i <= maxDots; i++) {
-        String dots = ".".repeat(i);
-        System.out.print("\r" + loadingText + dots);
-        try {
-          Thread.sleep(intervalMillis);
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-        }
-      }
     }
   }
 }
