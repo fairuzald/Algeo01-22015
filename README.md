@@ -3,16 +3,16 @@
 ## Features
 
 1. Solve a system of linear equations using four different techniques:
-   a. Utilize the Gauss method
-   b. Apply the Gauss-Jordan method
-   c. Implement the Inverse method
-   d. Use the Cramer method
+   - Utilize the Gauss method
+   - Apply the Gauss-Jordan method
+   - Implement the Inverse method
+   - Use the Cramer method
 2. Determine the determinant of a given matrix through two distinct methods:
-   a. Employ the Cofactor expansion technique
-   b. Utilize the Reduction method
+   - Employ the Cofactor expansion technique
+   - Utilize the Reduction method
 3. Calculate the inverse of a given matrix using two different approaches:
-   a. Implement the Gauss-Jordan method
-   b. Utilize the Adjoin method
+   - Implement the Gauss-Jordan method
+   - Utilize the Adjoin method
 4. Create an interpolated linear equation that passes through all provided points, and predict the y-value for a given x-value.
 5. Conduct multiple linear regression, including formulating the equation and making predictions for the y-value based on the provided x-values.
 6. Predict the value of a point using the bicubic spline principle.
