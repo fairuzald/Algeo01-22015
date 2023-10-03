@@ -143,8 +143,6 @@ public class Matrix implements MatrixInterface {
     this.matrix = result.copyElmtMatrix();
     this.rowEff = result.rowEff;
     this.colEff = result.colEff;
-
-
   }
 
 

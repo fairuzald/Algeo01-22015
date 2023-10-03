@@ -1,5 +1,6 @@
 package tools.types;
 
+import java.util.Scanner;
 import tools.Matrix;
 
 public interface BicubicSplineInterface {
@@ -50,7 +51,7 @@ public interface BicubicSplineInterface {
    * Membaca data masukan untuk perhitungan Bicubic Spline. Metode ini menggunakan masukan dari
    * pengguna untuk mengisi titik-titik yang diketahui dan titik yang akan diprediksi.
    */
-  void readBicubicSpline();
+  void readBicubicSpline(Scanner globalScanner);
 
   /**
    * Membaca data masukan dari file untuk perhitungan Bicubic Spline.
@@ -97,5 +98,7 @@ public interface BicubicSplineInterface {
    * @param knownPoint Matriks dari titik-titik yang diketahui.
    * @return Nilai yang diprediksi pada titik (x, y) yang diberikan.
    */
-  double predictBicubicSplineValue(double x, double y, Matrix knownPoint);
+  void predictBicubicSplineValue();
+
+  double predictBicubicSplineImage(double x, double y, Matrix knownPoint);
 }

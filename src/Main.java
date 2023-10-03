@@ -1,7 +1,5 @@
 import java.util.Scanner;
 
-import tools.Regression;
-
 public class Main {
   public static void main(String[] args) {
     Scanner scan = new Scanner(System.in);
@@ -47,8 +45,8 @@ public class Main {
           Menu.delay(2000);
           break;
         case 5:
-          BicubicMenu bicubicAsikJos = new BicubicMenu();
-          bicubicAsikJos.BicubicSpline(scan);
+          BicubicSplineMenu bicubicAsikJos = new BicubicSplineMenu();
+          bicubicAsikJos.BicubicSpline();
           Menu.delay(2000);
           break;
         case 6:

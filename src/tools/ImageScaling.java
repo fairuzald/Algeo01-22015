@@ -201,7 +201,7 @@ public class ImageScaling extends BicubicSpline implements ImageScalingInterface
             getInterpolaterImageMatrix(borderedMatrix, rowOriginIdx, colOriginIdx));
 
         // Assign value pada scaled matrix dengan predict value dari bicubic spline
-        double value = this.predictBicubicSplineValue(y, x, koef);
+        double value = this.predictBicubicSplineImage(y, x, koef);
         scaledMatrix.setElmt(i, j, value);
       }
     }
