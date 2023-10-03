@@ -1,6 +1,3 @@
-
-
-
 import java.util.Scanner;
 import tools.SPL;
 
@@ -23,7 +20,7 @@ public class LinearEquationMenu {
   public void LinearEquation() {
     // INISIALISASI
     int inputMethod, readInput;
-    char saveStatus;
+    String saveStatus;
     Scanner input;
     SPL mSPL = new SPL(0, 0);
 
@@ -56,6 +53,7 @@ public class LinearEquationMenu {
           System.out.println("-----------------------------------");
 
           mSPL.readSPL();
+          input.nextLine();
 
           System.out.println("-----------------------------------");
           System.out.println("Data matriks SPL Berhasil Terbaca");
@@ -76,6 +74,8 @@ public class LinearEquationMenu {
           System.out.println("Data matriks SPL Berhasil Terbaca");
         } else if (readInput == 3) {
           Menu.clearScreen();
+          input.close();
+          return;
           // MainMenu();
         }
 
@@ -102,18 +102,24 @@ public class LinearEquationMenu {
 
         }
         // MAU DISIMPAN?
-        if (inputMethod == 1 || inputMethod == 2) {
+        if (inputMethod == 1 || inputMethod == 2 || inputMethod == 3 || inputMethod == 4) {
           System.out.println("-----------------------------------");
           mSPL.displaySPL();
           System.out.println("-----------------------------------");
           System.out.print("Simpan Hasil? (y/n) : ");
 
-          saveStatus = input.next().charAt(0);
-          if (saveStatus == 'y') {
+          saveStatus = input.nextLine();
+          while (!saveStatus.equals("y") && !saveStatus.equals("n")) {
+            System.out.println("Ulangi! Input haruslah 'y' atau 'n'");
+            System.out.print("Simpan Hasil? (y/n) : ");
+            saveStatus = input.nextLine();
+          }
+          if (saveStatus.equals("y")) {
             System.out.println("-----------------------------------");
             String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
             String outputPath = Menu.getOutputFileLoc(input, outputDir);
             mSPL.writeFileSPL(outputPath);
+
           }
         }
       }

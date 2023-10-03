@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import tools.types.MatrixInterface;
 
-public class Matrix implements MatrixInterface {
+public class Matrix {
   /* ***** ATRIBUTE ***** */
   private double[][] matrix; // Inisialisasi matrix
   private int rowEff; // Ukuran baris terdefinisi
@@ -91,15 +91,15 @@ public class Matrix implements MatrixInterface {
 
   /* ********** Assignment Matrix ********** */
   /** Mengcopy nilai elemen suatu array matriks ke tempat lain */
-  public double[][] copyElmtMatrix() {
+  public double[][] copyElmtMatrix(int row, int col) {
     /* KAMUS */
     int i, j;
-    final double[][] result = new double[this.rowEff][this.colEff];
+    final double[][] result = new double[row][col];
 
     /* ALGORITMA */
 
-    for (i = this.getFirstIdxRow(); i < this.rowEff; i++) {
-      for (j = this.getFirstIdxCol(); j < this.colEff; j++) {
+    for (i = this.getFirstIdxRow(); i < row; i++) {
+      for (j = this.getFirstIdxCol(); j < col; j++) {
         result[i][j] = this.matrix[i][j];
       }
     }
@@ -107,13 +107,13 @@ public class Matrix implements MatrixInterface {
   }
 
   /** Mencopy matriks ke matriks lain */
-  public Matrix copyMatrix() {
+  public Matrix copyMatrix(int row, int col) {
     /* KAMUS */
-    final Matrix mCopy = new Matrix(this.rowEff, this.colEff);
+    final Matrix mCopy = new Matrix(row, col);
     /* ALGORITMA */
-    mCopy.matrix = this.copyElmtMatrix();
-    mCopy.rowEff = this.rowEff;
-    mCopy.colEff = this.colEff;
+    mCopy.matrix = this.copyElmtMatrix(row, col);
+    mCopy.rowEff = row;
+    mCopy.colEff = col;
 
     return mCopy;
   }
@@ -140,9 +140,10 @@ public class Matrix implements MatrixInterface {
       }
     }
 
-    this.matrix = result.copyElmtMatrix();
+    this.matrix = result.copyElmtMatrix(this.getRowEff(), this.getColEff());
     this.rowEff = result.rowEff;
     this.colEff = result.colEff;
+
   }
 
 
@@ -715,7 +716,7 @@ public class Matrix implements MatrixInterface {
     double det = 1.0d;
     int i, j;
     double factor;
-    Matrix mCopy = this.copyMatrix(); // Buat copy matrix
+    Matrix mCopy = this.copyMatrix(this.getRowEff(), this.getColEff()); // Buat copy matrix
 
     for (i = mCopy.getFirstIdxRow(); i <= mCopy.getLastIdxRow(); i++) {
       // Apakah ada elemen diagonal bernilai 0

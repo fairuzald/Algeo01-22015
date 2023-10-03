@@ -47,7 +47,7 @@ public class Regression extends SPL implements RegressionInterface {
         this.estimationPoint[j] = inputan;
       }
 
-      this.allPoint = mat.copyMatrix();
+      this.allPoint = mat.copyMatrix(mat.getRowEff(), mat.getColEff());
       input.close();
     } catch (Exception e) {
       System.err.println("Error saat readRegression.");
@@ -80,7 +80,7 @@ public class Regression extends SPL implements RegressionInterface {
         this.estimationPoint[k] = inputan;
       }
 
-      this.allPoint = mat.copyMatrix();
+      this.allPoint = mat.copyMatrix(mat.getRowEff(), mat.getColEff());
       scan.close();
     } catch (Exception e) {
       e.printStackTrace();;

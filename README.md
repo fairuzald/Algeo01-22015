@@ -56,4 +56,4 @@ This program is develop and maintain by ucup tampan team.
 | -------- | ------------------------- |
 | 13522015 | Yusuf Ardian Sandi        |
 | 13522032 | Tazkia Nizami             |
-| 13522057 | Moh fairuz Alauddin Yahya |
+| 13522057 | Moh Fairuz Alauddin Yahya |

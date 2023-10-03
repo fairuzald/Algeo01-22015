@@ -101,14 +101,14 @@ public interface SPLInterface {
   // Output: Mengembalikan vektor konstan dari SPL.
   // Contoh Kasus:
   // - Mendapatkan vektor konstan dari SPL.
-  Matrix getVectorConstant();
+  Matrix getVectorConstant(int row);
 
   // Metode untuk menghitung numerator determinan Cramer
   // Input: Indeks kolom yang akan digunakan
   // Output: Mengembalikan nilai numerator determinan Cramer untuk kolom tertentu.
   // Contoh Kasus:
   // - Menghitung numerator determinan Cramer untuk kolom ke-2.
-  double determinanNumerator(int colIdx);
+  double determinanNumerator(int colIdx, Matrix koefMatrix);
 
   // Metode untuk memeriksa apakah vektor konstan SPL adalah nol
   // Input: Tidak ada input khusus
@@ -132,6 +132,6 @@ public interface SPLInterface {
   void cramerMethodSPL();
 
   enum categorySolution {
-    PARAMETRIX, UNIQUE, UNDEFINED, SUBSTITABLE
+    PARAMETRIX, UNIQUE, UNDEFINED, SUBSTITABLE, ZERODETERMINANTCRAMER, ZERODETERMINANTINVERS
   }
 }

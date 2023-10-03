@@ -1,0 +1,1 @@
+Determinan matrix 0 maka solusi tidak bisa dicari dengan metode invers karena tidak punya invers

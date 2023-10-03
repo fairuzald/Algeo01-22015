@@ -27,58 +27,48 @@ public class SPL extends Matrix implements SPLInterface {
     readMatrix();
   }
 
-  public void readFileSPL(final String fileName) {
-    readFileMatrix(fileName);
+  public void readFileSPL(final String filePath) {
+    readFileMatrix(filePath);
   }
 
   public void displaySPL() {
     int i;
-    int countParametrix = 0;
     String sentence;
     if (this.Status[0] == categorySolution.UNDEFINED) {
       System.out.println("SPL tidak memiliki solusi.");
+    } else if (this.Status[0] == categorySolution.ZERODETERMINANTCRAMER) {
+      System.out.println("Determinan matrix 0 maka solusi tidak bisa dicari dengan metode cramer");
+    } else if (this.Status[0] == categorySolution.ZERODETERMINANTINVERS) {
+      System.out.println(
+          "Determinan matrix 0 maka solusi tidak bisa dicari dengan metode invers karena tidak punya invers");
     } else {
 
       for (i = 0; i < this.Equation.length; i++) {
         // JIka solusi adalah parametrix maka hitung jumlahnya
-        if (this.Status[i] == categorySolution.PARAMETRIX) {
-          countParametrix++;
-        }
+
         sentence = "x_" + (i + 1) + "=" + this.Equation[i];
         System.out.println(sentence);
 
       }
-      if (countParametrix > 0) {
-        char params = 'a';
-        sentence = "\nDengan";
-        for (i = countParametrix; i > 0; i--) {
-          sentence += String.valueOf(params);
-          params++;
-          if (countParametrix > 1) {
-            sentence += ",";
-          }
-        }
-        sentence += "anggota bilangan real";
-        System.out.println(sentence);
-      }
+
     }
   }
 
   public void writeFileSPL(final String filePath) {
     int i;
-    int countParametrix = 0;
     String sentence;
     FileWriter output = null;
     try {
       output = new FileWriter(filePath);
       if (this.Status[0] == categorySolution.UNDEFINED) {
         output.write("SPL tidak memiliki solusi.");
+      } else if (this.Status[0] == categorySolution.ZERODETERMINANTCRAMER) {
+        output.write("Determinan matrix 0 maka solusi tidak bisa dicari dengan metode cramer");
+      } else if (this.Status[0] == categorySolution.ZERODETERMINANTINVERS) {
+        output.write(
+            "Determinan matrix 0 maka solusi tidak bisa dicari dengan metode invers karena tidak punya invers");
       } else {
         for (i = 0; i < this.Equation.length; i++) {
-          // Jika solusi adalah parametrix maka hitung jumlahnya
-          if (this.Status[i] == categorySolution.PARAMETRIX) {
-            countParametrix++;
-          }
           sentence = "x_" + (i + 1) + "=" + this.Equation[i];
           output.write(sentence);
           if (i != this.Equation.length - 1) {
@@ -87,22 +77,6 @@ public class SPL extends Matrix implements SPLInterface {
           }
         }
       }
-      // Tambahkan kalimat parametrix solution
-      if (countParametrix > 0) {
-        char params = 'a';
-        sentence = "Dengan ";
-        for (i = countParametrix; i > 0; i--) {
-          sentence += String.valueOf(params);
-          params++;
-          if (i > 1) {
-            sentence += ", ";
-          }
-        }
-        sentence += " anggota bilangan real";
-
-        output.write(sentence + "\n");
-      }
-
       output.close();
       System.out.println("Berhasil menyimpan SPL pada folder test, file \"" + filePath + "\".");
     } catch (IOException e) {
@@ -183,8 +157,8 @@ public class SPL extends Matrix implements SPLInterface {
 
 
     for (i = 0; i < this.getLastIdxCol(); i++) {
-      if (this.Status[i] != categorySolution.UNIQUE
-          && this.Status[i] != categorySolution.SUBSTITABLE) {
+      if (this.Status[i] != categorySolution.UNIQUE) {
+
         this.Status[i] = categorySolution.PARAMETRIX;
       }
     }
@@ -266,13 +240,16 @@ public class SPL extends Matrix implements SPLInterface {
 
               if (Math.abs(this.getElmt(i, k)) == 1) {
                 stringPersamaan += "-" + "(" + this.Equation[k] + ")";
+                this.Equation[j] = stringPersamaan;
               } else {
                 stringPersamaan +=
                     "-" + "(" + Math.abs(this.getElmt(i, k)) + this.Equation[k] + ")";
+                this.Equation[j] = stringPersamaan;
               }
             } else {
               if (Math.abs(this.getElmt(i, k)) == 1) {
                 stringPersamaan += "-" + "(" + this.Equation[k] + ")";
+                this.Equation[j] = stringPersamaan;
               } else {
                 stringPersamaan +=
                     "-" + "(" + Math.abs(this.getElmt(i, k)) + "(" + this.Equation[k] + "))";
@@ -286,18 +263,19 @@ public class SPL extends Matrix implements SPLInterface {
             if (isBelowZero) {
               if (Math.abs(this.getElmt(i, k)) == 1) {
                 stringPersamaan += "+" + this.Equation[k];
+                this.Equation[j] = stringPersamaan;
               } else {
                 stringPersamaan += "+" + Math.abs(this.getElmt(i, k)) + this.Equation[k];
-
+                this.Equation[j] = stringPersamaan;
               }
             } else {
               if (Math.abs(this.getElmt(i, k)) == 1) {
                 stringPersamaan += "+" + this.Equation[k];
-
+                this.Equation[j] = stringPersamaan;
               } else {
                 stringPersamaan +=
                     "+" + Math.abs(this.getElmt(i, k)) + "(" + this.Equation[k] + ")";
-
+                this.Equation[j] = stringPersamaan;
               }
             }
 
@@ -306,7 +284,7 @@ public class SPL extends Matrix implements SPLInterface {
         }
       }
 
-      this.Equation[j] = stringPersamaan;
+
     }
   }
 
@@ -335,20 +313,20 @@ public class SPL extends Matrix implements SPLInterface {
 
   }
 
-  public Matrix getVectorConstant() {
-    Matrix vectorConstant = new Matrix(this.getRowEff(), 1);
+  public Matrix getVectorConstant(int row) {
+    Matrix vectorConstant = new Matrix(row, 1);
     int i;
-    for (i = this.getFirstIdxRow(); i <= this.getLastIdxRow(); i++) {
+    for (i = this.getFirstIdxRow(); i < row; i++) {
       vectorConstant.setElmt(i, this.getFirstIdxCol(), this.getElmt(i, this.getLastIdxCol()));
     }
     return vectorConstant;
   }
 
-  public double determinanNumerator(int colIdx) {
+  public double determinanNumerator(int colIdx, Matrix koefMatrix) {
     int i;
     double[] temp = new double[this.getLastIdxCol()];
-    Matrix koefMatrix = this.getKoefMatrix();
-    Matrix vectorConstant = this.getVectorConstant();
+    Matrix vectorConstant = this.getVectorConstant(this.getRowEff());
+
     double determinant;
 
     for (i = koefMatrix.getFirstIdxRow(); i <= koefMatrix.getLastIdxRow(); i++) {
@@ -382,24 +360,17 @@ public class SPL extends Matrix implements SPLInterface {
     Matrix vectorSolution;
 
     Matrix koefMatrix = this.getKoefMatrix();
-    Matrix vectorConstant = this.getVectorConstant();
-
+    if (koefMatrix.getColEff() < koefMatrix.getRowEff()) {
+      koefMatrix = koefMatrix.copyMatrix(koefMatrix.getColEff(), koefMatrix.getColEff());
+    }
+    Matrix vectorConstant = this.getVectorConstant(koefMatrix.getRowEff());
     double determinant = koefMatrix.determinantCofactor();
     if (determinant == 0) {
       this.Solution = new double[1];
       this.Equation = new String[1];
       this.Status = new categorySolution[1];
       // Handle the case where the determinant is zero or numerator is zero
-      boolean isAllRowVectorConstantZero = this.isAllVectorConstantZero();
-      if (isAllRowVectorConstantZero) {
-        this.Status[0] = categorySolution.PARAMETRIX;
-        System.out.println(
-            "Determinan matrix 0 dan vector konstan semua bernilai 0 maka solusi parametrix tidak bisa dicari dengan metode cramer karena tidak punya invers");
-      } else {
-        this.Status[0] = categorySolution.UNDEFINED;
-        System.out.println(
-            "Determinan matrix 0 dan vector konstan tidak bernilai 0 maka solusi tidak ada.");
-      }
+      this.Status[0] = categorySolution.ZERODETERMINANTINVERS;
     } else if (!koefMatrix.isSquare()) {
       System.out.println(
           "Bukan matrix singular sehingga solusi SPL tidak ditemukan dengan metode invers");
@@ -416,7 +387,7 @@ public class SPL extends Matrix implements SPLInterface {
 
       for (i = vectorSolution.getFirstIdxCol(); i < vectorSolution.getColEff(); i++) {
         this.Solution[i] = vectorSolution.getElmt(0, i);
-        this.Equation[i] = Double.toString(vectorSolution.getElmt(0, i));
+        this.Equation[i] = String.format("%.3f", vectorSolution.getElmt(0, i));
         this.Status[i] = categorySolution.UNIQUE;
       }
 
@@ -426,38 +397,40 @@ public class SPL extends Matrix implements SPLInterface {
   public void cramerMethodSPL() {
     Matrix mEntry = this.getKoefMatrix();
     int i;
+    // Handle jika persamaan yang diberikan terlalu banyak yang diketahui
+    if (mEntry.getColEff() < mEntry.getRowEff()) {
+      mEntry = mEntry.copyMatrix(mEntry.getColEff(), mEntry.getColEff());
+    }
     double determinantDenominator = mEntry.determinantCofactor();
     double determinanNumerator;
     this.Solution = new double[this.getColEff() - 1];
     this.Equation = new String[this.getColEff() - 1];
     this.Status = new categorySolution[this.getColEff() - 1];
     for (i = mEntry.getFirstIdxCol(); i <= mEntry.getLastIdxCol(); i++) {
-      determinanNumerator = this.determinanNumerator(i);
+      determinanNumerator = this.determinanNumerator(i, mEntry);
 
       if (determinantDenominator == 0) {
         this.Solution = new double[1];
         this.Equation = new String[1];
         this.Status = new categorySolution[1];
         // Handle the case where the determinant is zero or numerator is zero
-        boolean isAllRowVectorConstantZero = this.isAllVectorConstantZero();
-        if (isAllRowVectorConstantZero) {
-          this.Status[0] = categorySolution.PARAMETRIX;
-          System.out.println(
-              "Determinan matrix 0 dan vector konstan semua bernilai 0 maka solusi parametrix tidak bisa dicari dengan metode cramer karena tidak punya invers");
-        } else {
-          this.Status[0] = categorySolution.UNDEFINED;
-          System.out.println(
-              "Determinan matrix 0 dan vector konstan tidak bernilai 0 maka solusi tidak ada");
-        }
+        this.Status[0] = categorySolution.ZERODETERMINANTCRAMER;
+        return;
       } else if (!mEntry.isSquare()) {
         System.out.println(
-            "Bukan matrix singular sehingga solusi SPL tidak ditemukan dengan metode invers");
+            "Bukan matrix singular sehingga solusi SPL tidak ditemukan dengan metode cramer");
+        return;
       } else {
         double solution = determinanNumerator / determinantDenominator;
-        System.out.println(solution);
 
         this.Solution[i] = solution;
-        this.Equation[i] = Double.toString(solution);
+        String formattedSolution;
+        if (solution == (int) solution) {
+          formattedSolution = String.valueOf((int) solution); // No formatting for integers
+        } else {
+          formattedSolution = String.format("%.3f", solution);
+        }
+        this.Equation[i] = formattedSolution;
         this.Status[i] = categorySolution.UNIQUE;
       }
     }
