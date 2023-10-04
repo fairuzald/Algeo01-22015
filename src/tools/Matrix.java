@@ -838,16 +838,4 @@ public class Matrix implements MatrixInterface {
     return mInvers;
   }
 
-  @Override
-  public double[][] copyElmtMatrix() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'copyElmtMatrix'");
-  }
-
-  @Override
-  public Matrix copyMatrix() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'copyMatrix'");
-  }
-
 }
