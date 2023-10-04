@@ -71,7 +71,7 @@ public class SPL extends Matrix implements SPLInterface {
         output.write(
             "Determinan matrix 0 maka solusi tidak bisa dicari dengan metode invers karena tidak punya invers");
       } else if (this.Status[0] == categorySolution.NOTSQUARE) {
-        System.out.println(
+        output.write(
             "Koefisien matrix bukan matrix persegi sehingga tidak bisa dicari determinannya ");
       } else {
         for (i = 0; i < this.Equation.length; i++) {
