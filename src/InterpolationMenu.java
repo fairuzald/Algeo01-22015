@@ -50,9 +50,10 @@ public class InterpolationMenu {
                 // MainMenu();
             }
 
+            System.out.println("-----------------------------------");
             System.out.println("Perhitungan Interpolasi Polinomial");
             System.out.println("-----------------------------------");
-            System.out.println("Hasil interpolasi polinomial sebagai berikut");
+            System.out.println("Hasil interpolasi polinomial sebagai berikut:");
             interpolasi.cetakOutputInterpolasi();
 
             // MAU DISIMPAN?
