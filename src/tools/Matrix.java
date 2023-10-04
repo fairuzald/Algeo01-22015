@@ -670,7 +670,6 @@ public class Matrix implements MatrixInterface {
 
   public double determinantCofactor() {
     if (!this.isSquare()) {
-      System.out.println("Matrix is not square. Determinant is undefined.");
       return Double.NaN;
     }
     Matrix subMatrix;
