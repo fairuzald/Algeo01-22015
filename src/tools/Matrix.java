@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import tools.types.MatrixInterface;
 
-public class Matrix {
+public class Matrix implements MatrixInterface {
   /* ***** ATRIBUTE ***** */
   private double[][] matrix; // Inisialisasi matrix
   private int rowEff; // Ukuran baris terdefinisi
@@ -836,6 +836,18 @@ public class Matrix {
     }
 
     return mInvers;
+  }
+
+  @Override
+  public double[][] copyElmtMatrix() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'copyElmtMatrix'");
+  }
+
+  @Override
+  public Matrix copyMatrix() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'copyMatrix'");
   }
 
 }
