@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import tools.types.MatrixInterface;
 
-public class Matrix {
+public class Matrix implements MatrixInterface {
   /* ***** ATRIBUTE ***** */
   private double[][] matrix; // Inisialisasi matrix
   private int rowEff; // Ukuran baris terdefinisi
@@ -131,19 +131,17 @@ public class Matrix {
     int nRows = input.nextInt();
     System.out.print("Masukkan banyak kolom matriks : ");
     int nCols = input.nextInt();
-    Matrix result = new Matrix(nRows, nCols);
+    this.matrix = new double[nRows][nCols]; // Inisialisasi matriks
 
     System.out.println("Masukkan elemen matriks :");
-    for (i = 0; i < result.rowEff; i++) {
-      for (j = 0; j < result.colEff; j++) {
-        result.matrix[i][j] = input.nextDouble();
+    for (i = 0; i < nRows; i++) {
+      for (j = 0; j < nCols; j++) {
+        this.matrix[i][j] = input.nextDouble();
       }
     }
 
-    this.matrix = result.copyElmtMatrix(this.getRowEff(), this.getColEff());
-    this.rowEff = result.rowEff;
-    this.colEff = result.colEff;
-
+    this.rowEff = nRows;
+    this.colEff = nCols;
   }
 
 
@@ -672,7 +670,6 @@ public class Matrix {
 
   public double determinantCofactor() {
     if (!this.isSquare()) {
-      System.out.println("Matrix is not square. Determinant is undefined.");
       return Double.NaN;
     }
     Matrix subMatrix;

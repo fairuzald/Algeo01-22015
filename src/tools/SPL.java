@@ -41,6 +41,9 @@ public class SPL extends Matrix implements SPLInterface {
     } else if (this.Status[0] == categorySolution.ZERODETERMINANTINVERS) {
       System.out.println(
           "Determinan matrix 0 maka solusi tidak bisa dicari dengan metode invers karena tidak punya invers");
+    } else if (this.Status[0] == categorySolution.NOTSQUARE) {
+      System.out.println(
+          "Koefisien matrix bukan matrix persegi sehingga tidak bisa dicari determinannya ");
     } else {
 
       for (i = 0; i < this.Equation.length; i++) {
@@ -67,6 +70,9 @@ public class SPL extends Matrix implements SPLInterface {
       } else if (this.Status[0] == categorySolution.ZERODETERMINANTINVERS) {
         output.write(
             "Determinan matrix 0 maka solusi tidak bisa dicari dengan metode invers karena tidak punya invers");
+      } else if (this.Status[0] == categorySolution.NOTSQUARE) {
+        output.write(
+            "Koefisien matrix bukan matrix persegi sehingga tidak bisa dicari determinannya ");
       } else {
         for (i = 0; i < this.Equation.length; i++) {
           sentence = "x_" + (i + 1) + "=" + this.Equation[i];
@@ -365,15 +371,19 @@ public class SPL extends Matrix implements SPLInterface {
     }
     Matrix vectorConstant = this.getVectorConstant(koefMatrix.getRowEff());
     double determinant = koefMatrix.determinantCofactor();
-    if (determinant == 0) {
+    if (determinant == Double.NaN || !koefMatrix.isSquare()) {
+      this.Solution = new double[1];
+      this.Equation = new String[1];
+      this.Status = new categorySolution[1];
+      // Handle the case where the determinant is zero or numerator is zero
+      this.Status[0] = categorySolution.NOTSQUARE;
+
+    } else if (determinant == 0) {
       this.Solution = new double[1];
       this.Equation = new String[1];
       this.Status = new categorySolution[1];
       // Handle the case where the determinant is zero or numerator is zero
       this.Status[0] = categorySolution.ZERODETERMINANTINVERS;
-    } else if (!koefMatrix.isSquare()) {
-      System.out.println(
-          "Bukan matrix singular sehingga solusi SPL tidak ditemukan dengan metode invers");
     } else {
 
       koefMatrix = koefMatrix.inversAdjoin();
@@ -408,17 +418,18 @@ public class SPL extends Matrix implements SPLInterface {
     this.Status = new categorySolution[this.getColEff() - 1];
     for (i = mEntry.getFirstIdxCol(); i <= mEntry.getLastIdxCol(); i++) {
       determinanNumerator = this.determinanNumerator(i, mEntry);
-
-      if (determinantDenominator == 0) {
+      if (determinanNumerator == Double.NaN || !mEntry.isSquare()) {
+        this.Solution = new double[1];
+        this.Equation = new String[1];
+        this.Status = new categorySolution[1];
+        // Handle the case where the determinant is zero or numerator is zero
+        this.Status[0] = categorySolution.NOTSQUARE;
+      } else if (determinantDenominator == 0) {
         this.Solution = new double[1];
         this.Equation = new String[1];
         this.Status = new categorySolution[1];
         // Handle the case where the determinant is zero or numerator is zero
         this.Status[0] = categorySolution.ZERODETERMINANTCRAMER;
-        return;
-      } else if (!mEntry.isSquare()) {
-        System.out.println(
-            "Bukan matrix singular sehingga solusi SPL tidak ditemukan dengan metode cramer");
         return;
       } else {
         double solution = determinanNumerator / determinantDenominator;

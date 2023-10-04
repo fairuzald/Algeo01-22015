@@ -74,7 +74,6 @@ public class DeterminantMenu {
                 } else if (readInput == 3) {
                     Menu.clearScreen();
                     return;
-                    // MainMenu();
                 }
 
                 System.out.println("Perhitungan Determinan: ");
@@ -87,7 +86,8 @@ public class DeterminantMenu {
                             determinanMatrix.displayMatrix();
                             System.out.println("adalah " + determinanMatrix.determinantCofactor());
                         } else {
-                            determinanMatrix.determinantCofactor();
+                            System.out.println(
+                                    "Matrix bukan matrix persegi sehingga tidak bisa dicari determinannya.");
                         }
                     }
                     case 2 -> {
@@ -98,7 +98,8 @@ public class DeterminantMenu {
                             System.out.println(
                                     "adalah " + determinanMatrix.determinantUpperTriangle());
                         } else {
-                            determinanMatrix.determinantUpperTriangle();
+                            System.out.println(
+                                    "Matrix bukan matrix persegi sehingga tidak bisa dicari determinannya.");
                         }
                     }
                     case 3 -> {
