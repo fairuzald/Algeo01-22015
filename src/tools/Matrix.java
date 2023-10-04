@@ -670,7 +670,6 @@ public class Matrix implements MatrixInterface {
 
   public double determinantCofactor() {
     if (!this.isSquare()) {
-      System.out.println("Matrix is not square. Determinant is undefined.");
       return Double.NaN;
     }
     Matrix subMatrix;
@@ -836,18 +835,6 @@ public class Matrix implements MatrixInterface {
     }
 
     return mInvers;
-  }
-
-  @Override
-  public double[][] copyElmtMatrix() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'copyElmtMatrix'");
-  }
-
-  @Override
-  public Matrix copyMatrix() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'copyMatrix'");
   }
 
 }
