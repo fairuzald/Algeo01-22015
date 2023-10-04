@@ -88,7 +88,6 @@ public interface MatrixInterface {
     // maka kita akan memanggil setElmt(0, 0, 5).
 
 
-
     // Menyalin elemen-elemen matriks ke dalam array 2D baru
     double[][] copyElmtMatrix(int row, int col);
 
