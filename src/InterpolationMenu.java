@@ -51,7 +51,10 @@ public class InterpolationMenu {
             }
 
             System.out.println("-----------------------------------");
-            System.out.println("Perhitungan Interpolasi Polinomial");
+            System.out.println("Perhitungan Interpolasi Polinomial diproses");
+            interpolasi.buatMatrixSPL();
+            interpolasi.cariTaksiranY();
+
             System.out.println("-----------------------------------");
             System.out.println("Hasil interpolasi polinomial sebagai berikut:");
             interpolasi.cetakOutputInterpolasi();
@@ -61,19 +64,19 @@ public class InterpolationMenu {
             System.out.print("Simpan Hasil? (y/n) : ");
 
             saveStatus = globalScanner.nextLine();
-            while (saveStatus == "y" || saveStatus == "n") {
-                if (saveStatus == "y") {
-                    System.out.println("-----------------------------------");
-                    String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
-                    String outputPath = Menu.getOutputFileLoc(globalScanner, outputDir);
+            while (!saveStatus.equals("y") && !saveStatus.equals("n")) {
+                System.out.println("Ulangi! Input haruslah 'y' atau 'n'");
+                System.out.print("Simpan Hasil? (y/n) : ");
+                saveStatus = globalScanner.nextLine();
+            }
 
-                    interpolasi.writeFileInterpolation(outputPath);
+            if (saveStatus.equals("y")) {
+                System.out.println("-----------------------------------");
+                String outputDir = System.getProperty("user.dir") + "\\test\\output\\";
+                String outputPath = Menu.getOutputFileLoc(globalScanner, outputDir);
 
-                } else if (saveStatus != "n") {
-                    System.out.println("Ulangi! Input haruslah 'y' atau 'n'");
-                    System.out.print("Simpan Hasil? (y/n) : ");
-                    saveStatus = globalScanner.nextLine();
-                }
+                interpolasi.writeFileInterpolation(outputPath);
+
             }
 
         } catch (Exception e) {
