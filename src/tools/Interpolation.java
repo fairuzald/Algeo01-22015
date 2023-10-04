@@ -99,7 +99,7 @@ public class Interpolation implements InterpolationInterface {
             // Assign nilai n
             this.n = this.koordinat.getRowEff()-1;
 
-            matrixTemp.displayMatrix();
+            // matrixTemp.displayMatrix();
         } catch (FileNotFoundException e) {
             System.err.printf("Error: File \"%s\" tidak ditemukan\n", filePath);
         }
