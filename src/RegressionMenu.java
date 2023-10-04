@@ -3,7 +3,7 @@ import java.util.Scanner;
 import tools.Regression;
 
 public class RegressionMenu {
-  private void selamatDatang() {
+  private void regressionMenu() {
     System.out.println("-----------------------------------");
     System.out.println("--------Multiple Regression--------");
     System.out.println("-----------------------------------");
@@ -21,7 +21,7 @@ public class RegressionMenu {
 
     try {
       scan = new Scanner(System.in);
-      selamatDatang();
+      regressionMenu();
       System.out.print("Masukkan pilihan : ");
       pilihanMulai = scan.nextInt();
 
@@ -106,6 +106,11 @@ public class RegressionMenu {
               e.printStackTrace();
             }
             break;
+
+          case 3:
+            Menu.clearScreen();
+            scan.close();
+            return;
         }
 
         reg.displayRegression();

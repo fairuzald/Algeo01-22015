@@ -2,6 +2,8 @@ import java.util.Scanner;
 import tools.SPL;
 
 public class LinearEquationMenu {
+  Scanner input = new Scanner(System.in);
+
   public void MenuSPLOption() {
     System.out.println("-----------------------------------");
     System.out.println("------Sistem Persamaan Linier------");
@@ -21,13 +23,11 @@ public class LinearEquationMenu {
     // INISIALISASI
     int inputMethod, readInput;
     String saveStatus;
-    Scanner input;
     SPL mSPL = new SPL(0, 0);
+
 
     // ALGORITMA
     try {
-      input = new Scanner(System.in);
-
       // PILIHAN METHOD
       this.MenuSPLOption();
       inputMethod = input.nextInt();
@@ -74,7 +74,6 @@ public class LinearEquationMenu {
           System.out.println("Data matriks SPL Berhasil Terbaca");
         } else if (readInput == 3) {
           Menu.clearScreen();
-          input.close();
           return;
           // MainMenu();
         }
@@ -131,6 +130,6 @@ public class LinearEquationMenu {
       System.out.println("Terjadi Error");
       e.printStackTrace();
     }
-
   }
+
 }
