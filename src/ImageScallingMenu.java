@@ -10,7 +10,7 @@ public class ImageScallingMenu {
     System.out.println("-----------------------------------");
     System.out.println("----------Image Scalling----------");
     System.out.println("-----------------------------------");
-    System.out.println("1. Run Image Scalling Processing");
+    System.out.println("1. Run Image Scaling Processing");
     System.out.println("2. Kembali");
     System.out.println("-----------------------------------");
   }

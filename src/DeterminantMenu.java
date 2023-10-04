@@ -74,7 +74,6 @@ public class DeterminantMenu {
                 } else if (readInput == 3) {
                     Menu.clearScreen();
                     return;
-                    // MainMenu();
                 }
 
                 System.out.println("Perhitungan Determinan: ");
