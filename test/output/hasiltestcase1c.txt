@@ -1,0 +1,1 @@
+Koefisien matrix bukan matrix persegi sehingga tidak bisa dicari determinannya 

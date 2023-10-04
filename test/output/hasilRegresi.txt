@@ -1,0 +1,5 @@
+Solusi dari Multiple Linear Regression ini adalah: 
+B_0 = 28.32138120830804
+B_1 = 0.5195983607374741
+B_2 = 0.05192992252390507
+Estimasi nilai yk = 38.97000668069281
