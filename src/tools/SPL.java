@@ -8,7 +8,6 @@ public class SPL extends Matrix implements SPLInterface {
   /* ***** ATRIBUTE ***** */
   /* ***** ATRIBUTE ***** */
 
-
   // UNtuk menyimpan solusi unique dan koefisien parametrik
   public double[] Solution;
 
@@ -161,7 +160,6 @@ public class SPL extends Matrix implements SPLInterface {
       this.Status[j] = categorySolution.UNIQUE;
     }
 
-
     for (i = 0; i < this.getLastIdxCol(); i++) {
       if (this.Status[i] != categorySolution.UNIQUE) {
 
@@ -248,8 +246,7 @@ public class SPL extends Matrix implements SPLInterface {
                 stringPersamaan += "-" + "(" + this.Equation[k] + ")";
                 this.Equation[j] = stringPersamaan;
               } else {
-                stringPersamaan +=
-                    "-" + "(" + Math.abs(this.getElmt(i, k)) + this.Equation[k] + ")";
+                stringPersamaan += "-" + "(" + Math.abs(this.getElmt(i, k)) + this.Equation[k] + ")";
                 this.Equation[j] = stringPersamaan;
               }
             } else {
@@ -257,8 +254,7 @@ public class SPL extends Matrix implements SPLInterface {
                 stringPersamaan += "-" + "(" + this.Equation[k] + ")";
                 this.Equation[j] = stringPersamaan;
               } else {
-                stringPersamaan +=
-                    "-" + "(" + Math.abs(this.getElmt(i, k)) + "(" + this.Equation[k] + "))";
+                stringPersamaan += "-" + "(" + Math.abs(this.getElmt(i, k)) + "(" + this.Equation[k] + "))";
                 this.Equation[j] = stringPersamaan;
               }
             }
@@ -279,8 +275,7 @@ public class SPL extends Matrix implements SPLInterface {
                 stringPersamaan += "+" + this.Equation[k];
                 this.Equation[j] = stringPersamaan;
               } else {
-                stringPersamaan +=
-                    "+" + Math.abs(this.getElmt(i, k)) + "(" + this.Equation[k] + ")";
+                stringPersamaan += "+" + Math.abs(this.getElmt(i, k)) + "(" + this.Equation[k] + ")";
                 this.Equation[j] = stringPersamaan;
               }
             }
@@ -289,7 +284,6 @@ public class SPL extends Matrix implements SPLInterface {
 
         }
       }
-
 
     }
   }
