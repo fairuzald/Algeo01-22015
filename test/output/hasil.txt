@@ -1,0 +1,5 @@
+Solusi dari Multiple Linear Regression ini adalah: 
+B_0 = null
+B_1 = null
+B_2 = null
+Estimasi nilai yk = 0.0

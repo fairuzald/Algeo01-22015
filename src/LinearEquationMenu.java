@@ -85,6 +85,7 @@ public class LinearEquationMenu {
           case 1 -> {
             System.out.println("Metode Eliminasi Gauss");
             mSPL.gaussMethodSPL();
+            mSPL.displayMatrix();
           }
           case 2 -> {
             System.out.println("Metode Eliminasi Gauss Jordan");

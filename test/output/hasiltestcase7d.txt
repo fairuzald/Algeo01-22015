@@ -1,0 +1,1 @@
+Solusi Predicted Value untuk f(0.1,0.9): 128.57518700000003
