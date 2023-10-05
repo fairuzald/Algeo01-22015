@@ -95,22 +95,15 @@ public class Interpolation implements InterpolationInterface {
 
             // Update the matrix and dimensions
             this.koordinat = matrixTemp;
+            
+            // Assign nilai n
+            this.n = this.koordinat.getRowEff()-1;
+
+            // matrixTemp.displayMatrix();
         } catch (FileNotFoundException e) {
             System.err.printf("Error: File \"%s\" tidak ditemukan\n", filePath);
         }
     }
-
-    // INI SALAH
-    // public void readFileMatrixInterpolasi(int n, float[] xlist, float[] ylist,
-    // double x) { // Pahamin cara baca file buat dijadiin input
-    // Matrix matrixKoordinat = new Matrix(n, n);
-    // matrixKoordinat.readFileMatrix("matrix1.txt"); // ini harusnya sesuai sama
-    // masukkan user mau filename nya apa
-    // this.koordinat = matrixKoordinat;
-    // this.n = matrixKoordinat.getRowEff()-1;
-    // // this.xDitaksir = // Ini masih bingung masukkan nya drmn, nunggu jawaban
-    // QnA
-    // }
 
     // Method untuk membuat matrix SPL
     public void buatMatrixSPL() {
@@ -133,11 +126,14 @@ public class Interpolation implements InterpolationInterface {
     public void cariTaksiranY() {
         // Selesein matrix (dapetin semua nilai a nya sehingga di dapet sebuah fungsi
         // f(x) untuk mencari nilai y)
-        this.matrixSPL.inversMethodSPL(); // Cari Solution[]
+        this.matrixSPL.gJordanMethodSPL(); // Cari Solution[]
+        
+        // this.matrixSPL.displaySPL();
 
         // Masukin nilai x, yang pengen ditaksir, ke fungsi f(x)
         double hasil = 0;
-        for (int i = 0; i < this.matrixSPL.getColEff() - 1; i++) {
+        for (int i = 0; i < this.matrixSPL.getColEff() -1; i++) {
+            // System.out.println(i);
             hasil += this.matrixSPL.Solution[i] * Math.pow(this.xDitaksir, i);
             // System.out.printf("a%d = %f\n", i, this.matrixSPL.Solution[i]);
         }
@@ -146,14 +142,28 @@ public class Interpolation implements InterpolationInterface {
 
     // Method untuk nyetak hasil taksiran
     public void cetakOutputInterpolasi() {
-        String output = "f(x) = ";
+        String output = "f(x) = [";
         String tempstr;
-        for (int i = this.matrixSPL.getColEff() - 1; i >= 0; i--) {
+        // this.matrixSPL.displayMatrix();
+        for (int i = this.matrixSPL.getColEff() - 2; i >= 0; i--) {
+            // System.out.println(i);
             tempstr = Double.toString(this.matrixSPL.Solution[i]);
-            if (i == 0) {
-                output = output + tempstr + ", f(" + this.xDitaksir + ") = ";
+
+            // double value = this.getElmt(i, j);
+            // String formattedValue;
+    
+            // // Check if the value is an integer (has no decimal part)
+            // if (value == (int) value) {
+            //   formattedValue = String.valueOf((int) value); // No formatting for integers
+            // } else {
+            //   // Format the double value with four decimal places
+            //   formattedValue = String.format("%.3f", value);
+            // }
+
+            if (i == 0) {   // Last
+                output = output + tempstr + "], f(" + this.xDitaksir + ") = ";
             } else {
-                output = output + tempstr + "x^(" + i + ") + ";
+                output = output + tempstr + "x^(" + i + ")] + [";
             }
         }
         output = output + this.hasilTaksiranX;
@@ -165,7 +175,7 @@ public class Interpolation implements InterpolationInterface {
             FileWriter output = new FileWriter(filePath);
             String stringDicetak = "f(x) = ";
             String tempstr;
-            for (int i = this.matrixSPL.getColEff() - 1; i >= 0; i--) {
+            for (int i = this.matrixSPL.getColEff() - 2; i >= 0; i--) {
                 tempstr = Double.toString(this.matrixSPL.Solution[i]);
                 if (i == 0) {
                     stringDicetak = stringDicetak + tempstr + ", f(" + this.xDitaksir + ") = ";
