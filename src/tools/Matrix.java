@@ -543,8 +543,8 @@ public class Matrix implements MatrixInterface {
     double value;
     for (i = this.getFirstIdxCol(); i <= this.getLastIdxCol(); i++) {
       value = this.getElmt(idxRowTarget, i) + (factor * this.getElmt(idxRowOrigin, i));
-      if (value == -0.0f) {
-        value = 0.0f;
+      if (value == -0.0d) {
+        value = 0.0d;
       }
       this.setElmt(idxRowTarget, i, value);
     }
@@ -567,8 +567,8 @@ public class Matrix implements MatrixInterface {
     double value;
     for (j = this.getFirstIdxCol(); j <= this.getLastIdxCol(); j++) {
       value = (this.getElmt(i, j) / factor);
-      if (value == -0.0f) {
-        value = 0.0f;
+      if (value == -0.0d) {
+        value = 0.0d;
       }
       this.setElmt(i, j, value);
     }
@@ -670,6 +670,8 @@ public class Matrix implements MatrixInterface {
 
   public double determinantCofactor() {
     if (!this.isSquare()) {
+      System.out.println("Matrix is not square. Determinant is undefined.");
+
       return Double.NaN;
     }
     Matrix subMatrix;
@@ -678,7 +680,7 @@ public class Matrix implements MatrixInterface {
       return this.getElmt(0, 0);
     }
 
-    double determinan = 0.0f;
+    double determinan = 0.0d;
 
     for (i = this.getFirstIdxRow(); i <= this.getLastIdxRow(); i++) {
       // Assign submatrix
@@ -734,7 +736,7 @@ public class Matrix implements MatrixInterface {
 
         // determinan bernilai 0 jika ada baris yang elemennya semua 0
         if (!found) {
-          return 0.0f;
+          return 0.0d;
         }
       }
       // Make elements below the diagonal zero

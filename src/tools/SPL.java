@@ -366,24 +366,23 @@ public class SPL extends Matrix implements SPLInterface {
     Matrix vectorSolution;
 
     Matrix koefMatrix = this.getKoefMatrix();
-    if (koefMatrix.getColEff() < koefMatrix.getRowEff()) {
-      koefMatrix = koefMatrix.copyMatrix(koefMatrix.getColEff(), koefMatrix.getColEff());
-    }
     Matrix vectorConstant = this.getVectorConstant(koefMatrix.getRowEff());
-    double determinant = koefMatrix.determinantCofactor();
-    if (determinant == Double.NaN || !koefMatrix.isSquare()) {
+    if (!koefMatrix.isSquare()) {
       this.Solution = new double[1];
       this.Equation = new String[1];
       this.Status = new categorySolution[1];
       // Handle the case where the determinant is zero or numerator is zero
       this.Status[0] = categorySolution.NOTSQUARE;
-
-    } else if (determinant == 0) {
+      return;
+    }
+    double determinant = koefMatrix.determinantUpperTriangle();
+    if (determinant == 0) {
       this.Solution = new double[1];
       this.Equation = new String[1];
       this.Status = new categorySolution[1];
       // Handle the case where the determinant is zero or numerator is zero
       this.Status[0] = categorySolution.ZERODETERMINANTINVERS;
+      return;
     } else {
 
       koefMatrix = koefMatrix.inversAdjoin();
@@ -407,23 +406,19 @@ public class SPL extends Matrix implements SPLInterface {
   public void cramerMethodSPL() {
     Matrix mEntry = this.getKoefMatrix();
     int i;
-    // Handle jika persamaan yang diberikan terlalu banyak yang diketahui
-    if (mEntry.getColEff() < mEntry.getRowEff()) {
-      mEntry = mEntry.copyMatrix(mEntry.getColEff(), mEntry.getColEff());
-    }
     double determinantDenominator = mEntry.determinantCofactor();
     double determinanNumerator;
     this.Solution = new double[this.getColEff() - 1];
     this.Equation = new String[this.getColEff() - 1];
     this.Status = new categorySolution[this.getColEff() - 1];
     for (i = mEntry.getFirstIdxCol(); i <= mEntry.getLastIdxCol(); i++) {
-      determinanNumerator = this.determinanNumerator(i, mEntry);
-      if (determinanNumerator == Double.NaN || !mEntry.isSquare()) {
+      if (!mEntry.isSquare()) {
         this.Solution = new double[1];
         this.Equation = new String[1];
         this.Status = new categorySolution[1];
         // Handle the case where the determinant is zero or numerator is zero
         this.Status[0] = categorySolution.NOTSQUARE;
+        return;
       } else if (determinantDenominator == 0) {
         this.Solution = new double[1];
         this.Equation = new String[1];
@@ -432,6 +427,8 @@ public class SPL extends Matrix implements SPLInterface {
         this.Status[0] = categorySolution.ZERODETERMINANTCRAMER;
         return;
       } else {
+        determinanNumerator = this.determinanNumerator(i, mEntry);
+
         double solution = determinanNumerator / determinantDenominator;
 
         this.Solution[i] = solution;
