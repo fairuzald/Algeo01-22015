@@ -339,7 +339,7 @@ public class SPL extends Matrix implements SPLInterface {
       temp[i] = koefMatrix.getElmt(i, colIdx);
       koefMatrix.setElmt(i, colIdx, vectorConstant.getElmt(i, 0));
     }
-    determinant = koefMatrix.determinantCofactor();
+    determinant = koefMatrix.determinantUpperTriangle();
     for (i = koefMatrix.getFirstIdxRow(); i <= koefMatrix.getLastIdxRow(); i++) {
       koefMatrix.setElmt(i, colIdx, temp[i]);
     }
@@ -405,7 +405,7 @@ public class SPL extends Matrix implements SPLInterface {
   public void cramerMethodSPL() {
     Matrix mEntry = this.getKoefMatrix();
     int i;
-    double determinantDenominator = mEntry.determinantCofactor();
+    double determinantDenominator = mEntry.determinantUpperTriangle();
     double determinanNumerator;
     this.Solution = new double[this.getColEff() - 1];
     this.Equation = new String[this.getColEff() - 1];
