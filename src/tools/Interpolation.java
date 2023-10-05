@@ -95,9 +95,9 @@ public class Interpolation implements InterpolationInterface {
 
             // Update the matrix and dimensions
             this.koordinat = matrixTemp;
-            
+
             // Assign nilai n
-            this.n = this.koordinat.getRowEff()-1;
+            this.n = this.koordinat.getRowEff() - 1;
 
             // matrixTemp.displayMatrix();
         } catch (FileNotFoundException e) {
@@ -127,12 +127,12 @@ public class Interpolation implements InterpolationInterface {
         // Selesein matrix (dapetin semua nilai a nya sehingga di dapet sebuah fungsi
         // f(x) untuk mencari nilai y)
         this.matrixSPL.gJordanMethodSPL(); // Cari Solution[]
-        
+
         // this.matrixSPL.displaySPL();
 
         // Masukin nilai x, yang pengen ditaksir, ke fungsi f(x)
         double hasil = 0;
-        for (int i = 0; i < this.matrixSPL.getColEff() -1; i++) {
+        for (int i = 0; i < this.matrixSPL.getColEff() - 1; i++) {
             // System.out.println(i);
             hasil += this.matrixSPL.Solution[i] * Math.pow(this.xDitaksir, i);
             // System.out.printf("a%d = %f\n", i, this.matrixSPL.Solution[i]);
@@ -151,16 +151,16 @@ public class Interpolation implements InterpolationInterface {
 
             // double value = this.getElmt(i, j);
             // String formattedValue;
-    
+
             // // Check if the value is an integer (has no decimal part)
             // if (value == (int) value) {
-            //   formattedValue = String.valueOf((int) value); // No formatting for integers
+            // formattedValue = String.valueOf((int) value); // No formatting for integers
             // } else {
-            //   // Format the double value with four decimal places
-            //   formattedValue = String.format("%.3f", value);
+            // // Format the double value with four decimal places
+            // formattedValue = String.format("%.3f", value);
             // }
 
-            if (i == 0) {   // Last
+            if (i == 0) { // Last
                 output = output + tempstr + "], f(" + this.xDitaksir + ") = ";
             } else {
                 output = output + tempstr + "x^(" + i + ")] + [";

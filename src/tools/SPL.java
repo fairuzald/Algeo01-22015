@@ -384,8 +384,7 @@ public class SPL extends Matrix implements SPLInterface {
       this.Status[0] = categorySolution.ZERODETERMINANTINVERS;
       return;
     } else {
-
-      koefMatrix = koefMatrix.inversAdjoin();
+      koefMatrix = koefMatrix.inversGJordan();
       vectorSolution = this.multiplyMatrix(koefMatrix, vectorConstant);
       vectorSolution = vectorSolution.transpose();
 
